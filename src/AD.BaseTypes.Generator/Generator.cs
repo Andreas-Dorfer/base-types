@@ -28,12 +28,11 @@ namespace AD.BaseTypes.Generator
             foreach (var tree in context.Compilation.SyntaxTrees)
             {
                 var semantics = context.Compilation.GetSemanticModel(tree);
-                var root = tree.GetRoot();
 
                 var sources = new List<string>();
 
                 var allPartialRecords =
-                    root.DescendantNodes()
+                    tree.GetRoot().DescendantNodes()
                     .Where(_ => _.IsKind(SyntaxKind.RecordDeclaration))
                     .OfType<RecordDeclarationSyntax>()
                     .Where(_ => _.Modifiers.Any(SyntaxKind.PartialKeyword));
