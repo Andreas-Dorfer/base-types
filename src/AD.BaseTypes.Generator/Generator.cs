@@ -96,7 +96,7 @@ $@"namespace {@namespace}
 
                 if (sources.Count > 0)
                 {
-                    context.AddSource(Path.GetFileNameWithoutExtension(tree.FilePath) + ".Generated", string.Join(Environment.NewLine, sources));
+                    context.AddSource(Path.GetFileNameWithoutExtension(tree.FilePath) + ".generated", string.Join(Environment.NewLine, sources));
                 }
             }
         }
