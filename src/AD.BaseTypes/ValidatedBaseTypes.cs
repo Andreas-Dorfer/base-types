@@ -67,7 +67,7 @@ namespace AD.BaseTypes
         /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> is too long.</exception>
         public void Validate(string value)
         {
-            if (value is null || value.Length > maxLength) throw new ArgumentOutOfRangeException(nameof(value), value, $"Parameter must not be longer than {maxLength} character(s).");
+            if (value is null || value.Length > maxLength) throw new ArgumentOutOfRangeException(nameof(value), value, $"Parameter must not be no longer than {maxLength} character(s).");
         }
     }
 
@@ -92,7 +92,7 @@ namespace AD.BaseTypes
         public void Validate(string value)
         {
             if (value is null || value.Length < minLength) throw new ArgumentOutOfRangeException(nameof(value), value, $"Parameter must be at least {minLength} character(s) long.");
-            if (value.Length > maxLength) throw new ArgumentOutOfRangeException(nameof(value), value, $"Parameter must not be longer than {maxLength} character(s).");
+            if (value.Length > maxLength) throw new ArgumentOutOfRangeException(nameof(value), value, $"Parameter must not be no longer than {maxLength} character(s).");
         }
     }
 
@@ -113,7 +113,7 @@ namespace AD.BaseTypes
         /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> doesn't match.</exception>
         public void Validate(string value)
         {
-            if (!Regex.IsMatch(value, pattern)) throw new ArgumentOutOfRangeException(nameof(value), value, $"Parameter doesn't match the pattern '{pattern}'.");
+            if (value is null || !Regex.IsMatch(value, pattern)) throw new ArgumentOutOfRangeException(nameof(value), value, $"Parameter doesn't match the pattern '{pattern}'.");
         }
     }
 
