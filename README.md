@@ -1,2 +1,2 @@
-# Expressive Types with Source Generators
-Fight primitive obsession and bring validation to the type system with C# source generators.
+# AD.BaseTypes
+Fight primitive obsession with source generators.
