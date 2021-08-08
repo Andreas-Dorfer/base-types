@@ -28,7 +28,6 @@ namespace AD.BaseTypes.Generator
             foreach (var tree in context.Compilation.SyntaxTrees)
             {
                 var semantics = context.Compilation.GetSemanticModel(tree);
-
                 var sources = new List<string>();
 
                 var allPartialRecords =
