@@ -68,7 +68,7 @@ record DepartmentId
 }
 ```
 Awesome, but that's a lot of boilerplate code. There sure is a solution to that:
-## The Generator
+## The Source Generator
 With `AD.BaseTypes` you can write the records like this:
 ```csharp
 [NonEmptyString] partial record EmployeeId;
