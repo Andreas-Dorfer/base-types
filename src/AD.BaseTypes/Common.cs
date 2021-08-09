@@ -1,4 +1,4 @@
-﻿namespace AD.BaseTypes
+﻿namespace AD.BaseTypes.Common
 {
     /// <summary>
     /// A GUID that's never empty.
