@@ -8,8 +8,8 @@ Consider the following snippet:
 ```csharp
 class Employee
 {
-    public Guid Id { get; }
-    public Guid DepartmentId { get; }
+    public string Id { get; }
+    public string DepartmentId { get; }
     //more properties
     
     public Department GetDepartment() =>
@@ -18,18 +18,18 @@ class Employee
 
 interface IDepartmentRepository
 {
-    Department Load(Guid id);
+    Department Load(string id);
 }
 ```
-Both the employee's ID and the associated department's ID are modeled as GUIDs ... although they are logically separate and must never be mixed. What if you accidentally use the wrong ID in `GetDepartment`?
+Both the employee's ID and the associated department's ID are modeled as strings ... although they are logically separate and must never be mixed. What if you accidentally use the wrong ID in `GetDepartment`?
 ```csharp
 public Department GetDepartment() =>
     departmentRepository.Load(Id);
 ```
 Your code still compiles. Hopefully, you've got some tests to catch that error. But why not utilize the type system to prevent that bug in the first place? C# 9 records to the rescue:
 ```csharp
-record EmployeeId(Guid Value);
-record DepartmentId(Guid Value);
+record EmployeeId(string Value);
+record DepartmentId(string Value);
 
 class Employee
 {
