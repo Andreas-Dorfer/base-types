@@ -14,10 +14,5 @@ namespace AD.BaseTypes
         /// <param name="value">The value to be validated.</param>
         /// <exception cref="ArgumentException">The parameter <paramref name="value"/> is invalid.</exception>
         void Validate(T value);
-
-        /// <summary>
-        /// The validation's precedence.
-        /// </summary>
-        int Order => 0;
     }
 }
