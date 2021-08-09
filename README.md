@@ -46,7 +46,7 @@ interface IDepartmentRepository
     Department Load(DepartmentId id);
 }
 ```
-Now, you get a compiler error when you accidentially use the employee's ID instead of the department's ID. Great! But there's more bugging me: both the employee's and the department's ID must not be empty. The records could reflect that constraint like this:
+You get a compiler error when you accidentially use the employee's ID instead of the department's ID. Great! But there's more bugging me: both the employee's and the department's ID must not be empty. The records could reflect that constraint like this:
 ```csharp
 record EmployeeId
 {
