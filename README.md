@@ -26,7 +26,7 @@ Both the employee's ID and the associated department's ID are modeled as strings
 public Department GetDepartment() =>
     departmentRepository.Load(Id);
 ```
-Your code still compiles. Hopefully, you've got some tests to catch that error. But why not utilize the type system to prevent that bug in the first place? C# 9 records to the rescue:
+Your code still compiles. Hopefully, you've got some tests to catch that bug. But why not utilize the type system to prevent that bug in the first place? C# 9 records to the rescue:
 ```csharp
 record EmployeeId(string Value);
 record DepartmentId(string Value);
@@ -164,5 +164,10 @@ class The90sAttribute : Attribute, IValidatedBaseType<DateTime>
 
 [The90s, Weekend] partial record SomeWeekendInThe90s;
 ```
+## Included Common Types
+The included common types are:
+- `NonEmptyGuid`
+- `NonEmptyString`
+- `PositiveDecimal`
 ## Note
 This project is in an early stage.
