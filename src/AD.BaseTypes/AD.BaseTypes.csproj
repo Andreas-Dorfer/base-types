@@ -6,4 +6,8 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AndreasDorfer.BaseTypes.Generator" Version="0.1.0" />
+  </ItemGroup>
+
 </Project>
