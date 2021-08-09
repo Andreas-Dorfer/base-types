@@ -46,7 +46,7 @@ interface IDepartmentRepository
     Department Load(DepartmentId id);
 }
 ```
-Now, you get a compiler error when you accidentially use the employee's ID instead of the department's ID. Great! But there's more bugging me: both the employee's and the department's ID must not be empty. The records could reflect that constraint like this:
+Now, you get a compiler error when you accidentally use the employee's ID instead of the department's ID. Great! But there's more bugging me: both the employee's and the department's ID must not be empty. The records could reflect that constraint like this:
 ```csharp
 record EmployeeId
 {
@@ -74,7 +74,7 @@ With `AD.BaseTypes` you can write the records like this:
 [NonEmptyString] partial record EmployeeId;
 [NonEmptyString] partial record DepartmentId;
 ```
-**That's it!** All the boilerpalte code is generated for you. Here's what the *generated* code for `EmployeeId` looks like:
+**That's it!** All the boilerplate code is generated for you. Here's what the *generated* code for `EmployeeId` looks like:
 ```csharp
 partial record EmployeeId
 {
