@@ -28,8 +28,8 @@ public Department GetDepartment() =>
 ```
 Your code still compiles. Hopefully, you've got some tests to catch that error. But why not utilize the type system to prevent that bug in the first place? C# 9 records to the rescue:
 ```csharp
-public record EmployeeId(Guid Value);
-public record DepartmentId(Guid Value);
+record EmployeeId(Guid Value);
+record DepartmentId(Guid Value);
 
 class Employee
 {
