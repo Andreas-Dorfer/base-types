@@ -2,7 +2,7 @@
 # AD.BaseTypes
 Fight primitive obsession and create expressive domain models with source generators.
 ## NuGet Package
-    PM> Install-Package AndreasDorfer.BaseTypes -Version 0.1.1
+    PM> Install-Package AndreasDorfer.BaseTypes -Version 0.1.3
 ## Motivation
 Consider the following snippet:
 ```csharp
