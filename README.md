@@ -149,5 +149,20 @@ class WeekendAttribute : Attribute, IValidatedBaseType<DateTime>
 
 [Weekend] partial record SomeWeekend;
 ```
+## Multiple Attributes
+You can apply multiple attributes:
+```csharp
+[AttributeUsage(AttributeTargets.Class)]
+class The90sAttribute : Attribute, IValidatedBaseType<DateTime>
+{
+    public void Validate(DateTime value)
+    {
+        if (value.Year < 1990 || value.Year > 1999)
+            throw new ArgumentOutOfRangeException(nameof(value), value, "must be in the 90s");
+    }
+}
+
+[The90s, Weekend] partial record SomeWeekendInThe90s;
+```
 ## Note
 This project is in an early stage.
