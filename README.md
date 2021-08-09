@@ -141,7 +141,7 @@ class WeekendAttribute : Attribute, IValidatedBaseType<DateTime>
     }
 }
 
-[Weekend] partial record Weekend;
+[Weekend] partial record SomeWeekend;
 ```
 ## Note
 This project is in an early stage.
