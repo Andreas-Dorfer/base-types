@@ -4,7 +4,7 @@ Fight primitive obsession and create expressive domain models with source genera
 ## NuGet Package
     PM> Install-Package AndreasDorfer.BaseTypes -Version 0.1.1
 ## Motivation
-Consider the following example:
+Consider the following snippet:
 ```csharp
 class Employee
 {
@@ -15,10 +15,35 @@ class Employee
     public Department GetDepartment() =>
         departmentRepository.Load(DepartmentId);
 }
+
+interface IDepartmentRepository
+{
+    Department Load(Guid id);
+}
 ```
 Both the employee's ID and the associated department's ID are modeled as GUIDs ... although they are logically separate and must never be mixed. What if you accidentally use the wrong ID in `GetDepartment`?
 ```csharp
 public Department GetDepartment() =>
     departmentRepository.Load(Id);
 ```
-Your code still compiles. Hopefully, you've got some tests to catch that error. But why not utilize the type system to prevent the bug in the first place?
+Your code still compiles. Hopefully, you've got some tests to catch that error. But why not utilize the type system to prevent that bug in the first place? C# 9 records to the rescue:
+```csharp
+public record EmployeeId(Guid Value);
+public record DepartmentId(Guid Value);
+
+class Employee
+{
+    public EmployeeId Id { get; }
+    public DepartmentId DepartmentId { get; }
+    //more properties
+    
+    public Department GetDepartment() =>
+        departmentRepository.Load(DepartmentId);
+}
+
+interface IDepartmentRepository
+{
+    Department Load(DepartmentId id);
+}
+```
+Now, you get a compiler error when you accidentially use the Employee's ID instead of the department's ID. Great!
