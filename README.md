@@ -46,4 +46,4 @@ interface IDepartmentRepository
     Department Load(DepartmentId id);
 }
 ```
-Now, you get a compiler error when you accidentially use the Employee's ID instead of the department's ID. Great!
+Now, you get a compiler error when you accidentially use the employee's ID instead of the department's ID. Great!
