@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageId>AndreasDorfer.BaseTypes</PackageId>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <Authors>Andreas Dorfer</Authors>
     <Description>Fight primitive obsession with source generators.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
