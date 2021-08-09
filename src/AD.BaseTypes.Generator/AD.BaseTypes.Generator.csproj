@@ -6,7 +6,6 @@
     <PackageId>AndreasDorfer.BaseTypes.Generator</PackageId>
     <Version>0.1.0</Version>
     <Authors>Andreas Dorfer</Authors>
-    <Company>Andreas Dorfer</Company>
     <Description>A source generator to fight primitive obsession.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/Andreas-Dorfer/base-types</RepositoryUrl>

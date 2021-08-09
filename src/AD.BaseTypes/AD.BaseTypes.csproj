@@ -1,9 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageId>AndreasDorfer.BaseTypes</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>Andreas Dorfer</Authors>
+    <Description>Fight primitive obsession with source generators.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/Andreas-Dorfer/base-types</RepositoryUrl>
+    <PackageTags>C#, source-generator, domain-modeling, validation, primitive-obsession</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
