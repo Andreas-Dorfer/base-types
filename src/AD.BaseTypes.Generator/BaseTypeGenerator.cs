@@ -59,7 +59,8 @@ namespace AD.BaseTypes.Generator
                     foreach (var validation in validations)
                     {
                         var validationType = semantics.GetSymbolInfo(validation).Symbol.ContainingType;
-                        validationBuilder.AppendLine($"new {validationType.ToDisplayString()}().Validate(value);");
+                        var args = validation?.ArgumentList?.Arguments.ToString() ?? "";
+                        validationBuilder.AppendLine($"new {validationType.ToDisplayString()}({args}).Validate(value);");
                     }
 
                     var @namespace = GetNamespace(record);
