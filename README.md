@@ -52,7 +52,7 @@ record EmployeeId
 {
     public EmployeeId(string value)
     {
-        if(string.IsNullOrEmpty(value)) throw new ArgumentException(nameof(value));
+        if(string.IsNullOrEmpty(value)) throw new ArgumentException("must not be empty");
         Value = value;
     }
     public string Value { get; }
@@ -61,7 +61,7 @@ record DepartmentId
 {
     public DepartmentId(string value)
     {
-        if(string.IsNullOrEmpty(value)) throw new ArgumentException(nameof(value));
+        if(string.IsNullOrEmpty(value)) throw new ArgumentException("must not be empty");
         Value = value;
     }
     public string Value { get; }
