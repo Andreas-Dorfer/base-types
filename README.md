@@ -67,3 +67,26 @@ record DepartmentId
     public string Value { get; }
 }
 ```
+Awesome, but that's a lot of boilerplate code. There sure is a solution to that:
+## The Generator
+With `AD.BaseTypes` you can write the records like this:
+```csharp
+[NonEmptyString] partial record EmployeeId;
+[NonEmptyString] partial record DepartmentId;
+```
+**That's it!** All the boilerpalte code is generated for you. Here's what the *generated* code for `EmployeeId` looks like:
+```csharp
+partial record EmployeeId
+{
+    public EmployeeId(string value)
+    {
+        new AD.BaseTypes.NonEmptyStringAttribute().Validate(value);
+
+        this.Value = value;
+    }
+
+    public string Value { get; }
+    public override string ToString() => Value.ToString();
+    public static implicit operator string(EmployeeId x) => x.Value;
+}
+```
