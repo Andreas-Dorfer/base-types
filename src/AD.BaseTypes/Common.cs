@@ -8,7 +8,7 @@
     /// <summary>
     /// A string that's never null or empty.
     /// </summary>
-    [NonEmptyString] public partial record NonEmptySting;
+    [NonEmptyString] public partial record NonEmptyString;
 
     /// <summary>
     /// A decimal that's never negative.
