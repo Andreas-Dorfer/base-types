@@ -21,4 +21,4 @@ Both the employee's ID and the associated department's ID are modeled as GUIDs .
 public Department GetDepartment() =>
     departmentRepository.Load(Id);
 ```
-Your code still compiles. You better've Hopefully, you've got some tests to catch that error. But why not utilize the type system to prevent the bug in the first place?
+Your code still compiles. Hopefully, you've got some tests to catch that error. But why not utilize the type system to prevent the bug in the first place?
