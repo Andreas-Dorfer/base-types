@@ -67,7 +67,7 @@ record DepartmentId
     public string Value { get; }
 }
 ```
-Awesome, but that's a lot of boilerplate code. There sure is a solution to that:
+Now you get an `ArgumentException` whenever you try to create an empty ID. But that's a lot of boilerplate code. There sure is a solution to that:
 ## The Source Generator
 With `AD.BaseTypes` you can write the records like this:
 ```csharp
