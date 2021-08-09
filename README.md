@@ -128,3 +128,20 @@ The included attributes are:
 - `MinMaxLengthAttribute`
 - `RegexAttribute`
 - `PositiveDecimalAttribute`
+## Custom Attributes
+You can create custom attributes. Let's say you need a `DateTime` only for weekends:
+```csharp
+[AttributeUsage(AttributeTargets.Class)]
+class WeekendAttribute : Attribute, IValidatedBaseType<DateTime>
+{
+    public void Validate(DateTime value)
+    {
+        if (value.DayOfWeek != DayOfWeek.Saturday && value.DayOfWeek != DayOfWeek.Sunday)
+            throw new ArgumentOutOfRangeException(nameof(value), value, "must be a Saturday or Sunday");
+    }
+}
+
+[Weekend] partial record Weekend;
+```
+## Note
+This project is in an early stage.
