@@ -111,6 +111,10 @@ partial record Name
     public static implicit operator string(Name x) => x.Value;
 }
 ```
+Or you need to model a serial number that must follow a certain pattern:
+```csharp
+[Regex(@"^\d\d_\w\w\w\w$")] partial record SerialNumber;
+```
 ## Included Attributes
 The included attributes are:
 - `IntAttribute`
