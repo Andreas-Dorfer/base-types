@@ -90,3 +90,16 @@ partial record EmployeeId
     public static implicit operator string(EmployeeId x) => x.Value;
 }
 ```
+## Included Attributes
+The included attributes are:
+- `IntAttribute`
+- `StringAttribute`
+- `GuidAttribute`
+- `DecimalAttribute`
+- `NonEmptyGuidAttribute`
+- `NonEmptyStringAttribute`
+- `MinLengthAttribute`
+- `MaxLengthAttribute`
+- `MinMaxLengthAttribute`
+- `RegexAttribute`
+- `PositiveDecimalAttribute`
