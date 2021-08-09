@@ -2,7 +2,7 @@
 # AD.BaseTypes
 Fight primitive obsession and create expressive domain models with source generators.
 ## NuGet Package
-    PM> Install-Package AndreasDorfer.BaseTypes -Version 0.1.1
+    PM> Install-Package AndreasDorfer.BaseTypes -Version 0.1.3
 ## Motivation
 Consider the following snippet:
 ```csharp
@@ -26,7 +26,7 @@ Both the employee's ID and the associated department's ID are modeled as strings
 public Department GetDepartment() =>
     departmentRepository.Load(Id);
 ```
-Your code still compiles. Hopefully, you've got some tests to catch that error. But why not utilize the type system to prevent that bug in the first place? C# 9 records to the rescue:
+Your code still compiles. Hopefully, you've got some tests to catch that bug. But why not utilize the type system to prevent that bug in the first place? C# 9 records to the rescue:
 ```csharp
 record EmployeeId(string Value);
 record DepartmentId(string Value);
@@ -76,7 +76,7 @@ With `AD.BaseTypes` you can write the records like this:
 ```
 **That's it!** All the boilerplate code is generated for you. Here's what the *generated* code for `EmployeeId` looks like:
 ```csharp
-partial record EmployeeId
+partial record EmployeeId : System.IComparable<EmployeeId>, System.IComparable
 {
     public EmployeeId(string value)
     {
@@ -87,6 +87,9 @@ partial record EmployeeId
 
     public string Value { get; }
     public override string ToString() => Value.ToString();
+    public int CompareTo(object obj) => CompareTo(obj as EmployeeId);
+    public int CompareTo(EmployeeId other) =>
+        other is null ? 1 : System.Collections.Generic.Comparer<string>.Default.Compare(Value, other.Value);
     public static implicit operator string(EmployeeId x) => x.Value;
 }
 ```
@@ -97,7 +100,7 @@ Let's say you need to model a name that's from 1 to 20 characters long:
 ```
 **That's it!** Here's what the *generated* code looks like:
 ```csharp
-partial record Name
+partial record Name : System.IComparable<Name>, System.IComparable
 {
     public Name(string value)
     {
@@ -108,6 +111,9 @@ partial record Name
 
     public string Value { get; }
     public override string ToString() => Value.ToString();
+    public int CompareTo(object obj) => CompareTo(obj as Name);
+    public int CompareTo(Name other) =>
+        other is null ? 1 : System.Collections.Generic.Comparer<string>.Default.Compare(Value, other.Value);
     public static implicit operator string(Name x) => x.Value;
 }
 ```
@@ -143,5 +149,25 @@ class WeekendAttribute : Attribute, IValidatedBaseType<DateTime>
 
 [Weekend] partial record SomeWeekend;
 ```
+## Multiple Attributes
+You can apply multiple attributes:
+```csharp
+[AttributeUsage(AttributeTargets.Class)]
+class The90sAttribute : Attribute, IValidatedBaseType<DateTime>
+{
+    public void Validate(DateTime value)
+    {
+        if (value.Year < 1990 || value.Year > 1999)
+            throw new ArgumentOutOfRangeException(nameof(value), value, "must be in the 90s");
+    }
+}
+
+[The90s, Weekend] partial record SomeWeekendInThe90s;
+```
+## Included Common Types
+The included common types are:
+- `NonEmptyGuid`
+- `NonEmptyString`
+- `PositiveDecimal`
 ## Note
 This project is in an early stage.
