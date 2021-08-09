@@ -113,7 +113,7 @@ partial record Name
 ```
 Or you need to model a serial number that must follow a certain pattern:
 ```csharp
-[Regex(@"^\d\d_\w\w\w\w$")] partial record SerialNumber;
+[Regex(@"^\d\d-\w\w\w\w$")] partial record SerialNumber;
 ```
 ## Included Attributes
 The included attributes are:
