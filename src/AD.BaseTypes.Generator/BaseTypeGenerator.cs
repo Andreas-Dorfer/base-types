@@ -77,7 +77,7 @@ $@"partial record {record.Identifier.Text} : System.IComparable<{record.Identifi
     public override string ToString() => Value.ToString();
     public int CompareTo(object obj) => CompareTo(obj as {record.Identifier.Text});
     public int CompareTo({record.Identifier.Text} other) => other is null ? 1 : System.Collections.Generic.Comparer<{baseTypes[0]}>.Default.Compare(Value, other.Value);
-    public static implicit operator {baseTypes[0]}({record.Identifier.Text} x) => x.Value;
+    public static implicit operator {baseTypes[0]}({record.Identifier.Text} item) => item.Value;
 }}" :
 $@"namespace {@namespace}
 {{
@@ -93,7 +93,7 @@ $@"namespace {@namespace}
         public override string ToString() => Value.ToString();
         public int CompareTo(object obj) => CompareTo(obj as {record.Identifier.Text});
         public int CompareTo({record.Identifier.Text} other) => other is null ? 1 : System.Collections.Generic.Comparer<{baseTypes[0]}>.Default.Compare(Value, other.Value);
-        public static implicit operator {baseTypes[0]}({record.Identifier.Text} x) => x.Value;
+        public static implicit operator {baseTypes[0]}({record.Identifier.Text} item) => item.Value;
     }}
 }}";
                     sources.Add(source);
