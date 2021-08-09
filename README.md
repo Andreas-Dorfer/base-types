@@ -46,7 +46,7 @@ interface IDepartmentRepository
     Department Load(DepartmentId id);
 }
 ```
-You get a compiler error when you accidentially use the employee's ID instead of the department's ID. Great! But there's more bugging me: both the employee's and the department's ID must not be empty. The records could reflect that constraint like this:
+Now, you get a compiler error when you accidentially use the employee's ID instead of the department's ID. Great! But there's more bugging me: both the employee's and the department's ID must not be empty. The records could reflect that constraint like this:
 ```csharp
 record EmployeeId
 {
@@ -67,7 +67,7 @@ record DepartmentId
     public string Value { get; }
 }
 ```
-Now, you get an `ArgumentException` whenever you try to create an empty ID. But that's a lot of boilerplate code. There sure is a solution to that:
+You get an `ArgumentException` whenever you try to create an empty ID. But that's a lot of boilerplate code. There sure is a solution to that:
 ## The Source Generator
 With `AD.BaseTypes` you can write the records like this:
 ```csharp
