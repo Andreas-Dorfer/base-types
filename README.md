@@ -90,6 +90,27 @@ partial record EmployeeId
     public static implicit operator string(EmployeeId x) => x.Value;
 }
 ```
+## But there's more!
+Let's say you need to model a name that's from 1 to 20 characters long:
+```csharp
+[MinMaxLength(1, 20)] partial record Name;
+```
+**That's it!** Here's what the *generated* code looks like:
+```csharp
+partial record Name
+{
+    public Name(string value)
+    {
+        new AD.BaseTypes.MinMaxLengthAttribute(1, 20).Validate(value);
+
+        this.Value = value;
+    }
+
+    public string Value { get; }
+    public override string ToString() => Value.ToString();
+    public static implicit operator string(Name x) => x.Value;
+}
+```
 ## Included Attributes
 The included attributes are:
 - `IntAttribute`
