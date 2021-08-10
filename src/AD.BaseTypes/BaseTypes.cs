@@ -3,30 +3,44 @@
 namespace AD.BaseTypes
 {
     /// <summary>
-    /// Int-Wrapper.
+    /// Int wrapper.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public class IntAttribute : Attribute, IBaseType<int>
     { }
 
     /// <summary>
-    /// String-Wrapper.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class)]
-    public class StringAttribute : Attribute, IBaseType<string>
-    { }
-
-    /// <summary>
-    /// GUID-Wrapper.
+    /// GUID wrapper.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public class GuidAttribute : Attribute, IBaseType<Guid>
     { }
 
     /// <summary>
-    /// Decimal-Wrapper.
+    /// String wrapper.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class)]
+    public class StringAttribute : Attribute, IBaseType<string>
+    { }
+
+    /// <summary>
+    /// Decimal wrapper.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public class DecimalAttribute : Attribute, IBaseType<decimal>
+    { }
+
+    /// <summary>
+    /// Double wrapper.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class)]
+    public class DoubleAttribute : Attribute, IBaseType<double>
+    { }
+
+    /// <summary>
+    /// DateTime wrapper.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class)]
+    public class DateTimeAttribute : Attribute, IBaseType<DateTime>
     { }
 }

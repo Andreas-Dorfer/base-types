@@ -4,6 +4,48 @@ using System.Text.RegularExpressions;
 namespace AD.BaseTypes
 {
     /// <summary>
+    /// Int with a minimal value.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class)]
+    public class IntMinAttribute : Attribute, IValidatedBaseType<int>
+    {
+        readonly int min;
+
+        /// <param name="min">Minimal value.</param>
+        public IntMinAttribute(int min)
+        {
+            this.min = min;
+        }
+
+        /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> is too small.</exception>
+        public void Validate(int value)
+        {
+            if (value < min) throw new ArgumentOutOfRangeException(nameof(value), value, $"Parameter must be more than {min}.");
+        }
+    }
+
+    /// <summary>
+    /// Int with a maximal value.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class)]
+    public class IntMaxAttribute : Attribute, IValidatedBaseType<int>
+    {
+        readonly int max;
+
+        /// <param name="max">Maximal value.</param>
+        public IntMaxAttribute(int max)
+        {
+            this.max = max;
+        }
+
+        /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> is too large.</exception>
+        public void Validate(int value)
+        {
+            if (value > max) throw new ArgumentOutOfRangeException(nameof(value), value, $"Parameter must be less than {max}.");
+        }
+    }
+
+    /// <summary>
     /// Non-empty GUID.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
@@ -77,8 +119,7 @@ namespace AD.BaseTypes
     [AttributeUsage(AttributeTargets.Class)]
     public class MinMaxLengthAttribute : Attribute, IValidatedBaseType<string>
     {
-        readonly int minLength;
-        readonly int maxLength;
+        readonly int minLength, maxLength;
 
         /// <param name="minLength">Minimal length.</param>
         /// <param name="maxLength">Maximal length.</param>
