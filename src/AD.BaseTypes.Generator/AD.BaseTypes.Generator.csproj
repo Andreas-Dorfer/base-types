@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <PackageId>AndreasDorfer.BaseTypes.Generator</PackageId>
-    <Version>0.1.2</Version>
+    <Version>0.1.3</Version>
     <Authors>Andreas Dorfer</Authors>
     <Description>A source generator to fight primitive obsession.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>

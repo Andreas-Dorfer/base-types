@@ -65,7 +65,7 @@ namespace AD.BaseTypes.Generator
 
                     var @namespace = GetNamespace(record);
                     var source = string.IsNullOrEmpty(@namespace) ?
-$@"partial record {record.Identifier.Text} : System.IComparable<{record.Identifier.Text}>, System.IComparable
+$@"partial record {record.Identifier.Text} : System.IComparable<{record.Identifier.Text}>, System.IComparable, AD.BaseTypes.IValue<{baseTypes[0]}>
 {{
     public {record.Identifier.Text}({baseTypes[0]} value)
     {{
@@ -78,10 +78,11 @@ $@"partial record {record.Identifier.Text} : System.IComparable<{record.Identifi
     public int CompareTo(object obj) => CompareTo(obj as {record.Identifier.Text});
     public int CompareTo({record.Identifier.Text} other) => other is null ? 1 : System.Collections.Generic.Comparer<{baseTypes[0]}>.Default.Compare(Value, other.Value);
     public static implicit operator {baseTypes[0]}({record.Identifier.Text} item) => item.Value;
+    public static {record.Identifier.Text} Create({baseTypes[0]} value) => new(value);
 }}" :
 $@"namespace {@namespace}
 {{
-    partial record {record.Identifier.Text} : System.IComparable<{record.Identifier.Text}>, System.IComparable
+    partial record {record.Identifier.Text} : System.IComparable<{record.Identifier.Text}>, System.IComparable, AD.BaseTypes.IValue<{baseTypes[0]}>
     {{
         public {record.Identifier.Text}({baseTypes[0]} value)
         {{
@@ -94,6 +95,7 @@ $@"namespace {@namespace}
         public int CompareTo(object obj) => CompareTo(obj as {record.Identifier.Text});
         public int CompareTo({record.Identifier.Text} other) => other is null ? 1 : System.Collections.Generic.Comparer<{baseTypes[0]}>.Default.Compare(Value, other.Value);
         public static implicit operator {baseTypes[0]}({record.Identifier.Text} item) => item.Value;
+        public static {record.Identifier.Text} Create({baseTypes[0]} value) => new(value);
     }}
 }}";
                     sources.Add(source);
