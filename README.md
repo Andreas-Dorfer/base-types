@@ -2,7 +2,7 @@
 # AD.BaseTypes
 Fight primitive obsession and create expressive domain models with source generators.
 ## NuGet Package
-    PM> Install-Package AndreasDorfer.BaseTypes -Version 0.1.3
+    PM> Install-Package AndreasDorfer.BaseTypes -Version 0.1.5
 ## Motivation
 Consider the following snippet:
 ```csharp
@@ -76,7 +76,7 @@ With `AD.BaseTypes` you can write the records like this:
 ```
 **That's it!** All the boilerplate code is generated for you. Here's what the *generated* code for `EmployeeId` looks like:
 ```csharp
-partial record EmployeeId : System.IComparable<EmployeeId>, System.IComparable
+partial record EmployeeId : System.IComparable<EmployeeId>, System.IComparable, AD.BaseTypes.IValue<string>
 {
     public EmployeeId(string value)
     {
@@ -90,7 +90,8 @@ partial record EmployeeId : System.IComparable<EmployeeId>, System.IComparable
     public int CompareTo(object obj) => CompareTo(obj as EmployeeId);
     public int CompareTo(EmployeeId other) =>
         other is null ? 1 : System.Collections.Generic.Comparer<string>.Default.Compare(Value, other.Value);
-    public static implicit operator string(EmployeeId x) => x.Value;
+    public static implicit operator string(EmployeeId item) => item.Value;
+    public static EmployeeId Create(string value) => new(value);
 }
 ```
 ## But there's more!
@@ -100,7 +101,7 @@ Let's say you need to model a name that's from 1 to 20 characters long:
 ```
 **That's it!** Here's what the *generated* code looks like:
 ```csharp
-partial record Name : System.IComparable<Name>, System.IComparable
+partial record Name : System.IComparable<Name>, System.IComparable, AD.BaseTypes.IValue<string>
 {
     public Name(string value)
     {
@@ -114,7 +115,8 @@ partial record Name : System.IComparable<Name>, System.IComparable
     public int CompareTo(object obj) => CompareTo(obj as Name);
     public int CompareTo(Name other) =>
         other is null ? 1 : System.Collections.Generic.Comparer<string>.Default.Compare(Value, other.Value);
-    public static implicit operator string(Name x) => x.Value;
+    public static implicit operator string(Name item) => item.Value;
+    public static Name Create(string value) => new(value);
 }
 ```
 Or you need to model a serial number that must follow a certain pattern:
@@ -124,16 +126,21 @@ Or you need to model a serial number that must follow a certain pattern:
 ## Included Attributes
 The included attributes are:
 - `IntAttribute`
+- `DoubleAttribute`
+- `DecimalAttribute`
 - `StringAttribute`
 - `GuidAttribute`
-- `DecimalAttribute`
-- `NonEmptyGuidAttribute`
+- `DateTimeAttribute`
+- `IntMinAttribute`
+- `IntMaxAttribute`
+- `IntRangeAttribute`
+- `PositiveDecimalAttribute`
 - `NonEmptyStringAttribute`
 - `MinLengthAttribute`
 - `MaxLengthAttribute`
 - `MinMaxLengthAttribute`
 - `RegexAttribute`
-- `PositiveDecimalAttribute`
+- `NonEmptyGuidAttribute`
 ## Custom Attributes
 You can create custom attributes. Let's say you need a `DateTime` only for weekends:
 ```csharp
@@ -164,10 +171,5 @@ class The90sAttribute : Attribute, IValidatedBaseType<DateTime>
 
 [The90s, Weekend] partial record SomeWeekendInThe90s;
 ```
-## Included Common Types
-The included common types are:
-- `NonEmptyGuid`
-- `NonEmptyString`
-- `PositiveDecimal`
 ## Note
 This project is in an early stage.
