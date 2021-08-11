@@ -171,5 +171,11 @@ class The90sAttribute : Attribute, IValidatedBaseType<DateTime>
 
 [The90s, Weekend] partial record SomeWeekendInThe90s;
 ```
+## Arbitraries
+[![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.Arbitraries.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.Arbitraries/)
+
+Are you using [FsCheck](https://fscheck.github.io/FsCheck/)? Check out `AD.BaseTypes.Arbitraries`.
+### NuGet Package
+    PM> Install-Package AndreasDorfer.BaseTypes.Arbitraries -Version 0.1.1
 ## Note
 This project is in an early stage.
