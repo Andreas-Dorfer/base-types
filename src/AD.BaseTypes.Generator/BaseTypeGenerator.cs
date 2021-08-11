@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace AD.BaseTypes.Generator
@@ -35,49 +34,63 @@ namespace AD.BaseTypes.Generator
 
                 foreach (var record in FindAllPartialRecords(tree))
                 {
-                    var attributes = record.AttributeLists.SelectMany(_ => _.Attributes);
-
+                    var attributes = GetAllAttributes(record);
                     if (!TryGetBaseType(semantics, attributes, out var baseType)) continue;
 
-                    var validations = GetAllValidations(semantics, attributes, baseType);
-                    var validationsBuilder = BuildValidations(semantics, validations);
+                    var sourceBuilder = new IndentedStringBuilder();
 
                     var @namespace = GetNamespace(record);
-                    var source = string.IsNullOrEmpty(@namespace) ?
-$@"partial record {record.Identifier.Text} : System.IComparable<{record.Identifier.Text}>, System.IComparable, AD.BaseTypes.IValue<{baseType}>
-{{
-    public {record.Identifier.Text}({baseType} value)
-    {{
-        {validationsBuilder}
-        this.Value = value;
-    }}
+                    var hasNamespace = !string.IsNullOrEmpty(@namespace);
+                    if (hasNamespace)
+                    {
+                        //namespace start
+                        sourceBuilder.AppendLine($"namespace {@namespace}");
+                        sourceBuilder.AppendLine("{");
+                        sourceBuilder.IncreaseIndent();
+                        //*****
+                    }
 
-    public {baseType} Value {{ get; }}
-    public override string ToString() => Value.ToString();
-    public int CompareTo(object obj) => CompareTo(obj as {record.Identifier.Text});
-    public int CompareTo({record.Identifier.Text} other) => other is null ? 1 : System.Collections.Generic.Comparer<{baseType}>.Default.Compare(Value, other.Value);
-    public static implicit operator {baseType}({record.Identifier.Text} item) => item.Value;
-    public static {record.Identifier.Text} Create({baseType} value) => new(value);
-}}" :
-$@"namespace {@namespace}
-{{
-    partial record {record.Identifier.Text} : System.IComparable<{record.Identifier.Text}>, System.IComparable, AD.BaseTypes.IValue<{baseType}>
-    {{
-        public {record.Identifier.Text}({baseType} value)
-        {{
-            {validationsBuilder}
-            this.Value = value;
-        }}
+                    //record start
+                    sourceBuilder.AppendLine($"partial record {record.Identifier.Text} : System.IComparable<{record.Identifier.Text}>, System.IComparable, AD.BaseTypes.IValue<{baseType}>");
+                    sourceBuilder.AppendLine("{");
+                    sourceBuilder.IncreaseIndent();
+                    //*****
 
-        public {baseType} Value {{ get; }}
-        public override string ToString() => Value.ToString();
-        public int CompareTo(object obj) => CompareTo(obj as {record.Identifier.Text});
-        public int CompareTo({record.Identifier.Text} other) => other is null ? 1 : System.Collections.Generic.Comparer<{baseType}>.Default.Compare(Value, other.Value);
-        public static implicit operator {baseType}({record.Identifier.Text} item) => item.Value;
-        public static {record.Identifier.Text} Create({baseType} value) => new(value);
-    }}
-}}";
-                    sources.Add(source);
+                    //constructor start
+                    sourceBuilder.AppendLine($"public {record.Identifier.Text}({baseType} value)");
+                    sourceBuilder.AppendLine("{");
+                    sourceBuilder.IncreaseIndent();
+                    //*****
+
+                    AppendValidations(sourceBuilder, semantics, attributes, baseType);
+                    sourceBuilder.AppendLine("this.Value = value;");
+
+                    //constructor end
+                    sourceBuilder.DecreaseIndent();
+                    sourceBuilder.AppendLine("}");
+                    //*****
+
+                    sourceBuilder.AppendLine($"public {baseType} Value {{ get; }}");
+                    sourceBuilder.AppendLine("public override string ToString() => Value.ToString();");
+                    sourceBuilder.AppendLine($"public int CompareTo(object obj) => CompareTo(obj as {record.Identifier.Text});");
+                    sourceBuilder.AppendLine($"public int CompareTo({record.Identifier.Text} other) => other is null ? 1 : System.Collections.Generic.Comparer<{baseType}>.Default.Compare(Value, other.Value);");
+                    sourceBuilder.AppendLine($"public static implicit operator {baseType}({record.Identifier.Text} item) => item.Value;");
+                    sourceBuilder.AppendLine($"public static {record.Identifier.Text} Create({baseType} value) => new(value);");
+
+                    //record end
+                    sourceBuilder.DecreaseIndent();
+                    sourceBuilder.AppendLine("}");
+                    //*****
+
+                    if (hasNamespace)
+                    {
+                        //namespace end
+                        sourceBuilder.DecreaseIndent();
+                        sourceBuilder.AppendLine("}");
+                        //*****
+                    }
+
+                    sources.Add(sourceBuilder.ToString());
                 }
 
                 if (sources.Count > 0)
@@ -92,6 +105,9 @@ $@"namespace {@namespace}
             .Where(_ => _.IsKind(SyntaxKind.RecordDeclaration))
             .OfType<RecordDeclarationSyntax>()
             .Where(_ => _.Modifiers.Any(SyntaxKind.PartialKeyword));
+
+        static IEnumerable<AttributeSyntax> GetAllAttributes(RecordDeclarationSyntax record) =>
+            record.AttributeLists.SelectMany(_ => _.Attributes);
 
         static bool TryGetBaseType(SemanticModel semantics, IEnumerable<AttributeSyntax> attributes, out string baseType)
         {
@@ -114,26 +130,6 @@ $@"namespace {@namespace}
                 }))
             .Where(_ => _ != null).Distinct().ToArray();
 
-        static IEnumerable<AttributeSyntax> GetAllValidations(SemanticModel semantics, IEnumerable<AttributeSyntax> attributes, string baseType) =>
-            attributes.Where(a =>
-                semantics.GetSymbolInfo(a).Symbol.ContainingType.AllInterfaces.Any(i =>
-                {
-                    var match = ValidatedBaseTypeRegex.Match(i.ToDisplayString());
-                    return match.Success && match.Groups["type"].Value == baseType;
-                }));
-
-        static StringBuilder BuildValidations(SemanticModel semantics, IEnumerable<AttributeSyntax> validations)
-        {
-            var validationsBuilder = new StringBuilder();
-            foreach (var validation in validations)
-            {
-                var validationType = semantics.GetSymbolInfo(validation).Symbol.ContainingType;
-                var args = validation?.ArgumentList?.Arguments.ToString() ?? "";
-                validationsBuilder.AppendLine($"new {validationType.ToDisplayString()}({args}).Validate(value);");
-            }
-            return validationsBuilder;
-        }
-
         static string GetNamespace(RecordDeclarationSyntax record)
         {
             var namespaces = FindParentNamespaces(record).Select(_ => _.Name).Reverse();
@@ -147,5 +143,23 @@ $@"namespace {@namespace}
                 if (node is NamespaceDeclarationSyntax @namespace) yield return @namespace;
             }
         }
+
+        static void AppendValidations(IndentedStringBuilder sourceBuilder, SemanticModel semantics, IEnumerable<AttributeSyntax> attributes, string baseType)
+        {
+            foreach (var validation in GetAllValidations(semantics, attributes, baseType))
+            {
+                var validationType = semantics.GetSymbolInfo(validation).Symbol.ContainingType;
+                var args = validation?.ArgumentList?.Arguments.ToString() ?? "";
+                sourceBuilder.AppendLine($"new {validationType.ToDisplayString()}({args}).Validate(value);");
+            }
+        }
+
+        static IEnumerable<AttributeSyntax> GetAllValidations(SemanticModel semantics, IEnumerable<AttributeSyntax> attributes, string baseType) =>
+            attributes.Where(a =>
+                semantics.GetSymbolInfo(a).Symbol.ContainingType.AllInterfaces.Any(i =>
+                {
+                    var match = ValidatedBaseTypeRegex.Match(i.ToDisplayString());
+                    return match.Success && match.Groups["type"].Value == baseType;
+                }));
     }
 }
