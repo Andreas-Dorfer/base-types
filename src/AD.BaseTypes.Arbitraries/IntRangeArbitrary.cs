@@ -29,8 +29,11 @@ namespace AD.BaseTypes.Arbitraries
         /// <param name="min">The minimal value.</param>
         /// <param name="max">The maximal value.</param>
         /// <param name="creator">The base type's creator.</param>
+        /// <exception cref="ArgumentException"><paramref name="max"/> is smaller than <paramref name="min"/>.</exception>
         public IntRangeArbitrary(int min, int max, Func<int, TBaseType> creator) : base(creator)
         {
+            if (max < min) throw new ArgumentException("Invalid range.");
+
             Min = min;
             Max = max;
         }
