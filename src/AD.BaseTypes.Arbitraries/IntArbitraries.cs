@@ -12,8 +12,11 @@ namespace AD.BaseTypes.Arbitraries
     public class IntArbitrary<TBaseType> : BaseTypeArbitrary<TBaseType, int> where TBaseType : IValue<int>
     {
         /// <inheritdoc/>
-        public IntArbitrary(Func<int, TBaseType> create) : base(create)
+        public IntArbitrary(Func<int, TBaseType> creator) : base(creator)
         { }
+
+        /// <inheritdoc/>
+        public static new IntArbitrary<TBaseType> Create(Func<int, TBaseType> creator) => new(creator);
     }
 
     /// <summary>
@@ -23,8 +26,8 @@ namespace AD.BaseTypes.Arbitraries
     public class IntMinArbitrary<TBaseType> : IntArbitrary<TBaseType> where TBaseType : IValue<int>
     {
         /// <param name="min">The minimal value.</param>
-        /// <param name="create">The base type's creator.</param>
-        public IntMinArbitrary(int min, Func<int, TBaseType> create) : base(create)
+        /// <param name="creator">The base type's creator.</param>
+        public IntMinArbitrary(int min, Func<int, TBaseType> creator) : base(creator)
         {
             Min = min;
         }
@@ -36,10 +39,13 @@ namespace AD.BaseTypes.Arbitraries
 
         /// <inheritdoc/>
         public override Gen<TBaseType> Generator =>
-            Gen.Choose(Min, int.MaxValue).Select(Create);
+            Gen.Choose(Min, int.MaxValue).Select(Creator);
 
         /// <inheritdoc/>
         public override IEnumerable<TBaseType> Shrinker(TBaseType baseType) =>
             base.Shrinker(baseType).Where(_ => _.Value >= Min);
+
+        /// <inheritdoc/>
+        public static IntMinArbitrary<TBaseType> Create(int min, Func<int, TBaseType> creator) => new(min, creator);
     }
 }

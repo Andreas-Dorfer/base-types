@@ -12,8 +12,11 @@ namespace AD.BaseTypes.Arbitraries
     public class GuidArbitrary<TBaseType> : BaseTypeArbitrary<TBaseType, Guid> where TBaseType : IValue<Guid>
     {
         /// <inheritdoc/>
-        public GuidArbitrary(Func<Guid, TBaseType> create) : base(create)
+        public GuidArbitrary(Func<Guid, TBaseType> creator) : base(creator)
         { }
+
+        /// <inheritdoc/>
+        public static new GuidArbitrary<TBaseType> Create(Func<Guid, TBaseType> creator) => new(creator);
     }
 
     /// <summary>
@@ -25,7 +28,7 @@ namespace AD.BaseTypes.Arbitraries
         readonly Arbitrary<Guid> arb = Arb.Default.Guid();
 
         /// <inheritdoc/>
-        public NonEmptyGuidArbitrary(Func<Guid, TBaseType> create) : base(create)
+        public NonEmptyGuidArbitrary(Func<Guid, TBaseType> creator) : base(creator)
         { }
 
         /// <summary>
@@ -37,10 +40,13 @@ namespace AD.BaseTypes.Arbitraries
 
         /// <inheritdoc/>
         public override Gen<TBaseType> Generator =>
-            arb.Generator.Where(Filter).Select(Create);
+            arb.Generator.Where(Filter).Select(Creator);
 
         /// <inheritdoc/>
         public override IEnumerable<TBaseType> Shrinker(TBaseType baseType) =>
-            arb.Shrinker(baseType.Value).Where(Filter).Select(Create);
+            arb.Shrinker(baseType.Value).Where(Filter).Select(Creator);
+
+        /// <inheritdoc/>
+        public static new NonEmptyGuidArbitrary<TBaseType> Create(Func<Guid, TBaseType> creator) => new(creator);
     }
 }

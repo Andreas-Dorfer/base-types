@@ -12,8 +12,11 @@ namespace AD.BaseTypes.Arbitraries
     public class StringArbitrary<TBaseType> : BaseTypeArbitrary<TBaseType, string> where TBaseType : IValue<string>
     {
         /// <inheritdoc/>
-        public StringArbitrary(Func<string, TBaseType> create) : base(create)
+        public StringArbitrary(Func<string, TBaseType> creator) : base(creator)
         { }
+
+        /// <inheritdoc/>
+        public static new StringArbitrary<TBaseType> Create(Func<string, TBaseType> creator) => new(creator);
     }
 
     /// <summary>
@@ -25,7 +28,7 @@ namespace AD.BaseTypes.Arbitraries
         readonly Arbitrary<NonEmptyString> arb = Arb.Default.NonEmptyString();
 
         /// <inheritdoc/>
-        public NonEmptyStringArbitrary(Func<string, TBaseType> create) : base(create)
+        public NonEmptyStringArbitrary(Func<string, TBaseType> creator) : base(creator)
         { }
 
         /// <summary>
@@ -33,7 +36,7 @@ namespace AD.BaseTypes.Arbitraries
         /// </summary>
         /// <param name="str">The FsCheck.NonEmptyString.</param>
         /// <returns>The base type.</returns>
-        protected TBaseType Map(NonEmptyString str) => Create(str.Item);
+        protected TBaseType Map(NonEmptyString str) => Creator(str.Item);
 
         /// <inheritdoc/>
         public override Gen<TBaseType> Generator =>
@@ -42,5 +45,8 @@ namespace AD.BaseTypes.Arbitraries
         /// <inheritdoc/>
         public override IEnumerable<TBaseType> Shrinker(TBaseType baseType) =>
             arb.Shrinker(NonEmptyString.NewNonEmptyString(baseType.Value)).Select(Map);
+
+        /// <inheritdoc/>
+        public static new NonEmptyStringArbitrary<TBaseType> Create(Func<string, TBaseType> creator) => new(creator);
     }
 }
