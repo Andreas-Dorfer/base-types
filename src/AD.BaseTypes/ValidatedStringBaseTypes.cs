@@ -3,58 +3,16 @@ using System.Text.RegularExpressions;
 
 namespace AD.BaseTypes
 {
-    /// <summary>
-    /// Int with a minimal value.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class)]
-    public class IntMinAttribute : Attribute, IValidatedBaseType<int>
+    static class StringValidation
     {
-        readonly int min;
-
-        /// <param name="min">Minimal value.</param>
-        public IntMinAttribute(int min)
+        public static void MinLength(int minLength, string value)
         {
-            this.min = min;
+            if (value is null || value.Length < minLength) throw new ArgumentOutOfRangeException(nameof(value), value, $"Parameter must be at least {minLength} character(s) long.");
         }
 
-        /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> is too small.</exception>
-        public void Validate(int value)
+        public static void MaxLength(int maxLength, string value)
         {
-            if (value < min) throw new ArgumentOutOfRangeException(nameof(value), value, $"Parameter must be more than {min}.");
-        }
-    }
-
-    /// <summary>
-    /// Int with a maximal value.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class)]
-    public class IntMaxAttribute : Attribute, IValidatedBaseType<int>
-    {
-        readonly int max;
-
-        /// <param name="max">Maximal value.</param>
-        public IntMaxAttribute(int max)
-        {
-            this.max = max;
-        }
-
-        /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> is too large.</exception>
-        public void Validate(int value)
-        {
-            if (value > max) throw new ArgumentOutOfRangeException(nameof(value), value, $"Parameter must be less than {max}.");
-        }
-    }
-
-    /// <summary>
-    /// Non-empty GUID.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class)]
-    public class NonEmptyGuidAttribute : Attribute, IValidatedBaseType<Guid>
-    {
-        /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> is empty.</exception>
-        public void Validate(Guid value)
-        {
-            if (value == Guid.Empty) throw new ArgumentOutOfRangeException(nameof(value), value, "Parameter must not be empty.");
+            if (value is null || value.Length > maxLength) throw new ArgumentOutOfRangeException(nameof(value), value, $"Parameter must not be no longer than {maxLength} character(s).");
         }
     }
 
@@ -86,10 +44,7 @@ namespace AD.BaseTypes
         }
 
         /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> is too short.</exception>
-        public void Validate(string value)
-        {
-            if (value is null || value.Length < minLength) throw new ArgumentOutOfRangeException(nameof(value), value, $"Parameter must be at least {minLength} character(s) long.");
-        }
+        public void Validate(string value) => StringValidation.MinLength(minLength, value);
     }
 
     /// <summary>
@@ -107,10 +62,7 @@ namespace AD.BaseTypes
         }
 
         /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> is too long.</exception>
-        public void Validate(string value)
-        {
-            if (value is null || value.Length > maxLength) throw new ArgumentOutOfRangeException(nameof(value), value, $"Parameter must not be no longer than {maxLength} character(s).");
-        }
+        public void Validate(string value) => StringValidation.MaxLength(maxLength, value);
     }
 
     /// <summary>
@@ -132,8 +84,8 @@ namespace AD.BaseTypes
         /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> is too short or too long.</exception>
         public void Validate(string value)
         {
-            if (value is null || value.Length < minLength) throw new ArgumentOutOfRangeException(nameof(value), value, $"Parameter must be at least {minLength} character(s) long.");
-            if (value.Length > maxLength) throw new ArgumentOutOfRangeException(nameof(value), value, $"Parameter must not be no longer than {maxLength} character(s).");
+            StringValidation.MinLength(minLength, value);
+            StringValidation.MaxLength(maxLength, value);
         }
     }
 
@@ -155,19 +107,6 @@ namespace AD.BaseTypes
         public void Validate(string value)
         {
             if (value is null || !Regex.IsMatch(value, pattern)) throw new ArgumentOutOfRangeException(nameof(value), value, $"Parameter doesn't match the pattern '{pattern}'.");
-        }
-    }
-
-    /// <summary>
-    /// Positive Decimal.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class)]
-    public class PositiveDecimalAttribute : Attribute, IValidatedBaseType<decimal>
-    {
-        /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> is negative.</exception>
-        public void Validate(decimal value)
-        {
-            if (value < 0) throw new ArgumentOutOfRangeException(nameof(value), value, "Parameter must not be negative.");
         }
     }
 }

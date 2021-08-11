@@ -10,17 +10,10 @@ namespace AD.BaseTypes
     { }
 
     /// <summary>
-    /// GUID wrapper.
+    /// Double wrapper.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class GuidAttribute : Attribute, IBaseType<Guid>
-    { }
-
-    /// <summary>
-    /// String wrapper.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class)]
-    public class StringAttribute : Attribute, IBaseType<string>
+    public class DoubleAttribute : Attribute, IBaseType<double>
     { }
 
     /// <summary>
@@ -31,10 +24,17 @@ namespace AD.BaseTypes
     { }
 
     /// <summary>
-    /// Double wrapper.
+    /// String wrapper.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class DoubleAttribute : Attribute, IBaseType<double>
+    public class StringAttribute : Attribute, IBaseType<string>
+    { }
+
+    /// <summary>
+    /// GUID wrapper.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class)]
+    public class GuidAttribute : Attribute, IBaseType<Guid>
     { }
 
     /// <summary>
