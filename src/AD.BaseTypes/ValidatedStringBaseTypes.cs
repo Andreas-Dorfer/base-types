@@ -3,32 +3,6 @@ using System.Text.RegularExpressions;
 
 namespace AD.BaseTypes
 {
-    static class StringValidation
-    {
-        public static void MinLength(int minLength, string value)
-        {
-            if (value is null || value.Length < minLength) throw new ArgumentOutOfRangeException(nameof(value), value, $"Parameter must be at least {minLength} character(s) long.");
-        }
-
-        public static void MaxLength(int maxLength, string value)
-        {
-            if (value is null || value.Length > maxLength) throw new ArgumentOutOfRangeException(nameof(value), value, $"Parameter must not be no longer than {maxLength} character(s).");
-        }
-    }
-
-    /// <summary>
-    /// Non-empty string.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class)]
-    public class NonEmptyStringAttribute : Attribute, IValidatedBaseType<string>
-    {
-        /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> is empty.</exception>
-        public void Validate(string value)
-        {
-            if (string.IsNullOrEmpty(value)) throw new ArgumentOutOfRangeException(nameof(value), value, "Parameter must not be empty.");
-        }
-    }
-
     /// <summary>
     /// String with a minimal length.
     /// </summary>
