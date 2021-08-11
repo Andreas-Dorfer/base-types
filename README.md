@@ -97,7 +97,11 @@ partial record EmployeeId : System.IComparable<EmployeeId>, System.IComparable, 
 ## But there's more!
 Let's say you need to model a name that's from 1 to 20 characters long:
 ```csharp
-[MinMaxLength(1, 20)] partial record Name;
+[MinMaxLength(MinLength, MaxLength)]
+partial record Name
+{
+    public const int MinLength = 1, MaxLength = 20;
+}
 ```
 **That's it!** Here's what the *generated* code looks like:
 ```csharp
@@ -105,7 +109,7 @@ partial record Name : System.IComparable<Name>, System.IComparable, AD.BaseTypes
 {
     public Name(string value)
     {
-        new AD.BaseTypes.MinMaxLengthAttribute(1, 20).Validate(value);
+        new AD.BaseTypes.MinMaxLengthAttribute(MinLength, MaxLength).Validate(value);
 
         this.Value = value;
     }
@@ -113,8 +117,7 @@ partial record Name : System.IComparable<Name>, System.IComparable, AD.BaseTypes
     public string Value { get; }
     public override string ToString() => Value.ToString();
     public int CompareTo(object obj) => CompareTo(obj as Name);
-    public int CompareTo(Name other) =>
-        other is null ? 1 : System.Collections.Generic.Comparer<string>.Default.Compare(Value, other.Value);
+    public int CompareTo(Name other) => other is null ? 1 : System.Collections.Generic.Comparer<string>.Default.Compare(Value, other.Value);
     public static implicit operator string(Name item) => item.Value;
     public static Name Create(string value) => new(value);
 }
