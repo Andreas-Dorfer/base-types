@@ -178,4 +178,4 @@ Are you using [FsCheck](https://fscheck.github.io/FsCheck/)? Check out `AD.BaseT
 ### NuGet Package
     PM> Install-Package AndreasDorfer.BaseTypes.Arbitraries -Version 0.1.1
 ## Note
-This project is in an early stage.
+`AD.BaseTypes` is in an early stage.
