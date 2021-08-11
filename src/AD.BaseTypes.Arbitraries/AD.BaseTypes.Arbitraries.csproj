@@ -7,7 +7,7 @@
     <PackageId>AndreasDorfer.BaseTypes.Arbitraries</PackageId>
     <Version>0.1.0</Version>
     <Authors>Andreas Dorfer</Authors>
-    <Description>Arbitraries for generated types.</Description>
+    <Description>Arbitraries for generated base types.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/Andreas-Dorfer/base-types</RepositoryUrl>
   </PropertyGroup>
