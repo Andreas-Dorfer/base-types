@@ -1,6 +1,4 @@
-﻿using FsCheck;
-using System;
-using System.Linq;
+﻿using System;
 
 namespace AD.BaseTypes.Arbitraries
 {
@@ -23,29 +21,11 @@ namespace AD.BaseTypes.Arbitraries
     /// Arbitrary for int base types with a maximal value.
     /// </summary>
     /// <typeparam name="TBaseType"></typeparam>
-    public class IntMaxArbitrary<TBaseType> : IntArbitrary<TBaseType> where TBaseType : IValue<int>
+    public class IntMaxArbitrary<TBaseType> : IntRangeArbitrary<TBaseType> where TBaseType : IValue<int>
     {
         /// <param name="max">The maximal value.</param>
         /// <param name="creator">The base type's creator.</param>
-        public IntMaxArbitrary(int max, Func<int, TBaseType> creator) : base(creator)
-        {
-            Max = max;
-        }
-
-        /// <summary>
-        /// The maximal value.
-        /// </summary>
-        protected int Max { get; }
-
-        /// <summary>
-        /// Filters too lage values.
-        /// </summary>
-        /// <param name="value">The value to check.</param>
-        /// <returns>True, if the value is valid.</returns>
-        protected override bool Filter(int value) => value <= Max;
-
-        /// <inheritdoc/>
-        public override Gen<TBaseType> Generator =>
-            Gen.Choose(int.MinValue, Max).Select(Creator);
+        public IntMaxArbitrary(int max, Func<int, TBaseType> creator) : base(int.MinValue, max, creator)
+        { }
     }
 }
