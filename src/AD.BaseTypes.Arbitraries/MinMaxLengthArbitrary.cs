@@ -1,6 +1,5 @@
 ﻿using FsCheck;
 using System;
-using System.Linq;
 
 namespace AD.BaseTypes.Arbitraries
 {
@@ -57,9 +56,6 @@ namespace AD.BaseTypes.Arbitraries
         protected override bool Filter(string value) => value is not null && value.Length >= MinLength && value.Length <= MaxLength;
 
         /// <inheritdoc/>
-        public override Gen<TBaseType> Generator =>
-            Gen.Choose(MinLength, MaxLength)
-            .SelectMany(length => Gen.ArrayOf(length, Arb.Generate<char>()))
-            .Select(_ => Creator(new(_)));
+        public override Gen<TBaseType> Generator => StringGeneration.Generate(MinLength, MaxLength, Creator);
     }
 }
