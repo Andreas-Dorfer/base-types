@@ -13,8 +13,9 @@ namespace AD.BaseTypes.Generator
     [Generator]
     public class BaseTypeGenerator : ISourceGenerator
     {
-        static readonly Regex BaseTypeRegex = new Regex("^AD.BaseTypes.IBaseType<(?<type>.+)>$");
-        static readonly Regex ValidatedBaseTypeRegex = new Regex("^AD.BaseTypes.IValidatedBaseType<(?<type>.+)>$");
+        static readonly Regex
+            BaseTypeRegex = new Regex("^AD.BaseTypes.IBaseType<(?<type>.+)>$"),
+            ValidatedBaseTypeRegex = new Regex("^AD.BaseTypes.IValidatedBaseType<(?<type>.+)>$");
 
         public void Initialize(GeneratorInitializationContext context)
         { }
@@ -27,7 +28,6 @@ namespace AD.BaseTypes.Generator
             //    System.Diagnostics.Debugger.Launch();
             //}
 #endif
-
             foreach (var tree in context.Compilation.SyntaxTrees)
             {
                 var semantics = context.Compilation.GetSemanticModel(tree);
