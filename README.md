@@ -117,7 +117,8 @@ partial record Name : System.IComparable<Name>, System.IComparable, AD.BaseTypes
     public string Value { get; }
     public override string ToString() => Value.ToString();
     public int CompareTo(object obj) => CompareTo(obj as Name);
-    public int CompareTo(Name other) => other is null ? 1 : System.Collections.Generic.Comparer<string>.Default.Compare(Value, other.Value);
+    public int CompareTo(Name other) =>
+        other is null ? 1 : System.Collections.Generic.Comparer<string>.Default.Compare(Value, other.Value);
     public static implicit operator string(Name item) => item.Value;
     public static Name Create(string value) => new(value);
 }
