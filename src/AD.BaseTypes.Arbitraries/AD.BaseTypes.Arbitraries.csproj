@@ -1,11 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageId>AndreasDorfer.BaseTypes.Arbitraries</PackageId>
-    <Version>0.1.1</Version>
+    <Version>0.1.2</Version>
     <Authors>Andreas Dorfer</Authors>
     <Description>Arbitraries for generated base types.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
