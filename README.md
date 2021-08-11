@@ -164,10 +164,5 @@ class The90sAttribute : Attribute, IValidatedBaseType<DateTime>
 
 [The90s, Weekend] partial record SomeWeekendInThe90s;
 ```
-## Included Common Types
-The included common types are:
-- `NonEmptyGuid`
-- `NonEmptyString`
-- `PositiveDecimal`
 ## Note
 This project is in an early stage.
