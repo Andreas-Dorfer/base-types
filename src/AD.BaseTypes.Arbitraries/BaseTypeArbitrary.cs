@@ -25,10 +25,17 @@ namespace AD.BaseTypes.Arbitraries
         protected Func<TWrapped, TBaseType> Creator { get; }
 
         /// <summary>
+        /// Filters invalid wrapped values.
+        /// </summary>
+        /// <param name="value">The wrapped value to check.</param>
+        /// <returns>True, if the wrapped value is valid.</returns>
+        protected virtual bool Filter(TWrapped value) => true;
+
+        /// <summary>
         /// Generates the base type.
         /// </summary>
         public override Gen<TBaseType> Generator =>
-            Arb.Generate<TWrapped>().Select(Creator);
+            Arb.Generate<TWrapped>().Where(Filter).Select(Creator);
 
         /// <summary>
         /// Shrinks the base type.
@@ -36,7 +43,7 @@ namespace AD.BaseTypes.Arbitraries
         /// <param name="baseType"></param>
         /// <returns></returns>
         public override IEnumerable<TBaseType> Shrinker(TBaseType baseType) =>
-            Arb.Shrink(baseType.Value).Select(Creator);
+            Arb.Shrink(baseType.Value).Where(Filter).Select(Creator);
 
         /// <summary>
         /// Creates a new arbitrary.

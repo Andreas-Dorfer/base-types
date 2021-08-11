@@ -32,6 +32,13 @@ namespace AD.BaseTypes.Arbitraries
         { }
 
         /// <summary>
+        /// Filters empty string.
+        /// </summary>
+        /// <param name="value">The string to check.</param>
+        /// <returns>True, if the string isn't empty.</returns>
+        protected override bool Filter(string value) => !string.IsNullOrEmpty(value);
+
+        /// <summary>
         /// Maps a FsCheck.NonEmptyString to the base type.
         /// </summary>
         /// <param name="str">The FsCheck.NonEmptyString.</param>

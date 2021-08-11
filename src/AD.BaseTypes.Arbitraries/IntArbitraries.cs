@@ -1,6 +1,5 @@
 ﻿using FsCheck;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace AD.BaseTypes.Arbitraries
@@ -37,13 +36,16 @@ namespace AD.BaseTypes.Arbitraries
         /// </summary>
         protected int Min { get; }
 
+        /// <summary>
+        /// Filters too small values.
+        /// </summary>
+        /// <param name="value">The value to check.</param>
+        /// <returns>True, if the value is valid.</returns>
+        protected override bool Filter(int value) => value >= Min;
+
         /// <inheritdoc/>
         public override Gen<TBaseType> Generator =>
             Gen.Choose(Min, int.MaxValue).Select(Creator);
-
-        /// <inheritdoc/>
-        public override IEnumerable<TBaseType> Shrinker(TBaseType baseType) =>
-            base.Shrinker(baseType).Where(_ => _.Value >= Min);
 
         /// <inheritdoc/>
         public static IntMinArbitrary<TBaseType> Create(int min, Func<int, TBaseType> creator) => new(min, creator);
