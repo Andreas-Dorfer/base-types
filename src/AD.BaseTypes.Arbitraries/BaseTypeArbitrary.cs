@@ -13,9 +13,10 @@ namespace AD.BaseTypes.Arbitraries
     public class BaseTypeArbitrary<TBaseType, TWrapped> : Arbitrary<TBaseType> where TBaseType : IValue<TWrapped>
     {
         /// <param name="create">The base type's creator.</param>
+        /// <exception cref="ArgumentNullException">The creator is null.</exception>
         public BaseTypeArbitrary(Func<TWrapped, TBaseType> create)
         {
-            Create = create;
+            Create = create ?? throw new ArgumentNullException(nameof(create));
         }
 
         /// <summary>
