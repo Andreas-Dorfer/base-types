@@ -37,46 +37,44 @@ namespace AD.BaseTypes.Generator
                 {
                     var attributes = record.AttributeLists.SelectMany(_ => _.Attributes);
 
-                    var baseTypes = GetBaseTypeAttributes(semantics, attributes);
-                    if (baseTypes.Length != 1) continue;
-                    var baseType = baseTypes[0];
+                    if (!TryGetBaseType(semantics, attributes, out var baseType)) continue;
 
-                    var validations = GetAllValidations(semantics, attributes, baseTypes);
+                    var validations = GetAllValidations(semantics, attributes, baseType);
                     var validationsBuilder = BuildValidations(semantics, validations);
 
                     var @namespace = GetNamespace(record);
                     var source = string.IsNullOrEmpty(@namespace) ?
-$@"partial record {record.Identifier.Text} : System.IComparable<{record.Identifier.Text}>, System.IComparable, AD.BaseTypes.IValue<{baseTypes[0]}>
+$@"partial record {record.Identifier.Text} : System.IComparable<{record.Identifier.Text}>, System.IComparable, AD.BaseTypes.IValue<{baseType}>
 {{
-    public {record.Identifier.Text}({baseTypes[0]} value)
+    public {record.Identifier.Text}({baseType} value)
     {{
         {validationsBuilder}
         this.Value = value;
     }}
 
-    public {baseTypes[0]} Value {{ get; }}
+    public {baseType} Value {{ get; }}
     public override string ToString() => Value.ToString();
     public int CompareTo(object obj) => CompareTo(obj as {record.Identifier.Text});
-    public int CompareTo({record.Identifier.Text} other) => other is null ? 1 : System.Collections.Generic.Comparer<{baseTypes[0]}>.Default.Compare(Value, other.Value);
-    public static implicit operator {baseTypes[0]}({record.Identifier.Text} item) => item.Value;
-    public static {record.Identifier.Text} Create({baseTypes[0]} value) => new(value);
+    public int CompareTo({record.Identifier.Text} other) => other is null ? 1 : System.Collections.Generic.Comparer<{baseType}>.Default.Compare(Value, other.Value);
+    public static implicit operator {baseType}({record.Identifier.Text} item) => item.Value;
+    public static {record.Identifier.Text} Create({baseType} value) => new(value);
 }}" :
 $@"namespace {@namespace}
 {{
-    partial record {record.Identifier.Text} : System.IComparable<{record.Identifier.Text}>, System.IComparable, AD.BaseTypes.IValue<{baseTypes[0]}>
+    partial record {record.Identifier.Text} : System.IComparable<{record.Identifier.Text}>, System.IComparable, AD.BaseTypes.IValue<{baseType}>
     {{
-        public {record.Identifier.Text}({baseTypes[0]} value)
+        public {record.Identifier.Text}({baseType} value)
         {{
             {validationsBuilder}
             this.Value = value;
         }}
 
-        public {baseTypes[0]} Value {{ get; }}
+        public {baseType} Value {{ get; }}
         public override string ToString() => Value.ToString();
         public int CompareTo(object obj) => CompareTo(obj as {record.Identifier.Text});
-        public int CompareTo({record.Identifier.Text} other) => other is null ? 1 : System.Collections.Generic.Comparer<{baseTypes[0]}>.Default.Compare(Value, other.Value);
-        public static implicit operator {baseTypes[0]}({record.Identifier.Text} item) => item.Value;
-        public static {record.Identifier.Text} Create({baseTypes[0]} value) => new(value);
+        public int CompareTo({record.Identifier.Text} other) => other is null ? 1 : System.Collections.Generic.Comparer<{baseType}>.Default.Compare(Value, other.Value);
+        public static implicit operator {baseType}({record.Identifier.Text} item) => item.Value;
+        public static {record.Identifier.Text} Create({baseType} value) => new(value);
     }}
 }}";
                     sources.Add(source);
@@ -95,6 +93,18 @@ $@"namespace {@namespace}
             .OfType<RecordDeclarationSyntax>()
             .Where(_ => _.Modifiers.Any(SyntaxKind.PartialKeyword));
 
+        static bool TryGetBaseType(SemanticModel semantics, IEnumerable<AttributeSyntax> attributes, out string baseType)
+        {
+            var baseTypes = GetBaseTypeAttributes(semantics, attributes);
+            if (baseTypes.Length != 1)
+            {
+                baseType = default;
+                return false;
+            }
+            baseType = baseTypes[0];
+            return true;
+        }
+
         static string[] GetBaseTypeAttributes(SemanticModel semantics, IEnumerable<AttributeSyntax> attributes) =>
             attributes.SelectMany(attribute =>
                 semantics.GetSymbolInfo(attribute).Symbol.ContainingType.AllInterfaces.Select(@interface =>
@@ -104,12 +114,12 @@ $@"namespace {@namespace}
                 }))
             .Where(_ => _ != null).Distinct().ToArray();
 
-        static IEnumerable<AttributeSyntax> GetAllValidations(SemanticModel semantics, IEnumerable<AttributeSyntax> attributes, string[] baseTypes) =>
+        static IEnumerable<AttributeSyntax> GetAllValidations(SemanticModel semantics, IEnumerable<AttributeSyntax> attributes, string baseType) =>
             attributes.Where(a =>
                 semantics.GetSymbolInfo(a).Symbol.ContainingType.AllInterfaces.Any(i =>
                 {
                     var match = ValidatedBaseTypeRegex.Match(i.ToDisplayString());
-                    return match.Success && match.Groups["type"].Value == baseTypes[0];
+                    return match.Success && match.Groups["type"].Value == baseType;
                 }));
 
         static StringBuilder BuildValidations(SemanticModel semantics, IEnumerable<AttributeSyntax> validations)
