@@ -180,7 +180,7 @@ Are you using [FsCheck](https://fscheck.github.io/FsCheck/)? Check out `AD.BaseT
 ### Example
 ```csharp
 [IntRange(Min, Max)]
-public partial record ZeroToTen
+partial record ZeroToTen
 {
     public const int Min = 0, Max = 10;
 }
