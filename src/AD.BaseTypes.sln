@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AD.BaseTypes", "AD.BaseType
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AD.BaseTypes.Generator", "AD.BaseTypes.Generator\AD.BaseTypes.Generator.csproj", "{6FBB787B-69C8-433C-ABF0-91476AA2111D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AD.BaseTypes.FsCheck", "AD.BaseTypes.FsCheck\AD.BaseTypes.FsCheck.csproj", "{52ACBE21-72B6-4A4B-B539-FF9581B36C6B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AD.BaseTypes.Arbitraries", "AD.BaseTypes.Arbitraries\AD.BaseTypes.Arbitraries.csproj", "{75DF7391-CB7B-4228-9F31-7B0BCF505F32}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{6FBB787B-69C8-433C-ABF0-91476AA2111D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FBB787B-69C8-433C-ABF0-91476AA2111D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FBB787B-69C8-433C-ABF0-91476AA2111D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{52ACBE21-72B6-4A4B-B539-FF9581B36C6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{52ACBE21-72B6-4A4B-B539-FF9581B36C6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{52ACBE21-72B6-4A4B-B539-FF9581B36C6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{52ACBE21-72B6-4A4B-B539-FF9581B36C6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75DF7391-CB7B-4228-9F31-7B0BCF505F32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75DF7391-CB7B-4228-9F31-7B0BCF505F32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75DF7391-CB7B-4228-9F31-7B0BCF505F32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75DF7391-CB7B-4228-9F31-7B0BCF505F32}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

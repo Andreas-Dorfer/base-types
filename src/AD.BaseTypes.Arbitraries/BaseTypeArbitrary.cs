@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AD.BaseTypes.FsCheck
+namespace AD.BaseTypes.Arbitraries
 {
     /// <summary>
     /// Arbitrary for base types.
