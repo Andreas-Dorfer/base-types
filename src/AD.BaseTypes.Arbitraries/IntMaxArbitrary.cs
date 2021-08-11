@@ -38,7 +38,7 @@ namespace AD.BaseTypes.Arbitraries
         protected int Max { get; }
 
         /// <summary>
-        /// Filters too small values.
+        /// Filters too lage values.
         /// </summary>
         /// <param name="value">The value to check.</param>
         /// <returns>True, if the value is valid.</returns>

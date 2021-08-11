@@ -5,31 +5,34 @@ using System.Linq;
 namespace AD.BaseTypes.Arbitraries
 {
     /// <summary>
-    /// Arbitrary for int base types with a minimal value.
+    /// Arbitrary for int base types with a range.
     /// </summary>
-    public static class IntMinArbitrary
+    public static class IntRangeArbitrary
     {
         /// <summary>
         /// Creates an arbitrary.
         /// </summary>
         /// <typeparam name="TBaseType">The base type.</typeparam>
         /// <param name="min">The minimal value.</param>
+        /// <param name="max">The maximal value.</param>
         /// <param name="creator">The base type's creator.</param>
         /// <returns>The arbitrary.</returns>
-        public static IntMinArbitrary<TBaseType> Create<TBaseType>(int min, Func<int, TBaseType> creator) where TBaseType : IValue<int> => new(min, creator);
+        public static IntRangeArbitrary<TBaseType> Create<TBaseType>(int min, int max, Func<int, TBaseType> creator) where TBaseType : IValue<int> => new(min, max, creator);
     }
 
     /// <summary>
-    /// Arbitrary for int base types with a minimal value.
+    /// Arbitrary for int base types with a range.
     /// </summary>
     /// <typeparam name="TBaseType">The base type.</typeparam>
-    public class IntMinArbitrary<TBaseType> : IntArbitrary<TBaseType> where TBaseType : IValue<int>
+    public class IntRangeArbitrary<TBaseType> : IntArbitrary<TBaseType> where TBaseType : IValue<int>
     {
         /// <param name="min">The minimal value.</param>
+        /// <param name="max">The maximal value.</param>
         /// <param name="creator">The base type's creator.</param>
-        public IntMinArbitrary(int min, Func<int, TBaseType> creator) : base(creator)
+        public IntRangeArbitrary(int min, int max, Func<int, TBaseType> creator) : base(creator)
         {
             Min = min;
+            Max = max;
         }
 
         /// <summary>
@@ -38,14 +41,19 @@ namespace AD.BaseTypes.Arbitraries
         protected int Min { get; }
 
         /// <summary>
-        /// Filters too small values.
+        /// The maximal value.
+        /// </summary>
+        protected int Max { get; }
+
+        /// <summary>
+        /// Filters too small or too large values.
         /// </summary>
         /// <param name="value">The value to check.</param>
         /// <returns>True, if the value is valid.</returns>
-        protected override bool Filter(int value) => value >= Min;
+        protected override bool Filter(int value) => value >= Min && value <= Max;
 
         /// <inheritdoc/>
         public override Gen<TBaseType> Generator =>
-            Gen.Choose(Min, int.MaxValue).Select(Creator);
+            Gen.Choose(Min, Max).Select(Creator);
     }
 }
