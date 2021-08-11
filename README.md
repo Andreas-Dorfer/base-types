@@ -126,16 +126,21 @@ Or you need to model a serial number that must follow a certain pattern:
 ## Included Attributes
 The included attributes are:
 - `IntAttribute`
+- `DoubleAttribute`
+- `DecimalAttribute`
 - `StringAttribute`
 - `GuidAttribute`
-- `DecimalAttribute`
-- `NonEmptyGuidAttribute`
+- `DateTimeAttribute`
+- `IntMinAttribute`
+- `IntMaxAttribute`
+- `IntRangeAttribute`
+- `PositiveDecimalAttribute`
 - `NonEmptyStringAttribute`
 - `MinLengthAttribute`
 - `MaxLengthAttribute`
 - `MinMaxLengthAttribute`
 - `RegexAttribute`
-- `PositiveDecimalAttribute`
+- `NonEmptyGuidAttribute`
 ## Custom Attributes
 You can create custom attributes. Let's say you need a `DateTime` only for weekends:
 ```csharp
