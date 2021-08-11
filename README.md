@@ -97,7 +97,11 @@ partial record EmployeeId : System.IComparable<EmployeeId>, System.IComparable, 
 ## But there's more!
 Let's say you need to model a name that's from 1 to 20 characters long:
 ```csharp
-[MinMaxLength(1, 20)] partial record Name;
+[MinMaxLength(MinLength, MaxLength)]
+partial record Name
+{
+    public const int MinLength = 1, MaxLength = 20;
+}
 ```
 **That's it!** Here's what the *generated* code looks like:
 ```csharp
@@ -105,7 +109,7 @@ partial record Name : System.IComparable<Name>, System.IComparable, AD.BaseTypes
 {
     public Name(string value)
     {
-        new AD.BaseTypes.MinMaxLengthAttribute(1, 20).Validate(value);
+        new AD.BaseTypes.MinMaxLengthAttribute(MinLength, MaxLength).Validate(value);
 
         this.Value = value;
     }
@@ -121,7 +125,11 @@ partial record Name : System.IComparable<Name>, System.IComparable, AD.BaseTypes
 ```
 Or you need to model a serial number that must follow a certain pattern:
 ```csharp
-[Regex(@"^\d\d-\w\w\w\w$")] partial record SerialNumber;
+[Regex(Pattern)]
+partial record SerialNumber
+{
+    public const string Pattern = @"^\d\d-\w\w\w\w$";
+}
 ```
 ## Included Attributes
 The included attributes are:
