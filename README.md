@@ -124,7 +124,11 @@ partial record Name : System.IComparable<Name>, System.IComparable, AD.BaseTypes
 ```
 Or you need to model a serial number that must follow a certain pattern:
 ```csharp
-[Regex(@"^\d\d-\w\w\w\w$")] partial record SerialNumber;
+[Regex(Pattern)]
+partial record SerialNumber
+{
+    public const string Pattern = @"^\d\d-\w\w\w\w$";
+}
 ```
 ## Included Attributes
 The included attributes are:
