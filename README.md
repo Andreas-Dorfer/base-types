@@ -185,6 +185,25 @@ class The90sAttribute : Attribute, IValidatedBaseType<DateTime>
 Are you using [FsCheck](https://fscheck.github.io/FsCheck/)? Check out `AD.BaseTypes.Arbitraries`.
 ### NuGet Package
     PM> Install-Package AndreasDorfer.BaseTypes.Arbitraries -Version 0.1.2
+### Example
+```csharp
+[IntRange(Min, Max)]
+public partial record ZeroToTen
+{
+    public const int Min = 0, Max = 10;
+}
+
+const int MinProduct = ZeroToTen.Min * ZeroToTen.Min;
+const int MaxProduct = ZeroToTen.Max * ZeroToTen.Max;
+
+var arb = IntRangeArbitrary.Create(ZeroToTen.Min, ZeroToTen.Max, ZeroToTen.Create);
+
+Prop.ForAll(arb, arb, (a, b) =>
+{
+    var product = a * b;
+    return product >= MinProduct && product <= MaxProduct;
+});
+```
 ---
 ## Note
 `AD.BaseTypes` is in an early stage.
