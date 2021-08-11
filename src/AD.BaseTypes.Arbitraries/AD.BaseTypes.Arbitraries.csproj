@@ -12,9 +12,15 @@
     <RepositoryUrl>https://github.com/Andreas-Dorfer/base-types</RepositoryUrl>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(Configuration)'!='Debug'">
     <PackageReference Include="AndreasDorfer.BaseTypes" Version="0.1.5" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)'=='Debug'">
+    <ProjectReference Include="..\AD.BaseTypes\AD.BaseTypes.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <PackageReference Include="FsCheck" Version="2.15.3" />
   </ItemGroup>
-
+  
 </Project>
