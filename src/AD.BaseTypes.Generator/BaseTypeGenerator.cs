@@ -16,6 +16,9 @@ namespace AD.BaseTypes.Generator
         static readonly Regex BaseTypeRegex = new Regex("^AD.BaseTypes.IBaseType<(?<type>.+)>$");
         static readonly Regex ValidatedBaseTypeRegex = new Regex("^AD.BaseTypes.IValidatedBaseType<(?<type>.+)>$");
 
+        public void Initialize(GeneratorInitializationContext context)
+        { }
+
         public void Execute(GeneratorExecutionContext context)
         {
 #if DEBUG
@@ -30,38 +33,16 @@ namespace AD.BaseTypes.Generator
                 var semantics = context.Compilation.GetSemanticModel(tree);
                 var sources = new List<string>();
 
-                var allPartialRecords =
-                    tree.GetRoot().DescendantNodes()
-                    .Where(_ => _.IsKind(SyntaxKind.RecordDeclaration))
-                    .OfType<RecordDeclarationSyntax>()
-                    .Where(_ => _.Modifiers.Any(SyntaxKind.PartialKeyword));
-                foreach (var record in allPartialRecords)
+                foreach (var record in FindAllPartialRecords(tree))
                 {
                     var attributes = record.AttributeLists.SelectMany(_ => _.Attributes);
-                    var baseTypes = attributes.SelectMany(a =>
-                        semantics.GetSymbolInfo(a).Symbol.ContainingType.AllInterfaces.Select(i =>
-                        {
-                            var match = BaseTypeRegex.Match(i.ToDisplayString());
-                            return match.Success ?
-                                match.Groups["type"].Value :
-                                null;
-                        })).Where(_ => _ != null).Distinct().ToArray();
+
+                    var baseTypes = GetBaseTypeAttributes(semantics, attributes);
                     if (baseTypes.Length != 1) continue;
+                    var baseType = baseTypes[0];
 
-                    var validations = attributes.Where(a =>
-                        semantics.GetSymbolInfo(a).Symbol.ContainingType.AllInterfaces.Any(i =>
-                        {
-                            var match = ValidatedBaseTypeRegex.Match(i.ToDisplayString());
-                            return match.Success && match.Groups["type"].Value == baseTypes[0];
-                        }));
-
-                    var validationBuilder = new StringBuilder();
-                    foreach (var validation in validations)
-                    {
-                        var validationType = semantics.GetSymbolInfo(validation).Symbol.ContainingType;
-                        var args = validation?.ArgumentList?.Arguments.ToString() ?? "";
-                        validationBuilder.AppendLine($"new {validationType.ToDisplayString()}({args}).Validate(value);");
-                    }
+                    var validations = GetAllValidations(semantics, attributes, baseTypes);
+                    var validationsBuilder = BuildValidations(semantics, validations);
 
                     var @namespace = GetNamespace(record);
                     var source = string.IsNullOrEmpty(@namespace) ?
@@ -69,7 +50,7 @@ $@"partial record {record.Identifier.Text} : System.IComparable<{record.Identifi
 {{
     public {record.Identifier.Text}({baseTypes[0]} value)
     {{
-        {validationBuilder}
+        {validationsBuilder}
         this.Value = value;
     }}
 
@@ -86,7 +67,7 @@ $@"namespace {@namespace}
     {{
         public {record.Identifier.Text}({baseTypes[0]} value)
         {{
-            {validationBuilder}
+            {validationsBuilder}
             this.Value = value;
         }}
 
@@ -108,8 +89,39 @@ $@"namespace {@namespace}
             }
         }
 
-        public void Initialize(GeneratorInitializationContext context)
+        static IEnumerable<RecordDeclarationSyntax> FindAllPartialRecords(SyntaxTree tree) =>
+            tree.GetRoot().DescendantNodes()
+            .Where(_ => _.IsKind(SyntaxKind.RecordDeclaration))
+            .OfType<RecordDeclarationSyntax>()
+            .Where(_ => _.Modifiers.Any(SyntaxKind.PartialKeyword));
+
+        static string[] GetBaseTypeAttributes(SemanticModel semantics, IEnumerable<AttributeSyntax> attributes) =>
+            attributes.SelectMany(attribute =>
+                semantics.GetSymbolInfo(attribute).Symbol.ContainingType.AllInterfaces.Select(@interface =>
+                {
+                    var match = BaseTypeRegex.Match(@interface.ToDisplayString());
+                    return match.Success ? match.Groups["type"].Value : null;
+                }))
+            .Where(_ => _ != null).Distinct().ToArray();
+
+        static IEnumerable<AttributeSyntax> GetAllValidations(SemanticModel semantics, IEnumerable<AttributeSyntax> attributes, string[] baseTypes) =>
+            attributes.Where(a =>
+                semantics.GetSymbolInfo(a).Symbol.ContainingType.AllInterfaces.Any(i =>
+                {
+                    var match = ValidatedBaseTypeRegex.Match(i.ToDisplayString());
+                    return match.Success && match.Groups["type"].Value == baseTypes[0];
+                }));
+
+        static StringBuilder BuildValidations(SemanticModel semantics, IEnumerable<AttributeSyntax> validations)
         {
+            var validationsBuilder = new StringBuilder();
+            foreach (var validation in validations)
+            {
+                var validationType = semantics.GetSymbolInfo(validation).Symbol.ContainingType;
+                var args = validation?.ArgumentList?.Arguments.ToString() ?? "";
+                validationsBuilder.AppendLine($"new {validationType.ToDisplayString()}({args}).Validate(value);");
+            }
+            return validationsBuilder;
         }
 
         static string GetNamespace(RecordDeclarationSyntax record)
