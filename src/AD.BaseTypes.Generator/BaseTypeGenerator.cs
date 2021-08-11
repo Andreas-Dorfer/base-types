@@ -111,7 +111,7 @@ namespace AD.BaseTypes.Generator
 
         static bool TryGetBaseType(SemanticModel semantics, IEnumerable<AttributeSyntax> attributes, out string baseType)
         {
-            var baseTypes = GetBaseTypeAttributes(semantics, attributes);
+            var baseTypes = GetBaseTypes(semantics, attributes);
             if (baseTypes.Length != 1)
             {
                 baseType = default;
@@ -121,7 +121,7 @@ namespace AD.BaseTypes.Generator
             return true;
         }
 
-        static string[] GetBaseTypeAttributes(SemanticModel semantics, IEnumerable<AttributeSyntax> attributes) =>
+        static string[] GetBaseTypes(SemanticModel semantics, IEnumerable<AttributeSyntax> attributes) =>
             attributes.SelectMany(attribute =>
                 semantics.GetSymbolInfo(attribute).Symbol.ContainingType.AllInterfaces.Select(@interface =>
                 {
