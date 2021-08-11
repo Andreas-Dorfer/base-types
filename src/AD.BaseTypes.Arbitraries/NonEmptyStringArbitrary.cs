@@ -8,6 +8,20 @@ namespace AD.BaseTypes.Arbitraries
     /// <summary>
     /// Arbitrary for non-empty string base types.
     /// </summary>
+    public static class NonEmptyStringArbitrary
+    {
+        /// <summary>
+        /// Creates an arbitrary.
+        /// </summary>
+        /// <typeparam name="TBaseType">The base type.</typeparam>
+        /// <param name="creator">The base type's creator.</param>
+        /// <returns>The arbitrary.</returns>
+        public static NonEmptyStringArbitrary<TBaseType> Create<TBaseType>(Func<string, TBaseType> creator) where TBaseType : IValue<string> => new(creator);
+    }
+
+    /// <summary>
+    /// Arbitrary for non-empty string base types.
+    /// </summary>
     /// <typeparam name="TBaseType"></typeparam>
     public class NonEmptyStringArbitrary<TBaseType> : StringArbitrary<TBaseType> where TBaseType : IValue<string>
     {
@@ -38,8 +52,5 @@ namespace AD.BaseTypes.Arbitraries
         /// <inheritdoc/>
         public override IEnumerable<TBaseType> Shrinker(TBaseType baseType) =>
             arb.Shrinker(NonEmptyString.NewNonEmptyString(baseType.Value)).Select(Map);
-
-        /// <inheritdoc/>
-        public static new NonEmptyStringArbitrary<TBaseType> Create(Func<string, TBaseType> creator) => new(creator);
     }
 }

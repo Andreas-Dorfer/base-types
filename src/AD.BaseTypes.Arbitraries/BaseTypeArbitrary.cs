@@ -8,6 +8,21 @@ namespace AD.BaseTypes.Arbitraries
     /// <summary>
     /// Arbitrary for base types.
     /// </summary>
+    public static class BaseTypeArbitrary
+    {
+        /// <summary>
+        /// Creates an arbitrary.
+        /// </summary>
+        /// <typeparam name="TBaseType">The base type.</typeparam>
+        /// <typeparam name="TWrapped">The wrapped type.</typeparam>
+        /// <param name="creator">The base type's creator.</param>
+        /// <returns>The arbitrary.</returns>
+        public static BaseTypeArbitrary<TBaseType, TWrapped> Create<TBaseType, TWrapped>(Func<TWrapped, TBaseType> creator) where TBaseType : IValue<TWrapped> => new(creator);
+    }
+
+    /// <summary>
+    /// Arbitrary for base types.
+    /// </summary>
     /// <typeparam name="TBaseType">The base type.</typeparam>
     /// <typeparam name="TWrapped">The wrapped type.</typeparam>
     public class BaseTypeArbitrary<TBaseType, TWrapped> : Arbitrary<TBaseType> where TBaseType : IValue<TWrapped>
@@ -44,13 +59,5 @@ namespace AD.BaseTypes.Arbitraries
         /// <returns></returns>
         public override IEnumerable<TBaseType> Shrinker(TBaseType baseType) =>
             Arb.Shrink(baseType.Value).Where(Filter).Select(Creator);
-
-        /// <summary>
-        /// Creates a new arbitrary.
-        /// </summary>
-        /// <param name="creator">The base type's creator.</param>
-        /// <returns>The new arbitrary.</returns>
-        /// <exception cref="ArgumentNullException">The creator is null.</exception>
-        public static BaseTypeArbitrary<TBaseType, TWrapped> Create(Func<TWrapped, TBaseType> creator) => new(creator);
     }
 }

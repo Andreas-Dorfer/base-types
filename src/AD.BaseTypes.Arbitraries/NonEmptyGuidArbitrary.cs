@@ -5,6 +5,20 @@ namespace AD.BaseTypes.Arbitraries
     /// <summary>
     /// Arbitrary for non-empty GUID base types.
     /// </summary>
+    public static class NonEmptyGuidArbitrary
+    {
+        /// <summary>
+        /// Creates an arbitrary.
+        /// </summary>
+        /// <typeparam name="TBaseType">The base type.</typeparam>
+        /// <param name="creator">The base type's creator.</param>
+        /// <returns>The arbitrary.</returns>
+        public static NonEmptyGuidArbitrary<TBaseType> Create<TBaseType>(Func<Guid, TBaseType> creator) where TBaseType : IValue<Guid> => new(creator);
+    }
+
+    /// <summary>
+    /// Arbitrary for non-empty GUID base types.
+    /// </summary>
     /// <typeparam name="TBaseType">The base type.</typeparam>
     public class NonEmptyGuidArbitrary<TBaseType> : GuidArbitrary<TBaseType> where TBaseType : IValue<Guid>
     {
@@ -18,8 +32,5 @@ namespace AD.BaseTypes.Arbitraries
         /// <param name="value">The GUID to check.</param>
         /// <returns>True, if the GUID isn't empty.</returns>
         protected override bool Filter(Guid value) => value != Guid.Empty;
-
-        /// <inheritdoc/>
-        public static new NonEmptyGuidArbitrary<TBaseType> Create(Func<Guid, TBaseType> creator) => new(creator);
     }
 }
