@@ -3,12 +3,12 @@
     /// <summary>
     /// Common interface for all generated base types.
     /// </summary>
-    /// <typeparam name="T">The wrapped value's type.</typeparam>
-    public interface IBaseType<T>
+    /// <typeparam name="TWrapped">The wrapped value's type.</typeparam>
+    public interface IBaseType<TWrapped>
     {
         /// <summary>
         /// The wrapped Value.
         /// </summary>
-        T Value { get; }
+        TWrapped Value { get; }
     }
 }
