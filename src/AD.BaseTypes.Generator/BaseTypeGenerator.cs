@@ -51,13 +51,15 @@ namespace AD.BaseTypes.Generator
                     }
 
                     //record start
-                    sourceBuilder.AppendLine($"partial record {record.Identifier.Text} : System.IComparable<{record.Identifier.Text}>, System.IComparable, AD.BaseTypes.IBaseType<{baseType}>");
+                    var recordName = record.Identifier.Text;
+                    sourceBuilder.AppendLine($"[System.Text.Json.Serialization.JsonConverter(typeof(AD.BaseTypes.Json.BaseTypeJsonConverter<{recordName}, {baseType}>))]");
+                    sourceBuilder.AppendLine($"partial record {recordName} : System.IComparable<{recordName}>, System.IComparable, AD.BaseTypes.IBaseType<{baseType}>");
                     sourceBuilder.AppendLine("{");
                     sourceBuilder.IncreaseIndent();
                     //*****
 
                     //constructor start
-                    sourceBuilder.AppendLine($"public {record.Identifier.Text}({baseType} value)");
+                    sourceBuilder.AppendLine($"public {recordName}({baseType} value)");
                     sourceBuilder.AppendLine("{");
                     sourceBuilder.IncreaseIndent();
                     //*****
@@ -72,10 +74,10 @@ namespace AD.BaseTypes.Generator
 
                     sourceBuilder.AppendLine($"public {baseType} Value {{ get; }}");
                     sourceBuilder.AppendLine("public override string ToString() => Value.ToString();");
-                    sourceBuilder.AppendLine($"public int CompareTo(object obj) => CompareTo(obj as {record.Identifier.Text});");
+                    sourceBuilder.AppendLine($"public int CompareTo(object obj) => CompareTo(obj as {recordName});");
                     sourceBuilder.AppendLine($"public int CompareTo({record.Identifier.Text} other) => other is null ? 1 : System.Collections.Generic.Comparer<{baseType}>.Default.Compare(Value, other.Value);");
-                    sourceBuilder.AppendLine($"public static implicit operator {baseType}({record.Identifier.Text} item) => item.Value;");
-                    sourceBuilder.AppendLine($"public static {record.Identifier.Text} Create({baseType} value) => new(value);");
+                    sourceBuilder.AppendLine($"public static implicit operator {baseType}({recordName} item) => item.Value;");
+                    sourceBuilder.AppendLine($"public static {recordName} Create({baseType} value) => new(value);");
 
                     //record end
                     sourceBuilder.DecreaseIndent();
