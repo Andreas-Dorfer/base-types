@@ -16,4 +16,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AD.BaseTypes\AD.BaseTypes.csproj" />
+  </ItemGroup>
+
 </Project>
