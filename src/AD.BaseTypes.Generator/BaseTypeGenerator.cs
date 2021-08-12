@@ -102,7 +102,8 @@ namespace AD.BaseTypes.Generator
                     //*****
                 }
 
-                context.AddSource($"{recordName}.generated", sourceBuilder.ToString());
+                var fileHint = hasNamespace ? $"{@namespace}.{recordName}" : recordName;
+                context.AddSource($"{fileHint}.g", sourceBuilder.ToString());
             }
         }
 
