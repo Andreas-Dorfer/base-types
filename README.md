@@ -2,7 +2,7 @@
 # AD.BaseTypes
 Fight primitive obsession and create expressive domain models with source generators.
 ## NuGet Package
-    PM> Install-Package AndreasDorfer.BaseTypes -Version 0.2.0
+    PM> Install-Package AndreasDorfer.BaseTypes -Version 0.2.1
 ## Motivation
 Consider the following snippet:
 ```csharp
@@ -77,7 +77,7 @@ With `AD.BaseTypes` you can write the records like this:
 **That's it!** All the boilerplate code is generated for you. Here's what the *generated* code for `EmployeeId` looks like:
 ```csharp
 [System.Text.Json.Serialization.JsonConverter(typeof(AD.BaseTypes.Json.BaseTypeJsonConverter<EmployeeId, string>))]
-partial record EmployeeId : System.IComparable<EmployeeId>, System.IComparable, AD.BaseTypes.IBaseType<string>
+sealed partial record EmployeeId : System.IComparable<EmployeeId>, System.IComparable, AD.BaseTypes.IBaseType<string>
 {
     public EmployeeId(string value)
     {
@@ -101,7 +101,7 @@ Let's say you need to model a name that's from 1 to 20 characters long:
 **That's it!** Here's what the *generated* code looks like:
 ```csharp
 [System.Text.Json.Serialization.JsonConverter(typeof(AD.BaseTypes.Json.BaseTypeJsonConverter<Name, string>))]
-partial record Name : System.IComparable<Name>, System.IComparable, AD.BaseTypes.IBaseType<string>
+sealed partial record Name : System.IComparable<Name>, System.IComparable, AD.BaseTypes.IBaseType<string>
 {
     public Name(string value)
     {
@@ -176,7 +176,7 @@ class The90sAttribute : Attribute, IBaseTypeValidation<DateTime>
 ## Arbitraries
 Do you use [FsCheck](https://fscheck.github.io/FsCheck/)? Check out `AD.BaseTypes.Arbitraries`.
 ### NuGet Package
-    PM> Install-Package AndreasDorfer.BaseTypes.Arbitraries -Version 0.2.0
+    PM> Install-Package AndreasDorfer.BaseTypes.Arbitraries -Version 0.2.1
 ### Example
 ```csharp
 [IntRange(Min, Max)]
