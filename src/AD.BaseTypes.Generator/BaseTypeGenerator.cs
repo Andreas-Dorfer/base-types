@@ -19,16 +19,15 @@ namespace AD.BaseTypes.Generator
         public void Initialize(GeneratorInitializationContext context)
         {
             //AttachDebugger();
-            context.RegisterForSyntaxNotifications(() => new PartialRecordWithAttributesReceiver());
+            context.RegisterForSyntaxNotifications(() => new PartialRecordsWithAttributesReceiver());
         }
 
-        class PartialRecordWithAttributesReceiver : ISyntaxReceiver
+        class PartialRecordsWithAttributesReceiver : ISyntaxReceiver
         {
             public List<RecordDeclarationSyntax> Records { get; } = new List<RecordDeclarationSyntax>();
 
             public void OnVisitSyntaxNode(SyntaxNode syntaxNode)
             {
-                //only partial records with attributes
                 if (syntaxNode is RecordDeclarationSyntax record &&
                     record.Modifiers.Any(SyntaxKind.PartialKeyword) &&
                     record.AttributeLists.SelectMany(_ => _.Attributes).Any())
@@ -40,7 +39,7 @@ namespace AD.BaseTypes.Generator
 
         public void Execute(GeneratorExecutionContext context)
         {
-            foreach (var record in ((PartialRecordWithAttributesReceiver)context.SyntaxReceiver).Records)
+            foreach (var record in ((PartialRecordsWithAttributesReceiver)context.SyntaxReceiver).Records)
             {
                 var semantics = context.Compilation.GetSemanticModel(record.SyntaxTree);
 
