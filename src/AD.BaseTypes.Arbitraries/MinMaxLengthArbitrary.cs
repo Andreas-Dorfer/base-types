@@ -16,7 +16,7 @@ namespace AD.BaseTypes.Arbitraries
         /// <param name="maxLength">The maximal length.</param>
         /// <param name="creator">The base type's creator.</param>
         /// <returns>The arbitrary.</returns>
-        public static MinMaxLengthArbitrary<TBaseType> Create<TBaseType>(int minLength, int maxLength, Func<string, TBaseType> creator) where TBaseType : IBaseType<string> => new(minLength, minLength, creator);
+        public static MinMaxLengthArbitrary<TBaseType> Create<TBaseType>(int minLength, int maxLength, Func<string, TBaseType> creator) where TBaseType : IBaseType<string> => new(minLength, maxLength, creator);
     }
 
     /// <summary>
