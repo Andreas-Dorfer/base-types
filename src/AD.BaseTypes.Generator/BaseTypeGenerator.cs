@@ -53,7 +53,7 @@ namespace AD.BaseTypes.Generator
                     //record start
                     var recordName = record.Identifier.Text;
                     sourceBuilder.AppendLine($"[System.Text.Json.Serialization.JsonConverter(typeof(AD.BaseTypes.Json.BaseTypeJsonConverter<{recordName}, {baseType}>))]");
-                    sourceBuilder.AppendLine($"partial record {recordName} : System.IComparable<{recordName}>, System.IComparable, AD.BaseTypes.IBaseType<{baseType}>");
+                    sourceBuilder.AppendLine($"sealed partial record {recordName} : System.IComparable<{recordName}>, System.IComparable, AD.BaseTypes.IBaseType<{baseType}>");
                     sourceBuilder.AppendLine("{");
                     sourceBuilder.IncreaseIndent();
                     //*****
