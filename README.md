@@ -26,7 +26,7 @@ Both the employee's ID and the associated department's ID are modeled as strings
 public Department GetDepartment() =>
     departmentRepository.Load(Id);
 ```
-Your code still compiles. Hopefully, you've got some tests to catch that bug. But why not utilize the type system to prevent that bug in the first place? C# 9 records to the rescue:
+Your code still compiles. Hopefully, you've got some tests to catch that bug. But why not utilize the type system to prevent that bug in the first place? C# 9 records to the rescue (you can use records like [single case discriminated unions](https://fsharpforfunandprofit.com/posts/designing-with-types-single-case-dus/)):
 ```csharp
 record EmployeeId(string Value);
 record DepartmentId(string Value);
