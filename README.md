@@ -2,7 +2,7 @@
 # AD.BaseTypes
 Fight primitive obsession and create expressive domain models with source generators.
 ## NuGet Package
-    PM> Install-Package AndreasDorfer.BaseTypes -Version 0.1.5
+    PM> Install-Package AndreasDorfer.BaseTypes -Version 0.2.0
 ## Motivation
 Consider the following snippet:
 ```csharp
@@ -76,15 +76,14 @@ With `AD.BaseTypes` you can write the records like this:
 ```
 **That's it!** All the boilerplate code is generated for you. Here's what the *generated* code for `EmployeeId` looks like:
 ```csharp
-partial record EmployeeId : System.IComparable<EmployeeId>, System.IComparable, AD.BaseTypes.IValue<string>
+[System.Text.Json.Serialization.JsonConverter(typeof(AD.BaseTypes.Json.BaseTypeJsonConverter<EmployeeId, string>))]
+partial record EmployeeId : System.IComparable<EmployeeId>, System.IComparable, AD.BaseTypes.IBaseType<string>
 {
     public EmployeeId(string value)
     {
         new AD.BaseTypes.NonEmptyStringAttribute().Validate(value);
-
         this.Value = value;
     }
-
     public string Value { get; }
     public override string ToString() => Value.ToString();
     public int CompareTo(object obj) => CompareTo(obj as EmployeeId);
@@ -101,15 +100,14 @@ Let's say you need to model a name that's from 1 to 20 characters long:
 ```
 **That's it!** Here's what the *generated* code looks like:
 ```csharp
-partial record Name : System.IComparable<Name>, System.IComparable, AD.BaseTypes.IValue<string>
+[System.Text.Json.Serialization.JsonConverter(typeof(AD.BaseTypes.Json.BaseTypeJsonConverter<Name, string>))]
+partial record Name : System.IComparable<Name>, System.IComparable, AD.BaseTypes.IBaseType<string>
 {
     public Name(string value)
     {
         new AD.BaseTypes.MinMaxLengthAttribute(1, 20).Validate(value);
-
         this.Value = value;
     }
-
     public string Value { get; }
     public override string ToString() => Value.ToString();
     public int CompareTo(object obj) => CompareTo(obj as Name);
@@ -176,7 +174,7 @@ class The90sAttribute : Attribute, IValidatedBaseType<DateTime>
 ## Arbitraries
 Are you using [FsCheck](https://fscheck.github.io/FsCheck/)? Check out `AD.BaseTypes.Arbitraries`.
 ### NuGet Package
-    PM> Install-Package AndreasDorfer.BaseTypes.Arbitraries -Version 0.1.2
+    PM> Install-Package AndreasDorfer.BaseTypes.Arbitraries -Version 0.2.0
 ### Example
 ```csharp
 [IntRange(Min, Max)]
