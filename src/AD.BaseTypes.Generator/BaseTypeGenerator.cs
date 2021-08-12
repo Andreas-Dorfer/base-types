@@ -4,7 +4,6 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -18,92 +17,94 @@ namespace AD.BaseTypes.Generator
             ValidatedBaseTypeRegex = new Regex("^AD.BaseTypes.IBaseTypeValidation<(?<type>.+)>$");
 
         public void Initialize(GeneratorInitializationContext context)
-        { }
-
-        public void Execute(GeneratorExecutionContext context)
         {
             //AttachDebugger();
+            context.RegisterForSyntaxNotifications(() => new PartialRecordWithAttributesReceiver());
+        }
 
-            foreach (var tree in context.Compilation.SyntaxTrees)
+        class PartialRecordWithAttributesReceiver : ISyntaxReceiver
+        {
+            public List<RecordDeclarationSyntax> Records { get; } = new List<RecordDeclarationSyntax>();
+
+            public void OnVisitSyntaxNode(SyntaxNode syntaxNode)
             {
-                var semantics = context.Compilation.GetSemanticModel(tree);
-                var sources = new List<string>();
-
-                foreach (var record in FindAllPartialRecords(tree))
+                //only partial records with attributes
+                if (syntaxNode is RecordDeclarationSyntax record &&
+                    record.Modifiers.Any(SyntaxKind.PartialKeyword) &&
+                    record.AttributeLists.SelectMany(_ => _.Attributes).Any())
                 {
-                    var attributes = GetAllAttributes(record);
-                    if (!TryGetBaseType(semantics, attributes, out var baseType)) continue;
-
-                    var sourceBuilder = new IndentedStringBuilder();
-
-                    var @namespace = GetNamespace(record);
-                    var hasNamespace = !string.IsNullOrEmpty(@namespace);
-                    if (hasNamespace)
-                    {
-                        //namespace start
-                        sourceBuilder.AppendLine($"namespace {@namespace}");
-                        sourceBuilder.AppendLine("{");
-                        sourceBuilder.IncreaseIndent();
-                        //*****
-                    }
-
-                    //record start
-                    var recordName = record.Identifier.Text;
-                    sourceBuilder.AppendLine($"[System.Text.Json.Serialization.JsonConverter(typeof(AD.BaseTypes.Json.BaseTypeJsonConverter<{recordName}, {baseType}>))]");
-                    sourceBuilder.AppendLine($"sealed partial record {recordName} : System.IComparable<{recordName}>, System.IComparable, AD.BaseTypes.IBaseType<{baseType}>");
-                    sourceBuilder.AppendLine("{");
-                    sourceBuilder.IncreaseIndent();
-                    //*****
-
-                    //constructor start
-                    sourceBuilder.AppendLine($"public {recordName}({baseType} value)");
-                    sourceBuilder.AppendLine("{");
-                    sourceBuilder.IncreaseIndent();
-                    //*****
-
-                    AppendValidations(sourceBuilder, semantics, attributes, baseType);
-                    sourceBuilder.AppendLine("this.Value = value;");
-
-                    //constructor end
-                    sourceBuilder.DecreaseIndent();
-                    sourceBuilder.AppendLine("}");
-                    //*****
-
-                    sourceBuilder.AppendLine($"public {baseType} Value {{ get; }}");
-                    sourceBuilder.AppendLine("public override string ToString() => Value.ToString();");
-                    sourceBuilder.AppendLine($"public int CompareTo(object obj) => CompareTo(obj as {recordName});");
-                    sourceBuilder.AppendLine($"public int CompareTo({record.Identifier.Text} other) => other is null ? 1 : System.Collections.Generic.Comparer<{baseType}>.Default.Compare(Value, other.Value);");
-                    sourceBuilder.AppendLine($"public static implicit operator {baseType}({recordName} item) => item.Value;");
-                    sourceBuilder.AppendLine($"public static {recordName} Create({baseType} value) => new(value);");
-
-                    //record end
-                    sourceBuilder.DecreaseIndent();
-                    sourceBuilder.AppendLine("}");
-                    //*****
-
-                    if (hasNamespace)
-                    {
-                        //namespace end
-                        sourceBuilder.DecreaseIndent();
-                        sourceBuilder.AppendLine("}");
-                        //*****
-                    }
-
-                    sources.Add(sourceBuilder.ToString());
-                }
-
-                if (sources.Count > 0)
-                {
-                    context.AddSource(Path.GetFileNameWithoutExtension(tree.FilePath) + ".gBaseTypes", string.Join(Environment.NewLine, sources));
+                    Records.Add(record);
                 }
             }
         }
 
-        static IEnumerable<RecordDeclarationSyntax> FindAllPartialRecords(SyntaxTree tree) =>
-            tree.GetRoot().DescendantNodes()
-            .Where(_ => _.IsKind(SyntaxKind.RecordDeclaration))
-            .OfType<RecordDeclarationSyntax>()
-            .Where(_ => _.Modifiers.Any(SyntaxKind.PartialKeyword));
+        public void Execute(GeneratorExecutionContext context)
+        {
+            foreach (var record in ((PartialRecordWithAttributesReceiver)context.SyntaxReceiver).Records)
+            {
+                var semantics = context.Compilation.GetSemanticModel(record.SyntaxTree);
+
+                var attributes = GetAllAttributes(record);
+                if (!TryGetBaseType(semantics, attributes, out var baseType)) continue;
+
+                var sourceBuilder = new IndentedStringBuilder();
+
+                var @namespace = GetNamespace(record);
+                var hasNamespace = !string.IsNullOrEmpty(@namespace);
+                if (hasNamespace)
+                {
+                    //namespace start
+                    sourceBuilder.AppendLine($"namespace {@namespace}");
+                    sourceBuilder.AppendLine("{");
+                    sourceBuilder.IncreaseIndent();
+                    //*****
+                }
+
+                //record start
+                var recordName = record.Identifier.Text;
+                sourceBuilder.AppendLine($"[System.Text.Json.Serialization.JsonConverter(typeof(AD.BaseTypes.Json.BaseTypeJsonConverter<{recordName}, {baseType}>))]");
+                sourceBuilder.AppendLine($"sealed partial record {recordName} : System.IComparable<{recordName}>, System.IComparable, AD.BaseTypes.IBaseType<{baseType}>");
+                sourceBuilder.AppendLine("{");
+                sourceBuilder.IncreaseIndent();
+                //*****
+
+                //constructor start
+                sourceBuilder.AppendLine($"public {recordName}({baseType} value)");
+                sourceBuilder.AppendLine("{");
+                sourceBuilder.IncreaseIndent();
+                //*****
+
+                AppendValidations(sourceBuilder, semantics, attributes, baseType);
+                sourceBuilder.AppendLine("this.Value = value;");
+
+                //constructor end
+                sourceBuilder.DecreaseIndent();
+                sourceBuilder.AppendLine("}");
+                //*****
+
+                sourceBuilder.AppendLine($"public {baseType} Value {{ get; }}");
+                sourceBuilder.AppendLine("public override string ToString() => Value.ToString();");
+                sourceBuilder.AppendLine($"public int CompareTo(object obj) => CompareTo(obj as {recordName});");
+                sourceBuilder.AppendLine($"public int CompareTo({record.Identifier.Text} other) => other is null ? 1 : System.Collections.Generic.Comparer<{baseType}>.Default.Compare(Value, other.Value);");
+                sourceBuilder.AppendLine($"public static implicit operator {baseType}({recordName} item) => item.Value;");
+                sourceBuilder.AppendLine($"public static {recordName} Create({baseType} value) => new(value);");
+
+                //record end
+                sourceBuilder.DecreaseIndent();
+                sourceBuilder.AppendLine("}");
+                //*****
+
+                if (hasNamespace)
+                {
+                    //namespace end
+                    sourceBuilder.DecreaseIndent();
+                    sourceBuilder.AppendLine("}");
+                    //*****
+                }
+
+                context.AddSource($"{recordName}.generated", sourceBuilder.ToString());
+            }
+        }
 
         static IEnumerable<AttributeSyntax> GetAllAttributes(RecordDeclarationSyntax record) =>
             record.AttributeLists.SelectMany(_ => _.Attributes);
@@ -162,7 +163,7 @@ namespace AD.BaseTypes.Generator
                 }));
 
 #pragma warning disable IDE0051 // Remove unused private members
-        [Conditional("Debug")]
+        [Conditional("DEBUG")]
         static void AttachDebugger()
         {
             if (!Debugger.IsAttached)
