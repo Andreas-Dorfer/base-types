@@ -94,7 +94,7 @@ namespace AD.BaseTypes.Generator
 
                 if (sources.Count > 0)
                 {
-                    context.AddSource(Path.GetFileNameWithoutExtension(tree.FilePath) + ".generated", string.Join(Environment.NewLine, sources));
+                    context.AddSource(Path.GetFileNameWithoutExtension(tree.FilePath) + ".gBaseTypes", string.Join(Environment.NewLine, sources));
                 }
             }
         }
