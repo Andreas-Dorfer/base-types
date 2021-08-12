@@ -6,7 +6,7 @@ namespace AD.BaseTypes
     /// Int within a range.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class IntRangeAttribute : Attribute, IValidatedBaseType<int>
+    public class IntRangeAttribute : Attribute, IBaseTypeValidation<int>
     {
         readonly int min, max;
 

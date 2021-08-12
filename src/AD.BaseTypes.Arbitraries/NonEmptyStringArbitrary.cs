@@ -16,14 +16,14 @@ namespace AD.BaseTypes.Arbitraries
         /// <typeparam name="TBaseType">The base type.</typeparam>
         /// <param name="creator">The base type's creator.</param>
         /// <returns>The arbitrary.</returns>
-        public static NonEmptyStringArbitrary<TBaseType> Create<TBaseType>(Func<string, TBaseType> creator) where TBaseType : IValue<string> => new(creator);
+        public static NonEmptyStringArbitrary<TBaseType> Create<TBaseType>(Func<string, TBaseType> creator) where TBaseType : IBaseType<string> => new(creator);
     }
 
     /// <summary>
     /// Arbitrary for non-empty string base types.
     /// </summary>
     /// <typeparam name="TBaseType"></typeparam>
-    public class NonEmptyStringArbitrary<TBaseType> : StringArbitrary<TBaseType> where TBaseType : IValue<string>
+    public class NonEmptyStringArbitrary<TBaseType> : StringArbitrary<TBaseType> where TBaseType : IBaseType<string>
     {
         readonly Arbitrary<NonEmptyString> arb = Arb.Default.NonEmptyString();
 

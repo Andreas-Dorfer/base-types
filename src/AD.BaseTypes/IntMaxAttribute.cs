@@ -6,7 +6,7 @@ namespace AD.BaseTypes
     /// Int with a maximal value.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class IntMaxAttribute : Attribute, IValidatedBaseType<int>
+    public class IntMaxAttribute : Attribute, IBaseTypeValidation<int>
     {
         readonly int max;
 

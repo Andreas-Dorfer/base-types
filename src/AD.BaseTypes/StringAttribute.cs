@@ -6,6 +6,6 @@ namespace AD.BaseTypes
     /// String wrapper.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class StringAttribute : Attribute, IBaseType<string>
+    public class StringAttribute : Attribute, IBaseTypeDefinition<string>
     { }
 }

@@ -13,14 +13,14 @@ namespace AD.BaseTypes.Arbitraries
         /// <typeparam name="TBaseType">The base type.</typeparam>
         /// <param name="creator">The base type's creator.</param>
         /// <returns>The arbitrary.</returns>
-        public static DateTimeArbitrary<TBaseType> Create<TBaseType>(Func<DateTime, TBaseType> creator) where TBaseType : IValue<DateTime> => new(creator);
+        public static DateTimeArbitrary<TBaseType> Create<TBaseType>(Func<DateTime, TBaseType> creator) where TBaseType : IBaseType<DateTime> => new(creator);
     }
 
     /// <summary>
     /// Arbitrary for DateTime base types.
     /// </summary>
     /// <typeparam name="TBaseType">The base type.</typeparam>
-    public class DateTimeArbitrary<TBaseType> : BaseTypeArbitrary<TBaseType, DateTime> where TBaseType : IValue<DateTime>
+    public class DateTimeArbitrary<TBaseType> : BaseTypeArbitrary<TBaseType, DateTime> where TBaseType : IBaseType<DateTime>
     {
         /// <inheritdoc/>
         public DateTimeArbitrary(Func<DateTime, TBaseType> creator) : base(creator)

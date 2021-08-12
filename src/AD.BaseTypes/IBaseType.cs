@@ -1,9 +1,14 @@
 ﻿namespace AD.BaseTypes
 {
     /// <summary>
-    /// A wrapper around a (primitve) type.
+    /// Common interface for all generated base types.
     /// </summary>
-    /// <typeparam name="T">The type to wrap.</typeparam>
+    /// <typeparam name="T">The wrapped value's type.</typeparam>
     public interface IBaseType<T>
-    { }
+    {
+        /// <summary>
+        /// The wrapped Value.
+        /// </summary>
+        T Value { get; }
+    }
 }

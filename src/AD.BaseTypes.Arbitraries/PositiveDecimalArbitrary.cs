@@ -13,14 +13,14 @@ namespace AD.BaseTypes.Arbitraries
         /// <typeparam name="TBaseType">The base type.</typeparam>
         /// <param name="creator">The base type's creator.</param>
         /// <returns>The arbitrary.</returns>
-        public static PositiveDecimalArbitrary<TBaseType> Create<TBaseType>(Func<decimal, TBaseType> creator) where TBaseType : IValue<decimal> => new(creator);
+        public static PositiveDecimalArbitrary<TBaseType> Create<TBaseType>(Func<decimal, TBaseType> creator) where TBaseType : IBaseType<decimal> => new(creator);
     }
 
     /// <summary>
     /// Arbitrary for positive deicmal base types.
     /// </summary>
     /// <typeparam name="TBaseType"></typeparam>
-    public class PositiveDecimalArbitrary<TBaseType> : DecimalArbitrary<TBaseType> where TBaseType : IValue<decimal>
+    public class PositiveDecimalArbitrary<TBaseType> : DecimalArbitrary<TBaseType> where TBaseType : IBaseType<decimal>
     {
         /// <inheritdoc/>
         public PositiveDecimalArbitrary(Func<decimal, TBaseType> creator) : base(creator)

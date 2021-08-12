@@ -6,7 +6,7 @@ namespace AD.BaseTypes
     /// String with a maximal length.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class MaxLengthAttribute : Attribute, IValidatedBaseType<string>
+    public class MaxLengthAttribute : Attribute, IBaseTypeValidation<string>
     {
         readonly int maxLength;
 

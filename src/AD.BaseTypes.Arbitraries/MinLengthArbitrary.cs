@@ -15,14 +15,14 @@ namespace AD.BaseTypes.Arbitraries
         /// <param name="minLength">The minimal length.</param>
         /// <param name="creator">The base type's creator.</param>
         /// <returns>The arbitrary.</returns>
-        public static MinLengthArbitrary<TBaseType> Create<TBaseType>(int minLength, Func<string, TBaseType> creator) where TBaseType : IValue<string> => new(minLength, creator);
+        public static MinLengthArbitrary<TBaseType> Create<TBaseType>(int minLength, Func<string, TBaseType> creator) where TBaseType : IBaseType<string> => new(minLength, creator);
     }
 
     /// <summary>
     /// Arbitrary for string base types with a minimal range.
     /// </summary>
     /// <typeparam name="TBaseType"></typeparam>
-    public class MinLengthArbitrary<TBaseType> : StringArbitrary<TBaseType> where TBaseType : IValue<string>
+    public class MinLengthArbitrary<TBaseType> : StringArbitrary<TBaseType> where TBaseType : IBaseType<string>
     {
         /// <param name="minLength">The minimal length.</param>
         /// <param name="creator">The base type's creator.</param>

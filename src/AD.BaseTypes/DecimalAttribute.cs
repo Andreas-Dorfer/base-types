@@ -6,6 +6,6 @@ namespace AD.BaseTypes
     /// Decimal wrapper.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class DecimalAttribute : Attribute, IBaseType<decimal>
+    public class DecimalAttribute : Attribute, IBaseTypeDefinition<decimal>
     { }
 }

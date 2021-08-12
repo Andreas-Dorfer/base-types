@@ -6,6 +6,6 @@ namespace AD.BaseTypes
     /// DateTime wrapper.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class DateTimeAttribute : Attribute, IBaseType<DateTime>
+    public class DateTimeAttribute : Attribute, IBaseTypeDefinition<DateTime>
     { }
 }

@@ -13,8 +13,8 @@ namespace AD.BaseTypes.Generator
     public class BaseTypeGenerator : ISourceGenerator
     {
         static readonly Regex
-            BaseTypeRegex = new Regex("^AD.BaseTypes.IBaseType<(?<type>.+)>$"),
-            ValidatedBaseTypeRegex = new Regex("^AD.BaseTypes.IValidatedBaseType<(?<type>.+)>$");
+            BaseTypeRegex = new Regex("^AD.BaseTypes.IBaseTypeDefinition<(?<type>.+)>$"),
+            ValidatedBaseTypeRegex = new Regex("^AD.BaseTypes.IBaseTypeValidation<(?<type>.+)>$");
 
         public void Initialize(GeneratorInitializationContext context)
         { }
@@ -51,7 +51,7 @@ namespace AD.BaseTypes.Generator
                     }
 
                     //record start
-                    sourceBuilder.AppendLine($"partial record {record.Identifier.Text} : System.IComparable<{record.Identifier.Text}>, System.IComparable, AD.BaseTypes.IValue<{baseType}>");
+                    sourceBuilder.AppendLine($"partial record {record.Identifier.Text} : System.IComparable<{record.Identifier.Text}>, System.IComparable, AD.BaseTypes.IBaseType<{baseType}>");
                     sourceBuilder.AppendLine("{");
                     sourceBuilder.IncreaseIndent();
                     //*****

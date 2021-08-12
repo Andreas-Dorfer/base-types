@@ -6,7 +6,7 @@ namespace AD.BaseTypes
     /// Positive Decimal.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class PositiveDecimalAttribute : Attribute, IValidatedBaseType<decimal>
+    public class PositiveDecimalAttribute : Attribute, IBaseTypeValidation<decimal>
     {
         /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> is negative.</exception>
         public void Validate(decimal value)

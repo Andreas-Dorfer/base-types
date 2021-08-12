@@ -7,7 +7,7 @@ namespace AD.BaseTypes
     /// String with a regex constraint.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class RegexAttribute : Attribute, IValidatedBaseType<string>
+    public class RegexAttribute : Attribute, IBaseTypeValidation<string>
     {
         readonly string pattern;
 

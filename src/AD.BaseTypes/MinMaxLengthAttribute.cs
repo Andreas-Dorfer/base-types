@@ -6,7 +6,7 @@ namespace AD.BaseTypes
     /// String with a minimal and maximal length.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class MinMaxLengthAttribute : Attribute, IValidatedBaseType<string>
+    public class MinMaxLengthAttribute : Attribute, IBaseTypeValidation<string>
     {
         readonly int minLength, maxLength;
 

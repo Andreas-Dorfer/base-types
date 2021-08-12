@@ -14,14 +14,14 @@ namespace AD.BaseTypes.Arbitraries
         /// <param name="maxLength">The maximal length.</param>
         /// <param name="creator">The base type's creator.</param>
         /// <returns>The arbitrary.</returns>
-        public static MaxLengthArbitrary<TBaseType> Create<TBaseType>(int maxLength, Func<string, TBaseType> creator) where TBaseType : IValue<string> => new(maxLength, creator);
+        public static MaxLengthArbitrary<TBaseType> Create<TBaseType>(int maxLength, Func<string, TBaseType> creator) where TBaseType : IBaseType<string> => new(maxLength, creator);
     }
 
     /// <summary>
     /// Arbitrary for string base types with a maximal length.
     /// </summary>
     /// <typeparam name="TBaseType"></typeparam>
-    public class MaxLengthArbitrary<TBaseType> : MinMaxLengthArbitrary<TBaseType> where TBaseType : IValue<string>
+    public class MaxLengthArbitrary<TBaseType> : MinMaxLengthArbitrary<TBaseType> where TBaseType : IBaseType<string>
     {
         /// <param name="maxLength">The maximal length.</param>
         /// <param name="creator">The base type's creator.</param>

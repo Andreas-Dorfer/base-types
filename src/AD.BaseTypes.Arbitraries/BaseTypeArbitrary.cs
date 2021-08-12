@@ -17,7 +17,7 @@ namespace AD.BaseTypes.Arbitraries
         /// <typeparam name="TWrapped">The wrapped type.</typeparam>
         /// <param name="creator">The base type's creator.</param>
         /// <returns>The arbitrary.</returns>
-        public static BaseTypeArbitrary<TBaseType, TWrapped> Create<TBaseType, TWrapped>(Func<TWrapped, TBaseType> creator) where TBaseType : IValue<TWrapped> => new(creator);
+        public static BaseTypeArbitrary<TBaseType, TWrapped> Create<TBaseType, TWrapped>(Func<TWrapped, TBaseType> creator) where TBaseType : IBaseType<TWrapped> => new(creator);
     }
 
     /// <summary>
@@ -25,7 +25,7 @@ namespace AD.BaseTypes.Arbitraries
     /// </summary>
     /// <typeparam name="TBaseType">The base type.</typeparam>
     /// <typeparam name="TWrapped">The wrapped type.</typeparam>
-    public class BaseTypeArbitrary<TBaseType, TWrapped> : Arbitrary<TBaseType> where TBaseType : IValue<TWrapped>
+    public class BaseTypeArbitrary<TBaseType, TWrapped> : Arbitrary<TBaseType> where TBaseType : IBaseType<TWrapped>
     {
         /// <param name="creator">The base type's creator.</param>
         /// <exception cref="ArgumentNullException">The creator is null.</exception>

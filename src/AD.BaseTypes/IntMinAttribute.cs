@@ -6,7 +6,7 @@ namespace AD.BaseTypes
     /// Int with a minimal value.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class IntMinAttribute : Attribute, IValidatedBaseType<int>
+    public class IntMinAttribute : Attribute, IBaseTypeValidation<int>
     {
         readonly int min;
 

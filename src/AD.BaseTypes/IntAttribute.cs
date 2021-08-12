@@ -6,6 +6,6 @@ namespace AD.BaseTypes
     /// Int wrapper.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class IntAttribute : Attribute, IBaseType<int>
+    public class IntAttribute : Attribute, IBaseTypeDefinition<int>
     { }
 }

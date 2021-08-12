@@ -6,6 +6,6 @@ namespace AD.BaseTypes
     /// Double wrapper.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class DoubleAttribute : Attribute, IBaseType<double>
+    public class DoubleAttribute : Attribute, IBaseTypeDefinition<double>
     { }
 }

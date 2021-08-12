@@ -6,7 +6,7 @@ namespace AD.BaseTypes
     /// A validated wrapper around a (primitive) type.
     /// </summary>
     /// <typeparam name="T">The type to wrap.</typeparam>
-    public interface IValidatedBaseType<T> : IBaseType<T>
+    public interface IBaseTypeValidation<T> : IBaseTypeDefinition<T>
     {
         /// <summary>
         /// Validates the wrapped value.

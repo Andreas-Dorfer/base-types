@@ -3,7 +3,7 @@ using System.Text.Json;
 
 namespace AD.BaseTypes.Json
 {
-    public class IntJsonConverter<TBaseType> : BaseTypeJsonConverter<TBaseType, int> where TBaseType : class, IValue<int>
+    public class IntJsonConverter<TBaseType> : BaseTypeJsonConverter<TBaseType, int> where TBaseType : class, IBaseType<int>
     {
         public IntJsonConverter(Func<int, TBaseType> creator) : base(creator)
         { }

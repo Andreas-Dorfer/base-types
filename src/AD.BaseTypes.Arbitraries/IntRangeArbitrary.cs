@@ -17,14 +17,14 @@ namespace AD.BaseTypes.Arbitraries
         /// <param name="max">The maximal value.</param>
         /// <param name="creator">The base type's creator.</param>
         /// <returns>The arbitrary.</returns>
-        public static IntRangeArbitrary<TBaseType> Create<TBaseType>(int min, int max, Func<int, TBaseType> creator) where TBaseType : IValue<int> => new(min, max, creator);
+        public static IntRangeArbitrary<TBaseType> Create<TBaseType>(int min, int max, Func<int, TBaseType> creator) where TBaseType : IBaseType<int> => new(min, max, creator);
     }
 
     /// <summary>
     /// Arbitrary for int base types with a range.
     /// </summary>
     /// <typeparam name="TBaseType">The base type.</typeparam>
-    public class IntRangeArbitrary<TBaseType> : IntArbitrary<TBaseType> where TBaseType : IValue<int>
+    public class IntRangeArbitrary<TBaseType> : IntArbitrary<TBaseType> where TBaseType : IBaseType<int>
     {
         /// <param name="min">The minimal value.</param>
         /// <param name="max">The maximal value.</param>

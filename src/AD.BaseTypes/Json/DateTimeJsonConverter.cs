@@ -3,7 +3,7 @@ using System.Text.Json;
 
 namespace AD.BaseTypes.Json
 {
-    public class DateTimeJsonConverter<TBaseType> : BaseTypeJsonConverter<TBaseType, DateTime> where TBaseType : class, IValue<DateTime>
+    public class DateTimeJsonConverter<TBaseType> : BaseTypeJsonConverter<TBaseType, DateTime> where TBaseType : class, IBaseType<DateTime>
     {
         public DateTimeJsonConverter(Func<DateTime, TBaseType> creator) : base(creator)
         { }

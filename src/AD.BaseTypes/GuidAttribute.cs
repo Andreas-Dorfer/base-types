@@ -6,6 +6,6 @@ namespace AD.BaseTypes
     /// GUID wrapper.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class GuidAttribute : Attribute, IBaseType<Guid>
+    public class GuidAttribute : Attribute, IBaseTypeDefinition<Guid>
     { }
 }
