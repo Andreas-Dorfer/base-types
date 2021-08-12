@@ -143,7 +143,7 @@ The included attributes are:
 You can create custom attributes. Let's say you need a `DateTime` only for weekends:
 ```csharp
 [AttributeUsage(AttributeTargets.Class)]
-class WeekendAttribute : Attribute, IValidatedBaseType<DateTime>
+class WeekendAttribute : Attribute, IBaseTypeValidation<DateTime>
 {
     public void Validate(DateTime value)
     {
@@ -158,7 +158,7 @@ class WeekendAttribute : Attribute, IValidatedBaseType<DateTime>
 You can apply multiple attributes:
 ```csharp
 [AttributeUsage(AttributeTargets.Class)]
-class The90sAttribute : Attribute, IValidatedBaseType<DateTime>
+class The90sAttribute : Attribute, IBaseTypeValidation<DateTime>
 {
     public void Validate(DateTime value)
     {
