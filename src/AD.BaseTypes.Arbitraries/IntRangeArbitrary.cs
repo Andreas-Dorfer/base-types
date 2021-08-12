@@ -7,30 +7,13 @@ namespace AD.BaseTypes.Arbitraries
     /// <summary>
     /// Arbitrary for int base types with a range.
     /// </summary>
-    public static class IntRangeArbitrary
-    {
-        /// <summary>
-        /// Creates an arbitrary.
-        /// </summary>
-        /// <typeparam name="TBaseType">The base type.</typeparam>
-        /// <param name="min">The minimal value.</param>
-        /// <param name="max">The maximal value.</param>
-        /// <param name="creator">The base type's creator.</param>
-        /// <returns>The arbitrary.</returns>
-        public static IntRangeArbitrary<TBaseType> Create<TBaseType>(int min, int max, Func<int, TBaseType> creator) where TBaseType : IBaseType<int> => new(min, max, creator);
-    }
-
-    /// <summary>
-    /// Arbitrary for int base types with a range.
-    /// </summary>
     /// <typeparam name="TBaseType">The base type.</typeparam>
     public class IntRangeArbitrary<TBaseType> : IntArbitrary<TBaseType> where TBaseType : IBaseType<int>
     {
         /// <param name="min">The minimal value.</param>
         /// <param name="max">The maximal value.</param>
-        /// <param name="creator">The base type's creator.</param>
         /// <exception cref="ArgumentException"><paramref name="max"/> is smaller than <paramref name="min"/>.</exception>
-        public IntRangeArbitrary(int min, int max, Func<int, TBaseType> creator) : base(creator)
+        public IntRangeArbitrary(int min, int max)
         {
             if (max < min) throw new ArgumentException("Invalid range.");
 

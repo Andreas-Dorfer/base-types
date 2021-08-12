@@ -8,36 +8,14 @@ namespace AD.BaseTypes.Arbitraries
     /// <summary>
     /// Arbitrary for base types.
     /// </summary>
-    public static class BaseTypeArbitrary
-    {
-        /// <summary>
-        /// Creates an arbitrary.
-        /// </summary>
-        /// <typeparam name="TBaseType">The base type.</typeparam>
-        /// <typeparam name="TWrapped">The wrapped type.</typeparam>
-        /// <param name="creator">The base type's creator.</param>
-        /// <returns>The arbitrary.</returns>
-        public static BaseTypeArbitrary<TBaseType, TWrapped> Create<TBaseType, TWrapped>(Func<TWrapped, TBaseType> creator) where TBaseType : IBaseType<TWrapped> => new(creator);
-    }
-
-    /// <summary>
-    /// Arbitrary for base types.
-    /// </summary>
     /// <typeparam name="TBaseType">The base type.</typeparam>
     /// <typeparam name="TWrapped">The wrapped type.</typeparam>
     public class BaseTypeArbitrary<TBaseType, TWrapped> : Arbitrary<TBaseType> where TBaseType : IBaseType<TWrapped>
     {
-        /// <param name="creator">The base type's creator.</param>
-        /// <exception cref="ArgumentNullException">The creator is null.</exception>
-        public BaseTypeArbitrary(Func<TWrapped, TBaseType> creator)
-        {
-            Creator = creator ?? throw new ArgumentNullException(nameof(creator));
-        }
-
         /// <summary>
         /// The base type's creator.
         /// </summary>
-        protected Func<TWrapped, TBaseType> Creator { get; }
+        protected Func<TWrapped, TBaseType> Creator => BaseType<TBaseType, TWrapped>.Creator;
 
         /// <summary>
         /// Filters invalid wrapped values.

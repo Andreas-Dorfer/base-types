@@ -1,5 +1,4 @@
 ﻿using FsCheck;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,28 +7,10 @@ namespace AD.BaseTypes.Arbitraries
     /// <summary>
     /// Arbitrary for non-empty string base types.
     /// </summary>
-    public static class NonEmptyStringArbitrary
-    {
-        /// <summary>
-        /// Creates an arbitrary.
-        /// </summary>
-        /// <typeparam name="TBaseType">The base type.</typeparam>
-        /// <param name="creator">The base type's creator.</param>
-        /// <returns>The arbitrary.</returns>
-        public static NonEmptyStringArbitrary<TBaseType> Create<TBaseType>(Func<string, TBaseType> creator) where TBaseType : IBaseType<string> => new(creator);
-    }
-
-    /// <summary>
-    /// Arbitrary for non-empty string base types.
-    /// </summary>
     /// <typeparam name="TBaseType"></typeparam>
     public class NonEmptyStringArbitrary<TBaseType> : StringArbitrary<TBaseType> where TBaseType : IBaseType<string>
     {
         readonly Arbitrary<NonEmptyString> arb = Arb.Default.NonEmptyString();
-
-        /// <inheritdoc/>
-        public NonEmptyStringArbitrary(Func<string, TBaseType> creator) : base(creator)
-        { }
 
         /// <summary>
         /// Filters empty string.
