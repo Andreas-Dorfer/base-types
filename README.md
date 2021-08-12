@@ -77,7 +77,7 @@ With `AD.BaseTypes` you can write the records like this:
 **That's it!** All the boilerplate code is generated for you. Here's what the *generated* code for `EmployeeId` looks like:
 ```csharp
 [System.Text.Json.Serialization.JsonConverter(typeof(AD.BaseTypes.Json.BaseTypeJsonConverter<EmployeeId, string>))]
-partial record EmployeeId : System.IComparable<EmployeeId>, System.IComparable, AD.BaseTypes.IBaseType<string>
+sealed partial record EmployeeId : System.IComparable<EmployeeId>, System.IComparable, AD.BaseTypes.IBaseType<string>
 {
     public EmployeeId(string value)
     {
@@ -87,8 +87,7 @@ partial record EmployeeId : System.IComparable<EmployeeId>, System.IComparable, 
     public string Value { get; }
     public override string ToString() => Value.ToString();
     public int CompareTo(object obj) => CompareTo(obj as EmployeeId);
-    public int CompareTo(EmployeeId other) =>
-        other is null ? 1 : System.Collections.Generic.Comparer<string>.Default.Compare(Value, other.Value);
+    public int CompareTo(EmployeeId other) => other is null ? 1 : System.Collections.Generic.Comparer<string>.Default.Compare(Value, other.Value);
     public static implicit operator string(EmployeeId item) => item.Value;
     public static EmployeeId Create(string value) => new(value);
 }
@@ -101,7 +100,7 @@ Let's say you need to model a name that's from 1 to 20 characters long:
 **That's it!** Here's what the *generated* code looks like:
 ```csharp
 [System.Text.Json.Serialization.JsonConverter(typeof(AD.BaseTypes.Json.BaseTypeJsonConverter<Name, string>))]
-partial record Name : System.IComparable<Name>, System.IComparable, AD.BaseTypes.IBaseType<string>
+sealed partial record Name : System.IComparable<Name>, System.IComparable, AD.BaseTypes.IBaseType<string>
 {
     public Name(string value)
     {
@@ -111,8 +110,7 @@ partial record Name : System.IComparable<Name>, System.IComparable, AD.BaseTypes
     public string Value { get; }
     public override string ToString() => Value.ToString();
     public int CompareTo(object obj) => CompareTo(obj as Name);
-    public int CompareTo(Name other) =>
-        other is null ? 1 : System.Collections.Generic.Comparer<string>.Default.Compare(Value, other.Value);
+    public int CompareTo(Name other) => other is null ? 1 : System.Collections.Generic.Comparer<string>.Default.Compare(Value, other.Value);
     public static implicit operator string(Name item) => item.Value;
     public static Name Create(string value) => new(value);
 }
