@@ -2,7 +2,7 @@
 # AD.BaseTypes
 Fight primitive obsession and create expressive domain models with source generators.
 ## NuGet Package
-    PM> Install-Package AndreasDorfer.BaseTypes -Version 0.1.5
+    PM> Install-Package AndreasDorfer.BaseTypes -Version 0.2.0
 ## Motivation
 Consider the following snippet:
 ```csharp
@@ -26,7 +26,7 @@ Both the employee's ID and the associated department's ID are modeled as strings
 public Department GetDepartment() =>
     departmentRepository.Load(Id);
 ```
-Your code still compiles. Hopefully, you've got some tests to catch that bug. But why not utilize the type system to prevent that bug in the first place? C# 9 records to the rescue:
+Your code still compiles. Hopefully, you've got some tests to catch that bug. But why not utilize the type system to prevent that bug in the first place? C# 9 records to the rescue (you can use records like [single case discriminated unions](https://fsharpforfunandprofit.com/posts/designing-with-types-single-case-dus/)):
 ```csharp
 record EmployeeId(string Value);
 record DepartmentId(string Value);
@@ -76,15 +76,14 @@ With `AD.BaseTypes` you can write the records like this:
 ```
 **That's it!** All the boilerplate code is generated for you. Here's what the *generated* code for `EmployeeId` looks like:
 ```csharp
-partial record EmployeeId : System.IComparable<EmployeeId>, System.IComparable, AD.BaseTypes.IValue<string>
+[System.Text.Json.Serialization.JsonConverter(typeof(AD.BaseTypes.Json.BaseTypeJsonConverter<EmployeeId, string>))]
+partial record EmployeeId : System.IComparable<EmployeeId>, System.IComparable, AD.BaseTypes.IBaseType<string>
 {
     public EmployeeId(string value)
     {
         new AD.BaseTypes.NonEmptyStringAttribute().Validate(value);
-
         this.Value = value;
     }
-
     public string Value { get; }
     public override string ToString() => Value.ToString();
     public int CompareTo(object obj) => CompareTo(obj as EmployeeId);
@@ -101,15 +100,14 @@ Let's say you need to model a name that's from 1 to 20 characters long:
 ```
 **That's it!** Here's what the *generated* code looks like:
 ```csharp
-partial record Name : System.IComparable<Name>, System.IComparable, AD.BaseTypes.IValue<string>
+[System.Text.Json.Serialization.JsonConverter(typeof(AD.BaseTypes.Json.BaseTypeJsonConverter<Name, string>))]
+partial record Name : System.IComparable<Name>, System.IComparable, AD.BaseTypes.IBaseType<string>
 {
     public Name(string value)
     {
         new AD.BaseTypes.MinMaxLengthAttribute(1, 20).Validate(value);
-
         this.Value = value;
     }
-
     public string Value { get; }
     public override string ToString() => Value.ToString();
     public int CompareTo(object obj) => CompareTo(obj as Name);
@@ -145,7 +143,7 @@ The included attributes are:
 You can create custom attributes. Let's say you need a `DateTime` only for weekends:
 ```csharp
 [AttributeUsage(AttributeTargets.Class)]
-class WeekendAttribute : Attribute, IValidatedBaseType<DateTime>
+class WeekendAttribute : Attribute, IBaseTypeValidation<DateTime>
 {
     public void Validate(DateTime value)
     {
@@ -160,7 +158,7 @@ class WeekendAttribute : Attribute, IValidatedBaseType<DateTime>
 You can apply multiple attributes:
 ```csharp
 [AttributeUsage(AttributeTargets.Class)]
-class The90sAttribute : Attribute, IValidatedBaseType<DateTime>
+class The90sAttribute : Attribute, IBaseTypeValidation<DateTime>
 {
     public void Validate(DateTime value)
     {
@@ -174,9 +172,9 @@ class The90sAttribute : Attribute, IValidatedBaseType<DateTime>
 ---
 [![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.Arbitraries.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.Arbitraries/)
 ## Arbitraries
-Are you using [FsCheck](https://fscheck.github.io/FsCheck/)? Check out `AD.BaseTypes.Arbitraries`.
+Do you use [FsCheck](https://fscheck.github.io/FsCheck/)? Check out `AD.BaseTypes.Arbitraries`.
 ### NuGet Package
-    PM> Install-Package AndreasDorfer.BaseTypes.Arbitraries -Version 0.1.2
+    PM> Install-Package AndreasDorfer.BaseTypes.Arbitraries -Version 0.2.0
 ### Example
 ```csharp
 [IntRange(Min, Max)]
@@ -188,7 +186,7 @@ partial record ZeroToTen
 const int MinProduct = ZeroToTen.Min * ZeroToTen.Min;
 const int MaxProduct = ZeroToTen.Max * ZeroToTen.Max;
 
-var arb = IntRangeArbitrary.Create(ZeroToTen.Min, ZeroToTen.Max, ZeroToTen.Create);
+IntRangeArbitrary<ZeroToTen> arb = new(ZeroToTen.Min, ZeroToTen.Max);
 
 Prop.ForAll(arb, arb, (a, b) =>
 {
