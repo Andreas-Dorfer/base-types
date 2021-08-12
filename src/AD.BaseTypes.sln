@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AD.BaseTypes", "AD.BaseType
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AD.BaseTypes.Generator", "AD.BaseTypes.Generator\AD.BaseTypes.Generator.csproj", "{6FBB787B-69C8-433C-ABF0-91476AA2111D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AD.BaseTypes.Arbitraries", "AD.BaseTypes.Arbitraries\AD.BaseTypes.Arbitraries.csproj", "{75DF7391-CB7B-4228-9F31-7B0BCF505F32}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AD.BaseTypes.Arbitraries", "AD.BaseTypes.Arbitraries\AD.BaseTypes.Arbitraries.csproj", "{75DF7391-CB7B-4228-9F31-7B0BCF505F32}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AD.BaseTypes.Tests", "AD.BaseTypes.Tests\AD.BaseTypes.Tests.csproj", "{E7462B7B-2579-4F4E-B4FC-105CB57F03CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{75DF7391-CB7B-4228-9F31-7B0BCF505F32}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75DF7391-CB7B-4228-9F31-7B0BCF505F32}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75DF7391-CB7B-4228-9F31-7B0BCF505F32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7462B7B-2579-4F4E-B4FC-105CB57F03CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7462B7B-2579-4F4E-B4FC-105CB57F03CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7462B7B-2579-4F4E-B4FC-105CB57F03CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7462B7B-2579-4F4E-B4FC-105CB57F03CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
