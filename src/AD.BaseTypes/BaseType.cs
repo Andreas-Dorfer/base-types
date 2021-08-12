@@ -18,9 +18,9 @@ namespace AD.BaseTypes
                 var methodInfo = typeof(TBaseType).GetMethod("Create", BindingFlags.Public | BindingFlags.Static, null, new[] { typeof(TWrapped) }, null);
                 if (methodInfo is not null)
                 {
-                    var creatorMethod = Expression.Call(methodInfo);
-                    var creatorArg = Expression.Parameter(typeof(TWrapped));
-                    creator = Expression.Lambda<Func<TWrapped, TBaseType>>(creatorMethod, creatorArg).Compile();
+                    var arg = Expression.Parameter(typeof(TWrapped));
+                    var method = Expression.Call(methodInfo, arg);
+                    creator = Expression.Lambda<Func<TWrapped, TBaseType>>(method, arg).Compile();
                 }
             }
             catch { }
