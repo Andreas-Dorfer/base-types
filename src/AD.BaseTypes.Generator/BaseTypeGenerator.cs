@@ -30,7 +30,7 @@ namespace AD.BaseTypes.Generator
             {
                 if (syntaxNode is RecordDeclarationSyntax record &&
                     record.Modifiers.Any(SyntaxKind.PartialKeyword) &&
-                    record.AttributeLists.SelectMany(_ => _.Attributes).Any())
+                    GetAllAttributes(record).Any())
                 {
                     Records.Add(record);
                 }
