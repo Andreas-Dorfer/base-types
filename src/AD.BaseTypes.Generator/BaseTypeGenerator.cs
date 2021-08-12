@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -21,12 +22,8 @@ namespace AD.BaseTypes.Generator
 
         public void Execute(GeneratorExecutionContext context)
         {
-#if DEBUG
-            //if (!System.Diagnostics.Debugger.IsAttached)
-            //{
-            //    System.Diagnostics.Debugger.Launch();
-            //}
-#endif
+            //AttachDebugger();
+
             foreach (var tree in context.Compilation.SyntaxTrees)
             {
                 var semantics = context.Compilation.GetSemanticModel(tree);
@@ -163,5 +160,16 @@ namespace AD.BaseTypes.Generator
                     var match = ValidatedBaseTypeRegex.Match(i.ToDisplayString());
                     return match.Success && match.Groups["type"].Value == baseType;
                 }));
+
+#pragma warning disable IDE0051 // Remove unused private members
+        [Conditional("Debug")]
+        static void AttachDebugger()
+        {
+            if (!Debugger.IsAttached)
+            {
+                Debugger.Launch();
+            }
+        }
+#pragma warning restore IDE0051 // Remove unused private members
     }
 }
