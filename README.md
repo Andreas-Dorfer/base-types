@@ -172,7 +172,7 @@ class The90sAttribute : Attribute, IBaseTypeValidation<DateTime>
 ---
 [![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.Arbitraries.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.Arbitraries/)
 ## Arbitraries
-Are you using [FsCheck](https://fscheck.github.io/FsCheck/)? Check out `AD.BaseTypes.Arbitraries`.
+Do you use [FsCheck](https://fscheck.github.io/FsCheck/)? Check out `AD.BaseTypes.Arbitraries`.
 ### NuGet Package
     PM> Install-Package AndreasDorfer.BaseTypes.Arbitraries -Version 0.2.0
 ### Example
@@ -186,7 +186,7 @@ partial record ZeroToTen
 const int MinProduct = ZeroToTen.Min * ZeroToTen.Min;
 const int MaxProduct = ZeroToTen.Max * ZeroToTen.Max;
 
-var arb = IntRangeArbitrary.Create(ZeroToTen.Min, ZeroToTen.Max, ZeroToTen.Create);
+IntRangeArbitrary<ZeroToTen> arb = new(ZeroToTen.Min, ZeroToTen.Max);
 
 Prop.ForAll(arb, arb, (a, b) =>
 {
