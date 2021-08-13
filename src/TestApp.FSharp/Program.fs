@@ -13,7 +13,7 @@ let main argv =
     printfn "Hello world %s" message
 
     match "abc" |> BaseType.create<MyMaxLength, _> with
-    | Ok str -> printf "%s" str.Value
+    | Ok (BaseType.Value str) -> printf "%s" str
     | Error msg -> printf "%s" msg
 
     0 // return an integer exit code

@@ -16,3 +16,6 @@ module BaseType =
             (^baseType : (static member Create: 'wrapped -> 'baseType) value) |> Ok
         with
         | :? ArgumentException as exn -> exn.Message |> Error
+
+    /// Gets the base type's value.
+    let (|Value|) (baseType : IBaseType<_>) = baseType.Value
