@@ -197,7 +197,7 @@ Prop.ForAll(arb, arb, (a, b) =>
 });
 ```
 ---
-## F# Interop
+## F# Attributes
 You can configure the generator to emit the `Microsoft.FSharp.Core.AllowNullLiteral(false)` attribute.
 
 1. Add a reference to [FSharp.Core](https://www.nuget.org/packages/FSharp.Core/).
@@ -216,7 +216,7 @@ You can configure the generator to emit the `Microsoft.FSharp.Core.AllowNullLite
 ---
 [![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.FSharp.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.FSharp/)
 ## F#
-Do you use [F#](https://fsharp.org/)? Check out `AD.BaseTypes.FSharp`.
+Do you want to use the generated types in [F#](https://fsharp.org/)? Check out `AD.BaseTypes.FSharp`.
 ### NuGet Package
     PM > Install-Package AndreasDorfer.BaseTypes.FSharp -Version 0.3.2
 ### Example
