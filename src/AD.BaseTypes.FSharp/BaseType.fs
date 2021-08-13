@@ -5,7 +5,9 @@ open System
 /// Module for base types.
 module BaseType =
 
+    /// <summary>
     /// Creates a base type.
+    /// </summary>
     /// <param name="value">The base type's value.</param>
     /// <returns>The created base type or an error message.</returns>
     let inline create<'baseType, 'wrapped when 'baseType :> IBaseType<'wrapped> and 'baseType : (static member Create: 'wrapped -> 'baseType)> value =
