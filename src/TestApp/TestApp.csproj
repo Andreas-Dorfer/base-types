@@ -6,6 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <AdditionalFiles Include="AD.BaseTypes.Generator.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FSharp.Core" Version="5.0.2" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <ProjectReference Include="..\AD.BaseTypes.Generator\AD.BaseTypes.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\AD.BaseTypes\AD.BaseTypes.csproj" />
   </ItemGroup>

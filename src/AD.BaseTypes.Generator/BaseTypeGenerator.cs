@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -39,6 +40,8 @@ namespace AD.BaseTypes.Generator
 
         public void Execute(GeneratorExecutionContext context)
         {
+            var config = ReadConfig(context);
+
             foreach (var record in ((PartialRecordsWithAttributesReceiver)context.SyntaxReceiver).Records)
             {
                 var semantics = context.Compilation.GetSemanticModel(record.SyntaxTree);
@@ -61,6 +64,10 @@ namespace AD.BaseTypes.Generator
 
                 //record start
                 var recordName = record.Identifier.Text;
+                if (config?.AllowNullLiteral == false)
+                {
+                    sourceBuilder.AppendLine("[Microsoft.FSharp.Core.AllowNullLiteral(false)]");
+                }
                 sourceBuilder.AppendLine($"[System.Text.Json.Serialization.JsonConverter(typeof(AD.BaseTypes.Json.BaseTypeJsonConverter<{recordName}, {baseType}>))]");
                 sourceBuilder.AppendLine($"sealed partial record {recordName} : System.IComparable<{recordName}>, System.IComparable, AD.BaseTypes.IBaseType<{baseType}>");
                 sourceBuilder.AppendLine("{");
@@ -104,6 +111,30 @@ namespace AD.BaseTypes.Generator
                 var fileHint = hasNamespace ? $"{@namespace}.{recordName}" : recordName;
                 context.AddSource($"{fileHint}.g", sourceBuilder.ToString());
             }
+        }
+
+        static readonly Regex ConfigKeyValueRegex = new Regex(@"""(?<key>.+)""\s*:\s*(?<value>.+);?");
+
+        static Config ReadConfig(GeneratorExecutionContext context)
+        {
+            var configFile = context.AdditionalFiles.FirstOrDefault(_ => _.Path.EndsWith("AD.BaseTypes.Generator.json"));
+            if (configFile == null) return default;
+            var text = File.ReadAllText(configFile.Path);
+
+            var config = new Config();
+            foreach (Match match in ConfigKeyValueRegex.Matches(text))
+            {
+                switch (match.Groups["key"].Value)
+                {
+                    case nameof(config.AllowNullLiteral):
+                        if (bool.TryParse(match.Groups["value"].Value, out var allowNullLiteral))
+                        {
+                            config.AllowNullLiteral = allowNullLiteral;
+                        }
+                        break;
+                }
+            }
+            return config;
         }
 
         static IEnumerable<AttributeSyntax> GetAllAttributes(RecordDeclarationSyntax record) =>
