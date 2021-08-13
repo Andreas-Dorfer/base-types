@@ -70,7 +70,7 @@ sealed record DepartmentId
 }
 ```
 You get an `ArgumentException` whenever you try to create an empty ID. But that's a lot of boilerplate code. There sure is a solution to that:
-## The Source Generator
+##  [Source Generation](https://docs.microsoft.com/en-us/dotnet/csharp/roslyn-sdk/source-generators-overview)
 With `AD.BaseTypes` you can write the records like this:
 ```csharp
 [NonEmptyString] partial record EmployeeId;
