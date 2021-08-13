@@ -78,19 +78,18 @@ With `AD.BaseTypes` you can write the records like this:
 ```
 **That's it!** All the boilerplate code is [generated](https://docs.microsoft.com/en-us/dotnet/csharp/roslyn-sdk/source-generators-overview) for you. Here's what the *generated* code for `EmployeeId` looks like:
 ```csharp
-[System.Text.Json.Serialization.JsonConverter(typeof(AD.BaseTypes.Json.BaseTypeJsonConverter<EmployeeId, string>))]
-sealed partial record EmployeeId : System.IComparable<EmployeeId>, System.IComparable, AD.BaseTypes.IBaseType<string>
+[JsonConverter(typeof(BaseTypeJsonConverter<EmployeeId, string>))]
+sealed partial record EmployeeId : IComparable<EmployeeId>, IComparable, IBaseType<string>
 {
     public EmployeeId(string value)
     {
-        new AD.BaseTypes.NonEmptyStringAttribute().Validate(value);
-        this.Value = value;
+        new NonEmptyStringAttribute().Validate(value);
+        Value = value;
     }
     public string Value { get; }
     public override string ToString() => Value.ToString();
     public int CompareTo(object obj) => CompareTo(obj as EmployeeId);
-    public int CompareTo(EmployeeId other) =>
-        other is null ? 1 : System.Collections.Generic.Comparer<string>.Default.Compare(Value, other.Value);
+    public int CompareTo(EmployeeId other) => other is null ? 1 : Comparer<string>.Default.Compare(Value, other.Value);
     public static implicit operator string(EmployeeId item) => item.Value;
     public static EmployeeId Create(string value) => new(value);
 }
