@@ -12,11 +12,12 @@
     <RepositoryUrl>https://github.com/Andreas-Dorfer/base-types</RepositoryUrl>
     <PackageTags>C#, source-generator, domain-modeling, validation, primitive-obsession</PackageTags>
   </PropertyGroup>
-
+  
   <ItemGroup Condition="'$(Configuration)'!='Debug'">
-    <PackageReference Include="AndreasDorfer.BaseTypes.Generator" Version="0.2.2" />
+    <PackageReference Include="AndreasDorfer.BaseTypes.Core" Version="0.3.0" />
+    <PackageReference Include="AndreasDorfer.BaseTypes.Generator" Version="0.3.0" />
   </ItemGroup>
-
+  
   <ItemGroup Condition="'$(Configuration)'=='Debug'">
     <ProjectReference Include="..\AD.BaseTypes.Core\AD.BaseTypes.Core.csproj" />
   </ItemGroup>
