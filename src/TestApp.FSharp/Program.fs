@@ -12,8 +12,8 @@ let main argv =
     let message = from "F#" // Call the function
     printfn "Hello world %s" message
 
-
-    let x : Result<MyMaxLength, _> = "abc" |> BaseType.create
-
+    match "abc" |> BaseType.create<MyMaxLength, _> with
+    | Ok str -> printf "%s" str.Value
+    | Error msg -> printf "%s" msg
 
     0 // return an integer exit code
