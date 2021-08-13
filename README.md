@@ -2,7 +2,7 @@
 # AD.BaseTypes
 Fight primitive obsession and create expressive domain models with source generators.
 ## NuGet Package
-    PM> Install-Package AndreasDorfer.BaseTypes -Version 0.2.2
+    PM> Install-Package AndreasDorfer.BaseTypes -Version 0.3.1
 ## Motivation
 Consider the following snippet:
 ```csharp
@@ -78,19 +78,18 @@ With `AD.BaseTypes` you can write the records like this:
 ```
 **That's it!** All the boilerplate code is [generated](https://docs.microsoft.com/en-us/dotnet/csharp/roslyn-sdk/source-generators-overview) for you. Here's what the *generated* code for `EmployeeId` looks like:
 ```csharp
-[System.Text.Json.Serialization.JsonConverter(typeof(AD.BaseTypes.Json.BaseTypeJsonConverter<EmployeeId, string>))]
-sealed partial record EmployeeId : System.IComparable<EmployeeId>, System.IComparable, AD.BaseTypes.IBaseType<string>
+[JsonConverter(typeof(BaseTypeJsonConverter<EmployeeId, string>))]
+sealed partial record EmployeeId : IComparable<EmployeeId>, IComparable, IBaseType<string>
 {
     public EmployeeId(string value)
     {
-        new AD.BaseTypes.NonEmptyStringAttribute().Validate(value);
-        this.Value = value;
+        new NonEmptyStringAttribute().Validate(value);
+        Value = value;
     }
     public string Value { get; }
     public override string ToString() => Value.ToString();
     public int CompareTo(object obj) => CompareTo(obj as EmployeeId);
-    public int CompareTo(EmployeeId other) =>
-        other is null ? 1 : System.Collections.Generic.Comparer<string>.Default.Compare(Value, other.Value);
+    public int CompareTo(EmployeeId other) => other is null ? 1 : Comparer<string>.Default.Compare(Value, other.Value);
     public static implicit operator string(EmployeeId item) => item.Value;
     public static EmployeeId Create(string value) => new(value);
 }
@@ -102,19 +101,18 @@ Let's say you need to model a name that's from 1 to 20 characters long:
 ```
 **That's it!** Here's what the *generated* code looks like:
 ```csharp
-[System.Text.Json.Serialization.JsonConverter(typeof(AD.BaseTypes.Json.BaseTypeJsonConverter<Name, string>))]
-sealed partial record Name : System.IComparable<Name>, System.IComparable, AD.BaseTypes.IBaseType<string>
+[JsonConverter(typeof(BaseTypeJsonConverter<Name, string>))]
+sealed partial record Name : IComparable<Name>, IComparable, IBaseType<string>
 {
     public Name(string value)
     {
-        new AD.BaseTypes.MinMaxLengthAttribute(1, 20).Validate(value);
-        this.Value = value;
+        new MinMaxLengthAttribute(1, 20).Validate(value);
+        Value = value;
     }
     public string Value { get; }
     public override string ToString() => Value.ToString();
     public int CompareTo(object obj) => CompareTo(obj as Name);
-    public int CompareTo(Name other) =>
-        other is null ? 1 : System.Collections.Generic.Comparer<string>.Default.Compare(Value, other.Value);
+    public int CompareTo(Name other) => other is null ? 1 : Comparer<string>.Default.Compare(Value, other.Value);
     public static implicit operator string(Name item) => item.Value;
     public static Name Create(string value) => new(value);
 }
@@ -178,7 +176,7 @@ class The90sAttribute : Attribute, IBaseTypeValidation<DateTime>
 ## Arbitraries
 Do you use [FsCheck](https://fscheck.github.io/FsCheck/)? Check out `AD.BaseTypes.Arbitraries`.
 ### NuGet Package
-    PM> Install-Package AndreasDorfer.BaseTypes.Arbitraries -Version 0.2.2
+    PM> Install-Package AndreasDorfer.BaseTypes.Arbitraries -Version 0.3.1
 ### Example
 ```csharp
 [IntRange(Min, Max)]
