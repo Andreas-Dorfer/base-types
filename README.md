@@ -28,7 +28,7 @@ public Department GetDepartment() =>
 ```
 Your code still compiles. Hopefully, you've got some tests to catch that bug. But why not utilize the type system to prevent that bug in the first place?
 
-You can use C# records like [single case discriminated unions](https://fsharpforfunandprofit.com/posts/designing-with-types-single-case-dus/):
+You can use records like [single case discriminated unions](https://fsharpforfunandprofit.com/posts/designing-with-types-single-case-dus/):
 ```csharp
 sealed record EmployeeId(string Value);
 sealed record DepartmentId(string Value);
