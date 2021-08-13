@@ -2,7 +2,7 @@
 # AD.BaseTypes
 Fight primitive obsession and create expressive domain models with source generators.
 ## NuGet Package
-    PM> Install-Package AndreasDorfer.BaseTypes -Version 0.2.1
+    PM> Install-Package AndreasDorfer.BaseTypes -Version 0.2.2
 ## Motivation
 Consider the following snippet:
 ```csharp
@@ -26,10 +26,12 @@ Both the employee's ID and the associated department's ID are modeled as strings
 public Department GetDepartment() =>
     departmentRepository.Load(Id);
 ```
-Your code still compiles. Hopefully, you've got some tests to catch that bug. But why not utilize the type system to prevent that bug in the first place? C# 9 records to the rescue (you can use records like [single case discriminated unions](https://fsharpforfunandprofit.com/posts/designing-with-types-single-case-dus/)):
+Your code still compiles. Hopefully, you've got some tests to catch that bug. But why not utilize the type system to prevent that bug in the first place?
+
+You can use C# 9 records like [single case discriminated unions](https://fsharpforfunandprofit.com/posts/designing-with-types-single-case-dus/):
 ```csharp
-record EmployeeId(string Value);
-record DepartmentId(string Value);
+sealed record EmployeeId(string Value);
+sealed record DepartmentId(string Value);
 
 class Employee
 {
@@ -48,7 +50,7 @@ interface IDepartmentRepository
 ```
 Now, you get a compiler error when you accidentally use the employee's ID instead of the department's ID. Great! But there's more bugging me: both the employee's and the department's ID must not be empty. The records could reflect that constraint like this:
 ```csharp
-record EmployeeId
+sealed record EmployeeId
 {
     public EmployeeId(string value)
     {
@@ -57,7 +59,7 @@ record EmployeeId
     }
     public string Value { get; }
 }
-record DepartmentId
+sealed record DepartmentId
 {
     public DepartmentId(string value)
     {
@@ -176,7 +178,7 @@ class The90sAttribute : Attribute, IBaseTypeValidation<DateTime>
 ## Arbitraries
 Do you use [FsCheck](https://fscheck.github.io/FsCheck/)? Check out `AD.BaseTypes.Arbitraries`.
 ### NuGet Package
-    PM> Install-Package AndreasDorfer.BaseTypes.Arbitraries -Version 0.2.1
+    PM> Install-Package AndreasDorfer.BaseTypes.Arbitraries -Version 0.2.2
 ### Example
 ```csharp
 [IntRange(Min, Max)]
