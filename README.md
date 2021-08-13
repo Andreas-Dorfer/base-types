@@ -219,6 +219,12 @@ You can configure the generator to emit the `Microsoft.FSharp.Core.AllowNullLite
 Do you use [F#](https://fsharp.org/)? Check out `AD.BaseTypes.FSharp`.
 ### NuGet Package
     PM > Install-Package AndreasDorfer.BaseTypes.FSharp -Version 0.3.2
+### Example
+```fsharp
+match DateTime(1995, 1, 1) |> BaseType.create<SomeWeekendInThe90s, _> with
+| Ok (BaseType.Value dateTime) -> printf "%s" <| dateTime.ToShortDateString()
+| Error msg -> printf "%s" msg
+```
 ---
 ## Note
 `AD.BaseTypes` is in an early stage.
