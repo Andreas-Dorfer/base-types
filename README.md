@@ -199,7 +199,7 @@ Prop.ForAll(arb, arb, (a, b) =>
 });
 ```
 ---
-## F#
+## F# Interop
 You can configure the generator to emit the `Microsoft.FSharp.Core.AllowNullLiteral(false)` attribute.
 
 1. Add a reference to [FSharp.Core](https://www.nuget.org/packages/FSharp.Core/).
