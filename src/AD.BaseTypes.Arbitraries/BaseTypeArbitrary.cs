@@ -16,6 +16,7 @@ namespace AD.BaseTypes.Arbitraries
         /// The base type's creator.
         /// </summary>
         /// <exception cref="NotImplementedException">The base type does not define a creator.</exception>
+        /// <exception cref="ArgumentException">The parameter <paramref name="value"/> is invalid.</exception>
         protected TBaseType Creator(TWrapped value) => BaseType<TBaseType, TWrapped>.Create(value);
 
         /// <summary>
