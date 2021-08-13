@@ -2,35 +2,35 @@
 
 namespace TestApp
 {
-    [Int] partial record MyInt;
+    [Int] public partial record MyInt;
 
-    [Double] partial record MyDouble;
+    [Double] public partial record MyDouble;
 
-    [Decimal] partial record MyDecimal;
+    [Decimal] public partial record MyDecimal;
 
-    [String] partial record MyString;
+    [String] public partial record MyString;
 
-    [Guid] partial record MyGuid;
+    [Guid] public partial record MyGuid;
 
-    [DateTime] partial record MyDateTime;
+    [DateTime] public partial record MyDateTime;
 
-    [IntMin(-100)] partial record MyIntMin;
+    [IntMin(-100)] public partial record MyIntMin;
 
-    [IntMax(100)] partial record MyIntMax;
+    [IntMax(100)] public partial record MyIntMax;
 
-    [IntRange(-10, 10)] partial record MyIntRange;
+    [IntRange(-10, 10)] public partial record MyIntRange;
 
-    [PositiveDecimal] partial record MyPositiveDecimal;
+    [PositiveDecimal] public partial record MyPositiveDecimal;
 
-    [NonEmptyString] partial record MyNonEmptyString;
+    [NonEmptyString] public partial record MyNonEmptyString;
 
-    [MinLength(5)] partial record MyMinLength;
+    [MinLength(5)] public partial record MyMinLength;
 
-    [MaxLength(25)] partial record MyMaxLength;
+    [MaxLength(25)] public partial record MyMaxLength;
 
-    [MinMaxLength(10, 30)] partial record MinMaxLength;
+    [MinMaxLength(10, 30)] public partial record MinMaxLength;
 
-    [Regex(@"\d\w")] partial record MyRegex;
+    [Regex(@"\d\w")] public partial record MyRegex;
 
-    [NonEmptyGuid] partial record MyNonEmptyGuid;
+    [NonEmptyGuid] public partial record MyNonEmptyGuid;
 }

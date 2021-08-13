@@ -9,7 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AD.BaseTypes.Generator", "A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AD.BaseTypes.Arbitraries", "AD.BaseTypes.Arbitraries\AD.BaseTypes.Arbitraries.csproj", "{75DF7391-CB7B-4228-9F31-7B0BCF505F32}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp", "TestApp\TestApp.csproj", "{993579C9-6FC9-4688-A7E6-26DCDC3FBC1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestApp", "TestApp\TestApp.csproj", "{993579C9-6FC9-4688-A7E6-26DCDC3FBC1D}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "AD.BaseTypes.FSharp", "AD.BaseTypes.FSharp\AD.BaseTypes.FSharp.fsproj", "{D651D6FC-DE13-4837-93DE-4263AE37670C}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TestApp.FSharp", "TestApp.FSharp\TestApp.FSharp.fsproj", "{B5A91D55-B407-4108-96FE-7E8B41437B2D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{993579C9-6FC9-4688-A7E6-26DCDC3FBC1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{993579C9-6FC9-4688-A7E6-26DCDC3FBC1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{993579C9-6FC9-4688-A7E6-26DCDC3FBC1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D651D6FC-DE13-4837-93DE-4263AE37670C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D651D6FC-DE13-4837-93DE-4263AE37670C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D651D6FC-DE13-4837-93DE-4263AE37670C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D651D6FC-DE13-4837-93DE-4263AE37670C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5A91D55-B407-4108-96FE-7E8B41437B2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5A91D55-B407-4108-96FE-7E8B41437B2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5A91D55-B407-4108-96FE-7E8B41437B2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5A91D55-B407-4108-96FE-7E8B41437B2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
