@@ -1,6 +1,7 @@
-﻿namespace AD.BaseTypes
+﻿namespace AD.BaseTypes.FSharp
 
 open System
+open AD.BaseTypes
 
 /// Module for base types.
 module BaseType =

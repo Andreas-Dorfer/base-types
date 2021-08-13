@@ -4,9 +4,14 @@ using System.Reflection;
 
 namespace AD.BaseTypes
 {
+    /* A poor man's type class.                 *
+     * https://en.wikipedia.org/wiki/Type_class */
+
     /// <summary>
     /// Base type.
     /// </summary>
+    /// <typeparam name="TBaseType">The base type.</typeparam>
+    /// <typeparam name="TWrapped">The wrapped type.</typeparam>
     public static class BaseType<TBaseType, TWrapped> where TBaseType : IBaseType<TWrapped>
     {
         static readonly Func<TWrapped, TBaseType>? creator;
@@ -27,12 +32,15 @@ namespace AD.BaseTypes
         }
 
         /// <summary>
-        /// The base type's creator.
+        /// Creates the base type.
         /// </summary>
-        /// <exception cref="InvalidOperationException">The base type does not define a creator.</exception>
-        public static Func<TWrapped, TBaseType> Creator
+        /// <param name="value">The wrapped value.</param>
+        /// <exception cref="NotImplementedException">The base type does not define a creator.</exception>
+        /// <exception cref="ArgumentException">The parameter <paramref name="value"/> is invalid.</exception>
+        public static TBaseType Create(TWrapped value)
         {
-            get => creator ?? throw new InvalidOperationException($"The type '{typeof(TBaseType)}' does not define a creator.");
+            if (creator is null) throw new NotImplementedException($"The type '{typeof(TBaseType)}' does not define a creator.");
+            return creator(value);
         }
     }
 }

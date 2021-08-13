@@ -19,7 +19,7 @@ namespace AD.BaseTypes.Json
         public override TBaseType? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             var value = JsonSerializer.Deserialize<TWrapped>(ref reader, options);
-            return value is null ? default : BaseType<TBaseType, TWrapped>.Creator(value);
+            return value is null ? default : BaseType<TBaseType, TWrapped>.Create(value);
         }
     }
 }

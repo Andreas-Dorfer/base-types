@@ -15,7 +15,8 @@ namespace AD.BaseTypes.Arbitraries
         /// <summary>
         /// The base type's creator.
         /// </summary>
-        protected Func<TWrapped, TBaseType> Creator => BaseType<TBaseType, TWrapped>.Creator;
+        /// <exception cref="NotImplementedException">The base type does not define a creator.</exception>
+        protected TBaseType Creator(TWrapped value) => BaseType<TBaseType, TWrapped>.Create(value);
 
         /// <summary>
         /// Filters invalid wrapped values.

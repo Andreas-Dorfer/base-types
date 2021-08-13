@@ -1,8 +1,7 @@
 ﻿// Learn more about F# at http://docs.microsoft.com/dotnet/fsharp
 
-open AD.BaseTypes
+open AD.BaseTypes.FSharp
 open TestApp
-
 
 // Define a function to construct a message to print
 let from whom =
