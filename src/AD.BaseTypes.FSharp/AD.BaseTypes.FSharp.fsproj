@@ -13,8 +13,9 @@
   <ItemGroup Condition="'$(Configuration)'!='Debug'">
     <PackageReference Include="AndreasDorfer.BaseTypes" Version="0.2.2" />
   </ItemGroup>
+
   <ItemGroup Condition="'$(Configuration)'=='Debug'">
-    <ProjectReference Include="..\AD.BaseTypes\AD.BaseTypes.csproj" />
+    <ProjectReference Include="..\AD.BaseTypes.Core\AD.BaseTypes.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

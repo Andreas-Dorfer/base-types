@@ -32,7 +32,7 @@ namespace AD.BaseTypes
         /// <exception cref="InvalidOperationException">The base type does not define a creator.</exception>
         public static Func<TWrapped, TBaseType> Creator
         {
-            get => creator ?? throw new InvalidOperationException($"Type '{typeof(TBaseType)}' does not define a creator.");
+            get => creator ?? throw new InvalidOperationException($"The type '{typeof(TBaseType)}' does not define a creator.");
         }
     }
 }
