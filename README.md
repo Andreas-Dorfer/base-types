@@ -101,19 +101,18 @@ Let's say you need to model a name that's from 1 to 20 characters long:
 ```
 **That's it!** Here's what the *generated* code looks like:
 ```csharp
-[System.Text.Json.Serialization.JsonConverter(typeof(AD.BaseTypes.Json.BaseTypeJsonConverter<Name, string>))]
-sealed partial record Name : System.IComparable<Name>, System.IComparable, AD.BaseTypes.IBaseType<string>
+[JsonConverter(typeof(BaseTypeJsonConverter<Name, string>))]
+sealed partial record Name : IComparable<Name>, IComparable, IBaseType<string>
 {
     public Name(string value)
     {
-        new AD.BaseTypes.MinMaxLengthAttribute(1, 20).Validate(value);
-        this.Value = value;
+        new MinMaxLengthAttribute(1, 20).Validate(value);
+        Value = value;
     }
     public string Value { get; }
     public override string ToString() => Value.ToString();
     public int CompareTo(object obj) => CompareTo(obj as Name);
-    public int CompareTo(Name other) =>
-        other is null ? 1 : System.Collections.Generic.Comparer<string>.Default.Compare(Value, other.Value);
+    public int CompareTo(Name other) => other is null ? 1 : Comparer<string>.Default.Compare(Value, other.Value);
     public static implicit operator string(Name item) => item.Value;
     public static Name Create(string value) => new(value);
 }
