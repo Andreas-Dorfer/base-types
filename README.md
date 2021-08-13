@@ -199,5 +199,22 @@ Prop.ForAll(arb, arb, (a, b) =>
 });
 ```
 ---
+## F# Interop
+You can configure the generator to emit the `Microsoft.FSharp.Core.AllowNullLiteral` attribute.
+
+1. Add a reference to [FSharp.Core](https://www.nuget.org/packages/FSharp.Core/).
+2. Add the file `AD.BaseTypes.Generator.json` to your project:
+```json
+{
+  "AllowNullLiteral": false
+}
+```
+3. Add the following item group to your project file:
+```xml
+<ItemGroup>
+  <AdditionalFiles Include="AD.BaseTypes.Generator.json" />
+</ItemGroup>
+```
+---
 ## Note
 `AD.BaseTypes` is in an early stage.
