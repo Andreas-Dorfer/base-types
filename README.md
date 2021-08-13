@@ -214,5 +214,11 @@ You can configure the generator to emit the `Microsoft.FSharp.Core.AllowNullLite
 </ItemGroup>
 ```
 ---
+[![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.FSharp.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.FSharp/)
+## F#
+Do you use [F#](https://fsharp.org/)? Check out `AD.BaseTypes.FSharp`.
+### NuGet Package
+    PM > Install-Package AndreasDorfer.BaseTypes.FSharp -Version 0.3.2
+---
 ## Note
 `AD.BaseTypes` is in an early stage.
