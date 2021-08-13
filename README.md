@@ -70,13 +70,13 @@ sealed record DepartmentId
 }
 ```
 You get an `ArgumentException` whenever you try to create an empty ID. But that's a lot of boilerplate code. There sure is a solution to that:
-##  [Source Generation](https://docs.microsoft.com/en-us/dotnet/csharp/roslyn-sdk/source-generators-overview)
+##  Source Generation
 With `AD.BaseTypes` you can write the records like this:
 ```csharp
 [NonEmptyString] partial record EmployeeId;
 [NonEmptyString] partial record DepartmentId;
 ```
-**That's it!** All the boilerplate code is generated for you. Here's what the *generated* code for `EmployeeId` looks like:
+**That's it!** All the boilerplate code is [generated](https://docs.microsoft.com/en-us/dotnet/csharp/roslyn-sdk/source-generators-overview) for you. Here's what the *generated* code for `EmployeeId` looks like:
 ```csharp
 [System.Text.Json.Serialization.JsonConverter(typeof(AD.BaseTypes.Json.BaseTypeJsonConverter<EmployeeId, string>))]
 sealed partial record EmployeeId : System.IComparable<EmployeeId>, System.IComparable, AD.BaseTypes.IBaseType<string>
