@@ -4,9 +4,6 @@ using System.Reflection;
 
 namespace AD.BaseTypes
 {
-    /* A poor man's type class.                 *
-     * https://en.wikipedia.org/wiki/Type_class */
-
     /// <summary>
     /// Base type.
     /// </summary>
