@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageId>AndreasDorfer.BaseTypes.Core</PackageId>
-    <Version>0.3.0</Version>
+    <Version>0.3.1</Version>
     <Authors>Andreas Dorfer</Authors>
     <Description>Fight primitive obsession and create expressive domain models with source generators.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
