@@ -2,7 +2,7 @@
 # AD.BaseTypes
 Fight primitive obsession and create expressive domain models with source generators.
 ## NuGet Package
-    PM> Install-Package AndreasDorfer.BaseTypes -Version 0.2.1
+    PM> Install-Package AndreasDorfer.BaseTypes -Version 0.2.2
 ## Motivation
 Consider the following snippet:
 ```csharp
@@ -26,10 +26,12 @@ Both the employee's ID and the associated department's ID are modeled as strings
 public Department GetDepartment() =>
     departmentRepository.Load(Id);
 ```
-Your code still compiles. Hopefully, you've got some tests to catch that bug. But why not utilize the type system to prevent that bug in the first place? C# 9 records to the rescue (you can use records like [single case discriminated unions](https://fsharpforfunandprofit.com/posts/designing-with-types-single-case-dus/)):
+Your code still compiles. Hopefully, you've got some tests to catch that bug. But why not utilize the type system to prevent that bug in the first place?
+
+You can use records like [single case discriminated unions](https://fsharpforfunandprofit.com/posts/designing-with-types-single-case-dus/):
 ```csharp
-record EmployeeId(string Value);
-record DepartmentId(string Value);
+sealed record EmployeeId(string Value);
+sealed record DepartmentId(string Value);
 
 class Employee
 {
@@ -48,7 +50,7 @@ interface IDepartmentRepository
 ```
 Now, you get a compiler error when you accidentally use the employee's ID instead of the department's ID. Great! But there's more bugging me: both the employee's and the department's ID must not be empty. The records could reflect that constraint like this:
 ```csharp
-record EmployeeId
+sealed record EmployeeId
 {
     public EmployeeId(string value)
     {
@@ -57,7 +59,7 @@ record EmployeeId
     }
     public string Value { get; }
 }
-record DepartmentId
+sealed record DepartmentId
 {
     public DepartmentId(string value)
     {
@@ -68,13 +70,13 @@ record DepartmentId
 }
 ```
 You get an `ArgumentException` whenever you try to create an empty ID. But that's a lot of boilerplate code. There sure is a solution to that:
-## The Source Generator
+##  Source Generation
 With `AD.BaseTypes` you can write the records like this:
 ```csharp
 [NonEmptyString] partial record EmployeeId;
 [NonEmptyString] partial record DepartmentId;
 ```
-**That's it!** All the boilerplate code is generated for you. Here's what the *generated* code for `EmployeeId` looks like:
+**That's it!** All the boilerplate code is [generated](https://docs.microsoft.com/en-us/dotnet/csharp/roslyn-sdk/source-generators-overview) for you. Here's what the *generated* code for `EmployeeId` looks like:
 ```csharp
 [System.Text.Json.Serialization.JsonConverter(typeof(AD.BaseTypes.Json.BaseTypeJsonConverter<EmployeeId, string>))]
 sealed partial record EmployeeId : System.IComparable<EmployeeId>, System.IComparable, AD.BaseTypes.IBaseType<string>
@@ -176,7 +178,7 @@ class The90sAttribute : Attribute, IBaseTypeValidation<DateTime>
 ## Arbitraries
 Do you use [FsCheck](https://fscheck.github.io/FsCheck/)? Check out `AD.BaseTypes.Arbitraries`.
 ### NuGet Package
-    PM> Install-Package AndreasDorfer.BaseTypes.Arbitraries -Version 0.2.1
+    PM> Install-Package AndreasDorfer.BaseTypes.Arbitraries -Version 0.2.2
 ### Example
 ```csharp
 [IntRange(Min, Max)]
@@ -195,6 +197,23 @@ Prop.ForAll(arb, arb, (a, b) =>
     var product = a * b;
     return product >= MinProduct && product <= MaxProduct;
 });
+```
+---
+## F# Interop
+You can configure the generator to emit the `Microsoft.FSharp.Core.AllowNullLiteral(false)` attribute.
+
+1. Add a reference to [FSharp.Core](https://www.nuget.org/packages/FSharp.Core/).
+2. Add the file `AD.BaseTypes.Generator.json` to your project:
+```json
+{
+  "AllowNullLiteral": false
+}
+```
+3. Add the following `ItemGroup` to your project file:
+```xml
+<ItemGroup>
+  <AdditionalFiles Include="AD.BaseTypes.Generator.json" />
+</ItemGroup>
 ```
 ---
 ## Note
