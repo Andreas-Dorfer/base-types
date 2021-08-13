@@ -4,6 +4,12 @@
     <TargetFramework>net5.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <WarnOn>3390;$(WarnOn)</WarnOn>
+    <PackageId>AndreasDorfer.BaseTypes.FSharp</PackageId>
+    <Version>0.3.0</Version>
+    <Authors>Andreas Dorfer</Authors>
+    <Description>F# extensions for generated base types.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/Andreas-Dorfer/base-types</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
