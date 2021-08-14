@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)'!='Debug'">
-    <PackageReference Include="AndreasDorfer.BaseTypes.FSharp" Version="0.3.1" />
+    <PackageReference Include="AndreasDorfer.BaseTypes.FSharp" Version="0.3.2" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)'=='Debug'">
