@@ -218,9 +218,9 @@ The [AllowNullLiteralAttribute](https://fsharp.github.io/fsharp-core-docs/refere
 ---
 [![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.FSharp.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.FSharp/)
 ## F#
-Do you want to use the generated types in [F#](https://fsharp.org/)? Check out `AD.BaseTypes.FSharp`. The `BaseType` module offers some useful functions.
+Do you want to use the generated types in [F#](https://fsharp.org/)? Check out `AD.BaseTypes.FSharp`. The `BaseType` and `BaseTypeResult` modules offer some useful functions.
 ### NuGet Package
-    PM > Install-Package AndreasDorfer.BaseTypes.FSharp -Version 0.3.2
+    PM > Install-Package AndreasDorfer.BaseTypes.FSharp -Version 0.3.3
 ### Example
 ```fsharp
 match DateTime(1995, 1, 1) |> BaseType.create<SomeWeekendInThe90s, _> with
