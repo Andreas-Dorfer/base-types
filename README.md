@@ -140,7 +140,7 @@ The included attributes are:
 - `RegexAttribute`
 - `NonEmptyGuidAttribute`
 ## JSON Serialization
-The generated types are transparent to the serializer. They are serialized like the types they wrap (when you use [System.Text.Json](https://docs.microsoft.com/en-us/dotnet/api/system.text.json?view=net-5.0)).
+The generated types are transparent to the serializer. They are serialized like the types they wrap (with [System.Text.Json](https://docs.microsoft.com/en-us/dotnet/api/system.text.json?view=net-5.0)).
 ## Custom Attributes
 You can create custom attributes. Let's say you need a `DateTime` only for weekends:
 ```csharp
@@ -194,10 +194,10 @@ Prop.ForAll(arb, arb, (a, b) =>
 {
     var product = a * b;
     return product >= MinProduct && product <= MaxProduct;
-});
+}).QuickCheckThrowOnFailure();
 ```
 ---
-## F# Interop
+## Options
 You can configure the generator to emit the `Microsoft.FSharp.Core.AllowNullLiteral(false)` attribute.
 
 1. Add a reference to [FSharp.Core](https://www.nuget.org/packages/FSharp.Core/).
@@ -212,6 +212,20 @@ You can configure the generator to emit the `Microsoft.FSharp.Core.AllowNullLite
 <ItemGroup>
   <AdditionalFiles Include="AD.BaseTypes.Generator.json" />
 </ItemGroup>
+```
+The [AllowNullLiteralAttribute](https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-allownullliteralattribute.html) isn't intended to be added to types that aren't defined in F#. However, if you primarily use the generated types in F#, you might want to add it, nevertheless.
+
+---
+[![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.FSharp.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.FSharp/)
+## F#
+Do you want to use the generated types in [F#](https://fsharp.org/)? Check out `AD.BaseTypes.FSharp`. The `BaseType` module offers some useful functions.
+### NuGet Package
+    PM > Install-Package AndreasDorfer.BaseTypes.FSharp -Version 0.3.2
+### Example
+```fsharp
+match DateTime(1995, 1, 1) |> BaseType.create<SomeWeekendInThe90s, _> with
+| Ok (BaseType.Value dateTime) -> printf "%s" <| dateTime.ToShortDateString()
+| Error msg -> printf "%s" msg
 ```
 ---
 ## Note
