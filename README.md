@@ -140,7 +140,7 @@ The included attributes are:
 - `RegexAttribute`
 - `NonEmptyGuidAttribute`
 ## JSON Serialization
-The generated types are transparent to the serializer. They are serialized like the types they wrap (when you use [System.Text.Json](https://docs.microsoft.com/en-us/dotnet/api/system.text.json?view=net-5.0)).
+The generated types are transparent to the serializer. They are serialized like the types they wrap (with [System.Text.Json](https://docs.microsoft.com/en-us/dotnet/api/system.text.json?view=net-5.0)).
 ## Custom Attributes
 You can create custom attributes. Let's say you need a `DateTime` only for weekends:
 ```csharp
@@ -197,7 +197,7 @@ Prop.ForAll(arb, arb, (a, b) =>
 });
 ```
 ---
-## AllowNullLiteral
+## Options
 You can configure the generator to emit the `Microsoft.FSharp.Core.AllowNullLiteral(false)` attribute.
 
 1. Add a reference to [FSharp.Core](https://www.nuget.org/packages/FSharp.Core/).
