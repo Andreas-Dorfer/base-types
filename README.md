@@ -213,7 +213,7 @@ You can configure the generator to emit the `Microsoft.FSharp.Core.AllowNullLite
   <AdditionalFiles Include="AD.BaseTypes.Generator.json" />
 </ItemGroup>
 ```
-The [AllowNullLiteralAttribute](https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-allownullliteralattribute.html) isn't intended to be added to types that aren't defined in F#. However, if you primarily use the generated types in F#, it might make things easier for you.
+The [AllowNullLiteralAttribute](https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-allownullliteralattribute.html) isn't intended to be added to types that aren't defined in F#. However, if you primarily use the generated types in F#, it can make things easier for you.
 
 ---
 [![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.FSharp.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.FSharp/)
