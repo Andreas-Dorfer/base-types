@@ -223,7 +223,7 @@ Do you want to use the generated types in [F#](https://fsharp.org/)? Check out `
     PM > Install-Package AndreasDorfer.BaseTypes.FSharp -Version 0.3.3
 ### Example
 ```fsharp
-match DateTime(1995, 1, 1) |> BaseType.create<SomeWeekendInThe90s, _> with
+match (1995, 1, 1) |> DateTime |> BaseType.create<SomeWeekendInThe90s, _> with
 | Ok (BaseType.Value dateTime) -> printf "%s" <| dateTime.ToShortDateString()
 | Error msg -> printf "%s" msg
 ```
