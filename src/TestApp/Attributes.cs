@@ -13,7 +13,7 @@ namespace TestApp
         }
     }
 
-    [Weekend] partial record SomeWeekend;
+    [Weekend] public partial record SomeWeekend;
 
     [AttributeUsage(AttributeTargets.Class)]
     class The90sAttribute : Attribute, IBaseTypeValidation<DateTime>
@@ -25,5 +25,5 @@ namespace TestApp
         }
     }
 
-    [The90s, Weekend] partial record SomeWeekendInThe90s;
+    [The90s, Weekend] public partial record SomeWeekendInThe90s;
 }

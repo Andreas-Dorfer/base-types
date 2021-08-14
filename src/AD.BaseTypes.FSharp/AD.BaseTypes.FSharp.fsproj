@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <Compile Include="BaseType.fs" />
+    <Compile Include="BaseTypeResult.fs" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)'!='Debug'">
