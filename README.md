@@ -194,7 +194,7 @@ Prop.ForAll(arb, arb, (a, b) =>
 {
     var product = a * b;
     return product >= MinProduct && product <= MaxProduct;
-});
+}).QuickCheckThrowOnFailure();
 ```
 ---
 ## Options
