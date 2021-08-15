@@ -28,7 +28,7 @@ public Department GetDepartment() =>
 ```
 Your code still compiles. Hopefully, you've got some tests to catch that bug. But why not utilize the type system to prevent that bug in the first place?
 
-You can use records like [single case discriminated unions](https://fsharpforfunandprofit.com/posts/designing-with-types-single-case-dus/):
+You can use [records](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/record) like [single case discriminated unions](https://fsharpforfunandprofit.com/posts/designing-with-types-single-case-dus/):
 ```csharp
 sealed record EmployeeId(string Value);
 sealed record DepartmentId(string Value);
@@ -213,7 +213,7 @@ You can configure the generator to emit the `Microsoft.FSharp.Core.AllowNullLite
   <AdditionalFiles Include="AD.BaseTypes.Generator.json" />
 </ItemGroup>
 ```
-The [AllowNullLiteralAttribute](https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-allownullliteralattribute.html) isn't intended to be added to types that aren't defined in F#. However, if you primarily use the generated types in F#, you might want to add it, nevertheless.
+The [AllowNullLiteralAttribute](https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-allownullliteralattribute.html) isn't intended to be added to types that aren't defined in F#. However, if you primarily use the generated types in F#, you might want to add it.
 
 ---
 [![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.FSharp.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.FSharp/)
