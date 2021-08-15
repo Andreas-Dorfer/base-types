@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 
 namespace AD.BaseTypes.ModelBinders
 {
@@ -11,7 +11,7 @@ namespace AD.BaseTypes.ModelBinders
             var baseTypeInterface = type.GetInterface(typeof(IBaseType<>).Name);
             var wrappedType = baseTypeInterface?.GenericTypeArguments[0];
 
-            return (IModelBinder)Activator.CreateInstance(typeof(BaseTypeModelBinder<,>).MakeGenericType(type, wrappedType!))!;
+            return new BinderTypeModelBinder(typeof(BaseTypeModelBinder<,>).MakeGenericType(type, wrappedType!));
         }
     }
 }
