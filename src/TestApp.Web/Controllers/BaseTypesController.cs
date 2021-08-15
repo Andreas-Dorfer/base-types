@@ -12,6 +12,6 @@ namespace TestApp.Web.Controllers
     public class BaseTypesController : ControllerBase
     {
         [HttpGet]
-        public string Foo(MyNonEmptyString who) => $"Hallo {who}";
+        public string Foo(MyMinLength who) => $"Hallo {who}";
     }
 }
