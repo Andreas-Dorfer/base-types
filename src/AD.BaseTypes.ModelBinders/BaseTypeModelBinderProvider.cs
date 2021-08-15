@@ -7,11 +7,12 @@ namespace AD.BaseTypes.ModelBinders
     {
         public IModelBinder GetBinder(ModelBinderProviderContext context)
         {
-            var type = context.Metadata.ModelType;
-            var baseTypeInterface = type.GetInterface(typeof(IBaseType<>).Name);
-            var wrappedType = baseTypeInterface?.GenericTypeArguments[0];
+            var baseType = context.Metadata.ModelType;
+            var iBaseType = baseType.GetInterface(typeof(IBaseType<>).Name);
+            if (iBaseType is null) return null!;
 
-            return new BinderTypeModelBinder(typeof(BaseTypeModelBinder<,>).MakeGenericType(type, wrappedType!));
+            var wrapped = iBaseType.GenericTypeArguments[0];
+            return new BinderTypeModelBinder(typeof(BaseTypeModelBinder<,>).MakeGenericType(baseType, wrapped));
         }
     }
 }
