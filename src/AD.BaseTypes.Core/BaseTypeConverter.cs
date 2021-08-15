@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace AD.BaseTypes.Core
 {
-    public class BaseTypeTypeConverter<TBaseType, TWrapped> : TypeConverter where TBaseType : IBaseType<TWrapped>
+    public class BaseTypeConverter<TBaseType, TWrapped> : TypeConverter where TBaseType : IBaseType<TWrapped>
     {
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) =>
             sourceType == typeof(TWrapped);
