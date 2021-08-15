@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -32,12 +33,37 @@ namespace AD.BaseTypes
         /// Creates the base type.
         /// </summary>
         /// <param name="value">The wrapped value.</param>
+        /// <returns>The created base type.</returns>
         /// <exception cref="NotImplementedException">The base type does not define a creator.</exception>
         /// <exception cref="ArgumentException">The parameter <paramref name="value"/> is invalid.</exception>
         public static TBaseType Create(TWrapped value)
         {
             if (creator is null) throw new NotImplementedException($"The type '{typeof(TBaseType)}' does not define a creator.");
             return creator(value);
+        }
+
+        /// <summary>
+        /// Tries to create a base type.
+        /// </summary>
+        /// <param name="value">The wrapped value.</param>
+        /// <param name="baseType">The created base type.</param>
+        /// <param name="errorMessage">The error message.</param>
+        /// <returns>True, if the base type is created.</returns>
+        /// <exception cref="NotImplementedException">The base type does not define a creator.</exception>
+        public static bool TryCreate(TWrapped value, [MaybeNullWhen(false)] out TBaseType baseType, [MaybeNullWhen(true)] out string errorMessage)
+        {
+            try
+            {
+                baseType = Create(value);
+                errorMessage = default;
+                return true;
+            }
+            catch (ArgumentException ex)
+            {
+                baseType = default;
+                errorMessage = ex.Message;
+                return false;
+            }
         }
     }
 }
