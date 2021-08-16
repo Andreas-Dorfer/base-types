@@ -142,7 +142,7 @@ The included attributes are:
 - `RegexAttribute`
 - `NonEmptyGuidAttribute`
 ## JSON Serialization
-The generated types are transparent to the serializer. They are serialized like the types they wrap (with [System.Text.Json](https://docs.microsoft.com/en-us/dotnet/api/system.text.json?view=net-5.0)).
+The generated types are transparent to the serializer. They are serialized like the types they wrap.
 ## Custom Attributes
 You can create custom attributes. Let's say you need a `DateTime` only for weekends:
 ```csharp
