@@ -32,7 +32,8 @@ namespace AD.BaseTypes.Converters
         {
             if (value is not IBaseType<TWrapped> baseType) return default!;
 
-            return destinationType == typeof(TWrapped) ? baseType.Value! : wrappedConverter.ConvertTo(context, culture, baseType.Value, destinationType);
+            var wrapped = baseType.Value;
+            return destinationType == typeof(TWrapped) ? wrapped! : wrappedConverter.ConvertTo(context, culture, wrapped, destinationType);
         }
     }
 }
