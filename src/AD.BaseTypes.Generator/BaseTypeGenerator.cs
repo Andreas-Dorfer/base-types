@@ -92,7 +92,7 @@ namespace AD.BaseTypes.Generator
                 sourceBuilder.AppendLine($"public {baseType} Value {{ get; }}");
                 sourceBuilder.AppendLine("public override string ToString() => Value.ToString();");
                 sourceBuilder.AppendLine($"public int CompareTo(object obj) => CompareTo(obj as {recordName});");
-                sourceBuilder.AppendLine($"public int CompareTo({record.Identifier.Text} other) => other is null ? 1 : System.Collections.Generic.Comparer<{baseType}>.Default.Compare(Value, other.Value);");
+                sourceBuilder.AppendLine($"public int CompareTo({recordName} other) => other is null ? 1 : System.Collections.Generic.Comparer<{baseType}>.Default.Compare(Value, other.Value);");
                 sourceBuilder.AppendLine($"public static implicit operator {baseType}({recordName} item) => item.Value;");
                 sourceBuilder.AppendLine($"public static {recordName} Create({baseType} value) => new(value);");
 
