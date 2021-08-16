@@ -100,25 +100,6 @@ Let's say you need to model a name that's from 1 to 20 characters long:
 ```csharp
 [MinMaxLength(1, 20)] partial record Name;
 ```
-**That's it!** Here's what the *generated* code looks like:
-```csharp
-[TypeConverter(typeof(BaseTypeConverter<Name, string>))]
-[JsonConverter(typeof(BaseTypeJsonConverter<Name, string>))]
-sealed partial record Name : IComparable<Name>, IComparable, IBaseType<string>
-{
-    public Name(string value)
-    {
-        new MinMaxLengthAttribute(1, 20).Validate(value);
-        Value = value;
-    }
-    public string Value { get; }
-    public override string ToString() => Value.ToString();
-    public int CompareTo(object? obj) => CompareTo(obj as Name);
-    public int CompareTo(Name? other) => other is null ? 1 : Comparer<string>.Default.Compare(Value, other.Value);
-    public static implicit operator string(Name item) => item.Value;
-    public static Name Create(string value) => new(value);
-}
-```
 Or you need to model a serial number that must follow a certain pattern:
 ```csharp
 [Regex(@"^\d\d-\w\w\w\w$")] partial record SerialNumber;
