@@ -1,6 +1,5 @@
 ﻿using FsCheck;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace AD.BaseTypes.Arbitraries
 {
@@ -8,9 +7,17 @@ namespace AD.BaseTypes.Arbitraries
     /// Arbitrary for non-empty string base types.
     /// </summary>
     /// <typeparam name="TBaseType"></typeparam>
-    public class NonEmptyStringArbitrary<TBaseType> : StringArbitrary<TBaseType> where TBaseType : IBaseType<string>
+    public class NonEmptyStringArbitrary<TBaseType> : BaseTypeArbitrary<TBaseType, string> where TBaseType : IBaseType<string>
     {
-        readonly Arbitrary<NonEmptyString> arb = Arb.Default.NonEmptyString();
+        readonly Arbitrary<TBaseType> arb;
+
+        /// <summary>
+        /// Creates a <see cref="NonEmptyStringArbitrary{TBaseType}"/>.
+        /// </summary>
+        public NonEmptyStringArbitrary()
+        {
+            arb = Arb.Default.NonEmptyString().Convert(str => Creator(str.Item), baseType => NonEmptyString.NewNonEmptyString(baseType.Value));
+        }
 
         /// <summary>
         /// Filters empty string.
@@ -19,18 +26,10 @@ namespace AD.BaseTypes.Arbitraries
         /// <returns>True, if the string isn't empty.</returns>
         protected override bool Filter(string value) => !string.IsNullOrEmpty(value);
 
-        /// <summary>
-        /// Maps a FsCheck.NonEmptyString to the base type.
-        /// </summary>
-        /// <param name="str">The FsCheck.NonEmptyString.</param>
-        /// <returns>The base type.</returns>
-        protected TBaseType Map(NonEmptyString str) => Creator(str.Item);
+        /// <inheritdoc/>
+        public override Gen<TBaseType> Generator => arb.Generator;
 
         /// <inheritdoc/>
-        public override Gen<TBaseType> Generator => arb.Generator.Select(Map);
-
-        /// <inheritdoc/>
-        public override IEnumerable<TBaseType> Shrinker(TBaseType baseType) =>
-            arb.Shrinker(NonEmptyString.NewNonEmptyString(baseType.Value)).Select(Map);
+        public override IEnumerable<TBaseType> Shrinker(TBaseType baseType) => arb.Shrinker(baseType);
     }
 }

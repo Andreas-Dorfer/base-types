@@ -1,6 +1,5 @@
 ﻿using FsCheck;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace AD.BaseTypes.Arbitraries
 {
@@ -10,7 +9,15 @@ namespace AD.BaseTypes.Arbitraries
     /// <typeparam name="TBaseType">The base type.</typeparam>
     public class StringArbitrary<TBaseType> : BaseTypeArbitrary<TBaseType, string> where TBaseType : IBaseType<string>
     {
-        readonly Arbitrary<NonNull<string>> arb = Arb.Default.NonNull<string>();
+        readonly Arbitrary<TBaseType> arb;
+
+        /// <summary>
+        /// Creates a <see cref="StringArbitrary{TBaseType}"/>.
+        /// </summary>
+        public StringArbitrary()
+        {
+            arb = Arb.Default.NonNull<string>().Convert(str => Creator(str.Item), baseType => NonNull<string>.NewNonNull(baseType.Value));
+        }
 
         /// <summary>
         /// Filters empty strings.
@@ -19,18 +26,10 @@ namespace AD.BaseTypes.Arbitraries
         /// <returns>True, if the string isn't empty.</returns>
         protected override bool Filter(string value) => value is not null;
 
-        /// <summary>
-        /// Maps a NonNull-string to the base type.
-        /// </summary>
-        /// <param name="str">The NonNull-string.</param>
-        /// <returns>The base type.</returns>
-        protected TBaseType Map(NonNull<string> str) => Creator(str.Item);
+        /// <inheritdoc/>
+        public override Gen<TBaseType> Generator => arb.Generator;
 
         /// <inheritdoc/>
-        public override Gen<TBaseType> Generator => arb.Generator.Select(Map);
-
-        /// <inheritdoc/>
-        public override IEnumerable<TBaseType> Shrinker(TBaseType baseType) =>
-            arb.Shrinker(NonNull<string>.NewNonNull(baseType.Value)).Select(Map);
+        public override IEnumerable<TBaseType> Shrinker(TBaseType baseType) => arb.Shrinker(baseType);
     }
 }
