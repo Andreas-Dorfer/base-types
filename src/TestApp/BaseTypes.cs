@@ -31,6 +31,4 @@ namespace TestApp
     [MinMaxLength(10, 30)] public partial record MinMaxLength;
 
     [Regex(@"\d\w")] public partial record MyRegex;
-
-    [NonEmptyGuid] public partial record MyNonEmptyGuid;
 }

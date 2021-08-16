@@ -3,7 +3,7 @@
 namespace AD.BaseTypes
 {
     /// <summary>
-    /// String wrapper.
+    /// Non-null string wrapper.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public class StringAttribute : Attribute, IBaseTypeValidation<string>

@@ -3,9 +3,15 @@
 namespace AD.BaseTypes
 {
     /// <summary>
-    /// GUID wrapper.
+    /// Non-empty GUID.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class GuidAttribute : Attribute, IBaseTypeDefinition<Guid>
-    { }
+    public class GuidAttribute : Attribute, IBaseTypeValidation<Guid>
+    {
+        /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> is empty.</exception>
+        public void Validate(Guid value)
+        {
+            if (value == Guid.Empty) throw new ArgumentOutOfRangeException(nameof(value), value, "Parameter must not be empty.");
+        }
+    }
 }
