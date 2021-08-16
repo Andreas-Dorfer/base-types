@@ -2,7 +2,7 @@
 # AD.BaseTypes
 Fight primitive obsession and create expressive domain models with source generators.
 ## NuGet Package
-    PM> Install-Package AndreasDorfer.BaseTypes -Version 0.3.1
+    PM> Install-Package AndreasDorfer.BaseTypes -Version 0.4.0
 ## Motivation
 Consider the following snippet:
 ```csharp
@@ -78,6 +78,7 @@ With `AD.BaseTypes` you can write the records like this:
 ```
 **That's it!** All the boilerplate code is [generated](https://docs.microsoft.com/en-us/dotnet/csharp/roslyn-sdk/source-generators-overview) for you. Here's what the *generated* code for `EmployeeId` looks like:
 ```csharp
+[TypeConverter(typeof(BaseTypeConverter<EmployeeId, string>))]
 [JsonConverter(typeof(BaseTypeJsonConverter<EmployeeId, string>))]
 sealed partial record EmployeeId : IComparable<EmployeeId>, IComparable, IBaseType<string>
 {
@@ -88,8 +89,8 @@ sealed partial record EmployeeId : IComparable<EmployeeId>, IComparable, IBaseTy
     }
     public string Value { get; }
     public override string ToString() => Value.ToString();
-    public int CompareTo(object obj) => CompareTo(obj as EmployeeId);
-    public int CompareTo(EmployeeId other) => other is null ? 1 : Comparer<string>.Default.Compare(Value, other.Value);
+    public int CompareTo(object? obj) => CompareTo(obj as EmployeeId);
+    public int CompareTo(EmployeeId? other) => other is null ? 1 : Comparer<string>.Default.Compare(Value, other.Value);
     public static implicit operator string(EmployeeId item) => item.Value;
     public static EmployeeId Create(string value) => new(value);
 }
@@ -98,24 +99,6 @@ sealed partial record EmployeeId : IComparable<EmployeeId>, IComparable, IBaseTy
 Let's say you need to model a name that's from 1 to 20 characters long:
 ```csharp
 [MinMaxLength(1, 20)] partial record Name;
-```
-**That's it!** Here's what the *generated* code looks like:
-```csharp
-[JsonConverter(typeof(BaseTypeJsonConverter<Name, string>))]
-sealed partial record Name : IComparable<Name>, IComparable, IBaseType<string>
-{
-    public Name(string value)
-    {
-        new MinMaxLengthAttribute(1, 20).Validate(value);
-        Value = value;
-    }
-    public string Value { get; }
-    public override string ToString() => Value.ToString();
-    public int CompareTo(object obj) => CompareTo(obj as Name);
-    public int CompareTo(Name other) => other is null ? 1 : Comparer<string>.Default.Compare(Value, other.Value);
-    public static implicit operator string(Name item) => item.Value;
-    public static Name Create(string value) => new(value);
-}
 ```
 Or you need to model a serial number that must follow a certain pattern:
 ```csharp
@@ -140,7 +123,7 @@ The included attributes are:
 - `RegexAttribute`
 - `NonEmptyGuidAttribute`
 ## JSON Serialization
-The generated types are transparent to the serializer. They are serialized like the types they wrap (with [System.Text.Json](https://docs.microsoft.com/en-us/dotnet/api/system.text.json?view=net-5.0)).
+The generated types are transparent to the serializer. They are serialized like the types they wrap.
 ## Custom Attributes
 You can create custom attributes. Let's say you need a `DateTime` only for weekends:
 ```csharp
@@ -176,7 +159,7 @@ class The90sAttribute : Attribute, IBaseTypeValidation<DateTime>
 ## Arbitraries
 Do you use [FsCheck](https://fscheck.github.io/FsCheck/)? Check out `AD.BaseTypes.Arbitraries`.
 ### NuGet Package
-    PM> Install-Package AndreasDorfer.BaseTypes.Arbitraries -Version 0.3.1
+    PM> Install-Package AndreasDorfer.BaseTypes.Arbitraries -Version 0.4.0
 ### Example
 ```csharp
 [IntRange(Min, Max)]
@@ -220,7 +203,7 @@ The [AllowNullLiteralAttribute](https://fsharp.github.io/fsharp-core-docs/refere
 ## F#
 Do you want to use the generated types in [F#](https://fsharp.org/)? Check out `AD.BaseTypes.FSharp`. The `BaseType` and `BaseTypeResult` modules offer some useful functions.
 ### NuGet Package
-    PM > Install-Package AndreasDorfer.BaseTypes.FSharp -Version 0.3.3
+    PM > Install-Package AndreasDorfer.BaseTypes.FSharp -Version 0.4.0
 ### Example
 ```fsharp
 match (1995, 1, 1) |> DateTime |> BaseType.create<SomeWeekendInThe90s, _> with
