@@ -10,6 +10,6 @@ namespace AD.BaseTypes.Tests
     {
         protected override MyDouble New(double value) => new(value);
 
-        protected override bool JsonFilter(double value) => !(double.IsInfinity(value) || double.IsNaN(value));
+        protected override bool JsonFilter(double value) => double.IsFinite(value);
     }
 }
