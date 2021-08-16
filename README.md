@@ -89,8 +89,8 @@ sealed partial record EmployeeId : IComparable<EmployeeId>, IComparable, IBaseTy
     }
     public string Value { get; }
     public override string ToString() => Value.ToString();
-    public int CompareTo(object obj) => CompareTo(obj as EmployeeId);
-    public int CompareTo(EmployeeId other) => other is null ? 1 : Comparer<string>.Default.Compare(Value, other.Value);
+    public int CompareTo(object? obj) => CompareTo(obj as EmployeeId);
+    public int CompareTo(EmployeeId? other) => other is null ? 1 : Comparer<string>.Default.Compare(Value, other.Value);
     public static implicit operator string(EmployeeId item) => item.Value;
     public static EmployeeId Create(string value) => new(value);
 }
@@ -113,8 +113,8 @@ sealed partial record Name : IComparable<Name>, IComparable, IBaseType<string>
     }
     public string Value { get; }
     public override string ToString() => Value.ToString();
-    public int CompareTo(object obj) => CompareTo(obj as Name);
-    public int CompareTo(Name other) => other is null ? 1 : Comparer<string>.Default.Compare(Value, other.Value);
+    public int CompareTo(object? obj) => CompareTo(obj as Name);
+    public int CompareTo(Name? other) => other is null ? 1 : Comparer<string>.Default.Compare(Value, other.Value);
     public static implicit operator string(Name item) => item.Value;
     public static Name Create(string value) => new(value);
 }
