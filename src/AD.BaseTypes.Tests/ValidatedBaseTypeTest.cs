@@ -1,6 +1,7 @@
 ﻿using FsCheck;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.ComponentModel;
+using System.Text.Json;
 
 namespace AD.BaseTypes.Tests
 {
@@ -11,6 +12,8 @@ namespace AD.BaseTypes.Tests
 
         protected TypeConverter Converter { get; } = TypeDescriptor.GetConverter(typeof(TBaseType));
         protected TypeConverter WrappedConverter { get; } = TypeDescriptor.GetConverter(typeof(TWrapped));
+
+        protected virtual bool JsonFilter(TWrapped value) => true;
 
         [TestMethod]
         public void Create() =>
@@ -35,5 +38,17 @@ namespace AD.BaseTypes.Tests
         [TestMethod]
         public void ConvertToString() =>
             Prop.ForAll(Arbitrary, value => Converter.CanConvertTo(typeof(string)) && WrappedConverter.ConvertToString(value) == Converter.ConvertToString(New(value))).QuickCheckThrowOnFailure();
+
+        [TestMethod]
+        public void Json() =>
+            Prop.ForAll(Arbitrary.Filter(JsonFilter), value =>
+            {
+                var serializedValue = JsonSerializer.Serialize(value);
+                var serializedBaseType = JsonSerializer.Serialize(New(value));
+
+                var deserializedBaseType = JsonSerializer.Deserialize<TBaseType>(serializedValue);
+
+                return serializedValue == serializedBaseType && Equals(value, deserializedBaseType!.Value);
+            }).QuickCheckThrowOnFailure();
     }
 }

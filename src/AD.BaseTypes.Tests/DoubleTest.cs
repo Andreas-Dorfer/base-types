@@ -9,5 +9,7 @@ namespace AD.BaseTypes.Tests
     public class DoubleTest : BaseTypeTest<MyDouble, double>
     {
         protected override MyDouble New(double value) => new(value);
+
+        protected override bool JsonFilter(double value) => !(double.IsInfinity(value) || double.IsNaN(value));
     }
 }
