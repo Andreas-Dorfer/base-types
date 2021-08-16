@@ -12,5 +12,8 @@ namespace AD.BaseTypes.Tests
         protected override Arbitrary<Guid> Arbitrary => Arb.Default.Guid().Filter(guid => guid != Guid.Empty);
 
         protected override MyGuid New(Guid value) => new(value);
+
+        [TestMethod, ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void NoEmpty() => new MyGuid(Guid.Empty);
     }
 }
