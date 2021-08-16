@@ -27,8 +27,7 @@ namespace AD.BaseTypes.Arbitraries
         protected TBaseType Map(NonEmptyString str) => Creator(str.Item);
 
         /// <inheritdoc/>
-        public override Gen<TBaseType> Generator =>
-            arb.Generator.Select(Map);
+        public override Gen<TBaseType> Generator => arb.Generator.Select(Map);
 
         /// <inheritdoc/>
         public override IEnumerable<TBaseType> Shrinker(TBaseType baseType) =>
