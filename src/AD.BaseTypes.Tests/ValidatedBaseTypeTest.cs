@@ -17,15 +17,15 @@ namespace AD.BaseTypes.Tests
 
         [TestMethod]
         public void Create() =>
-            Prop.ForAll(Arbitrary, value => Equals(value, New(value).Value)).QuickCheckThrowOnFailure();
+            Prop.ForAll(Arbitrary, value => Equals(value, New(value).Value)).VerboseCheckThrowOnFailure();
 
         [TestMethod]
         public void ConvertFrom() =>
-            Prop.ForAll(Arbitrary, value => Converter.CanConvertFrom(typeof(TWrapped)) && Equals(value, ((TBaseType)Converter.ConvertFrom(value)).Value)).QuickCheckThrowOnFailure();
+            Prop.ForAll(Arbitrary, value => Converter.CanConvertFrom(typeof(TWrapped)) && Equals(value, ((TBaseType)Converter.ConvertFrom(value)).Value)).VerboseCheckThrowOnFailure();
 
         [TestMethod]
         public void ConvertTo() =>
-            Prop.ForAll(Arbitrary, value => Converter.CanConvertTo(typeof(TWrapped)) && Equals(value, Converter.ConvertTo(New(value), typeof(TWrapped)))).QuickCheckThrowOnFailure();
+            Prop.ForAll(Arbitrary, value => Converter.CanConvertTo(typeof(TWrapped)) && Equals(value, Converter.ConvertTo(New(value), typeof(TWrapped)))).VerboseCheckThrowOnFailure();
 
         [TestMethod]
         public void ConvertFromString() =>
@@ -33,11 +33,11 @@ namespace AD.BaseTypes.Tests
             {
                 var @string = WrappedConverter.ConvertToString(value);
                 return Converter.CanConvertFrom(typeof(string)) && Equals(WrappedConverter.ConvertFromString(@string), ((TBaseType)Converter.ConvertFromString(@string)).Value);
-            }).QuickCheckThrowOnFailure();
+            }).VerboseCheckThrowOnFailure();
 
         [TestMethod]
         public void ConvertToString() =>
-            Prop.ForAll(Arbitrary, value => Converter.CanConvertTo(typeof(string)) && WrappedConverter.ConvertToString(value) == Converter.ConvertToString(New(value))).QuickCheckThrowOnFailure();
+            Prop.ForAll(Arbitrary, value => Converter.CanConvertTo(typeof(string)) && WrappedConverter.ConvertToString(value) == Converter.ConvertToString(New(value))).VerboseCheckThrowOnFailure();
 
         [TestMethod]
         public void Json() =>
@@ -49,6 +49,6 @@ namespace AD.BaseTypes.Tests
                 var deserializedBaseType = JsonSerializer.Deserialize<TBaseType>(serializedValue);
 
                 return serializedValue == serializedBaseType && Equals(value, deserializedBaseType!.Value);
-            }).QuickCheckThrowOnFailure();
+            }).VerboseCheckThrowOnFailure();
     }
 }
