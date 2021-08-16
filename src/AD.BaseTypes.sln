@@ -17,9 +17,11 @@ Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "TestApp.FSharp", "TestApp.F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AD.BaseTypes.Core", "AD.BaseTypes.Core\AD.BaseTypes.Core.csproj", "{3065AD31-BC6F-40C8-ABEB-433855A665AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AD.BaseTypes.ModelBinders", "AD.BaseTypes.ModelBinders\AD.BaseTypes.ModelBinders.csproj", "{0F1B3747-C403-4456-A792-E3049BCBE4A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AD.BaseTypes.ModelBinders", "AD.BaseTypes.ModelBinders\AD.BaseTypes.ModelBinders.csproj", "{0F1B3747-C403-4456-A792-E3049BCBE4A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp.Web", "TestApp.Web\TestApp.Web.csproj", "{5CF1A766-14AF-4A12-A67E-F0EFC367307E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestApp.Web", "TestApp.Web\TestApp.Web.csproj", "{5CF1A766-14AF-4A12-A67E-F0EFC367307E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AD.BaseTypes.Tests", "AD.BaseTypes.Tests\AD.BaseTypes.Tests.csproj", "{9E193EED-73A4-4C0D-9823-9ED8FFB3F52B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{5CF1A766-14AF-4A12-A67E-F0EFC367307E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5CF1A766-14AF-4A12-A67E-F0EFC367307E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5CF1A766-14AF-4A12-A67E-F0EFC367307E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E193EED-73A4-4C0D-9823-9ED8FFB3F52B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E193EED-73A4-4C0D-9823-9ED8FFB3F52B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E193EED-73A4-4C0D-9823-9ED8FFB3F52B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E193EED-73A4-4C0D-9823-9ED8FFB3F52B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -11,18 +11,28 @@ namespace AD.BaseTypes.Converters
 
         /// <inheritdoc/>
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) =>
-            wrappedConverter.CanConvertFrom(context, sourceType);
+            sourceType == typeof(TWrapped) || wrappedConverter.CanConvertFrom(context, sourceType);
 
         /// <inheritdoc/>
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType) =>
-            wrappedConverter.CanConvertTo(context, destinationType);
+            destinationType == typeof(TWrapped) || wrappedConverter.CanConvertTo(context, destinationType);
 
         /// <inheritdoc/>
-        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value) =>
-            BaseType<TBaseType, TWrapped>.Create((TWrapped)wrappedConverter.ConvertFrom(context, culture, value));
+        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+        {
+            if (value is not TWrapped wrapped)
+            {
+                wrapped = (TWrapped)wrappedConverter.ConvertFrom(context, culture, value);
+            }
+            return BaseType<TBaseType, TWrapped>.Create(wrapped);
+        }
 
         /// <inheritdoc/>
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType) =>
-            wrappedConverter.ConvertTo(context, culture, ((IBaseType<TWrapped>)value).Value, destinationType);
+        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+        {
+            if (value is not IBaseType<TWrapped> baseType) return default!;
+
+            return destinationType == typeof(TWrapped) ? baseType.Value! : wrappedConverter.ConvertTo(context, culture, baseType.Value, destinationType);
+        }
     }
 }
