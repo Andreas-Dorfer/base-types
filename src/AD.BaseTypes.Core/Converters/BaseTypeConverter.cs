@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Globalization;
 
-namespace AD.BaseTypes.Core
+namespace AD.BaseTypes.Converters
 {
     /// <inheritdoc/>
     public class BaseTypeConverter<TBaseType, TWrapped> : TypeConverter where TBaseType : IBaseType<TWrapped>
