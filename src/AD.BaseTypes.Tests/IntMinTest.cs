@@ -19,6 +19,6 @@ namespace AD.BaseTypes.Tests
         protected override MyIntMin New(int value) => new(value);
 
         [TestMethod, ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void SmallerThanMin() => new MyIntMin(MyIntMin.Min - 1);
+        public void LessThanMin() => new MyIntMin(MyIntMin.Min - 1);
     }
 }

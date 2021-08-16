@@ -19,6 +19,6 @@ namespace AD.BaseTypes.Tests
         protected override MyIntMax New(int value) => new(value);
 
         [TestMethod, ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void GreaterThanMax() => new MyIntMax(MyIntMax.Max + 1);
+        public void MoreThanMax() => new MyIntMax(MyIntMax.Max + 1);
     }
 }
