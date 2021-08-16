@@ -7,24 +7,9 @@ namespace AD.BaseTypes.Arbitraries
     /// Arbitrary for non-empty string base types.
     /// </summary>
     /// <typeparam name="TBaseType"></typeparam>
-    public class NonEmptyStringArbitrary<TBaseType> : BaseTypeArbitrary<TBaseType, string> where TBaseType : IBaseType<string>
+    public class NonEmptyStringArbitrary<TBaseType> : Arbitrary<TBaseType> where TBaseType : IBaseType<string>
     {
-        readonly Arbitrary<TBaseType> arb;
-
-        /// <summary>
-        /// Creates a <see cref="NonEmptyStringArbitrary{TBaseType}"/>.
-        /// </summary>
-        public NonEmptyStringArbitrary()
-        {
-            arb = Arb.Default.NonEmptyString().Convert(str => Creator(str.Item), baseType => NonEmptyString.NewNonEmptyString(baseType.Value));
-        }
-
-        /// <summary>
-        /// Filters empty string.
-        /// </summary>
-        /// <param name="value">The string to check.</param>
-        /// <returns>True, if the string isn't empty.</returns>
-        protected override bool Filter(string value) => !string.IsNullOrEmpty(value);
+        readonly Arbitrary<TBaseType> arb = Arb.Default.NonEmptyString().Convert(str => BaseType<TBaseType, string>.Create(str.Item), baseType => NonEmptyString.NewNonEmptyString(baseType.Value));
 
         /// <inheritdoc/>
         public override Gen<TBaseType> Generator => arb.Generator;
