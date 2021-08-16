@@ -15,6 +15,6 @@ namespace AD.BaseTypes.Tests
         protected override MyString New(string value) => new(value);
 
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
-        public void NoNull() => new MyString(null);
+        public void NoNull() => new MyString(null!);
     }
 }
