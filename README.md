@@ -2,7 +2,7 @@
 # AD.BaseTypes
 Fight primitive obsession and create expressive domain models with source generators.
 ## NuGet Package
-    PM> Install-Package AndreasDorfer.BaseTypes -Version 0.3.1
+    PM> Install-Package AndreasDorfer.BaseTypes -Version 0.4.0
 ## Motivation
 Consider the following snippet:
 ```csharp
@@ -176,7 +176,7 @@ class The90sAttribute : Attribute, IBaseTypeValidation<DateTime>
 ## Arbitraries
 Do you use [FsCheck](https://fscheck.github.io/FsCheck/)? Check out `AD.BaseTypes.Arbitraries`.
 ### NuGet Package
-    PM> Install-Package AndreasDorfer.BaseTypes.Arbitraries -Version 0.3.1
+    PM> Install-Package AndreasDorfer.BaseTypes.Arbitraries -Version 0.4.0
 ### Example
 ```csharp
 [IntRange(Min, Max)]
@@ -220,7 +220,7 @@ The [AllowNullLiteralAttribute](https://fsharp.github.io/fsharp-core-docs/refere
 ## F#
 Do you want to use the generated types in [F#](https://fsharp.org/)? Check out `AD.BaseTypes.FSharp`. The `BaseType` and `BaseTypeResult` modules offer some useful functions.
 ### NuGet Package
-    PM > Install-Package AndreasDorfer.BaseTypes.FSharp -Version 0.3.3
+    PM > Install-Package AndreasDorfer.BaseTypes.FSharp -Version 0.4.0
 ### Example
 ```fsharp
 match (1995, 1, 1) |> DateTime |> BaseType.create<SomeWeekendInThe90s, _> with
