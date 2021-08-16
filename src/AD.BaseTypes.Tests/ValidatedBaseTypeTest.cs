@@ -9,8 +9,8 @@ namespace AD.BaseTypes.Tests
         protected abstract TBaseType New(TWrapped value);
         protected abstract Arbitrary<TWrapped> Arbitrary { get; }
 
-        protected TypeConverter Converter => TypeDescriptor.GetConverter(typeof(TBaseType));
-        protected TypeConverter WrappedConverter => TypeDescriptor.GetConverter(typeof(TWrapped));
+        protected TypeConverter Converter { get; } = TypeDescriptor.GetConverter(typeof(TBaseType));
+        protected TypeConverter WrappedConverter { get; } = TypeDescriptor.GetConverter(typeof(TWrapped));
 
         [TestMethod]
         public void Create() =>
