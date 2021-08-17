@@ -106,22 +106,22 @@ Or you need to model a serial number that must follow a certain pattern:
 ```
 ## Included Attributes
 The included attributes are:
-- `IntAttribute`
-- `DoubleAttribute`
-- `DecimalAttribute`
-- `StringAttribute`
-- `GuidAttribute`
+- `BoolAttribute`
 - `DateTimeAttribute`
-- `IntMinAttribute`
+- `DecimalAttribute`
+- `DoubleAttribute`
+- `GuidAttribute`
+- `IntAttribute`
 - `IntMaxAttribute`
+- `IntMinAttribute`
 - `IntRangeAttribute`
-- `PositiveDecimalAttribute`
-- `NonEmptyStringAttribute`
-- `MinLengthAttribute`
 - `MaxLengthAttribute`
+- `MinLengthAttribute`
 - `MinMaxLengthAttribute`
+- `NonEmptyStringAttribute`
+- `PositiveDecimalAttribute`
 - `RegexAttribute`
-- `NonEmptyGuidAttribute`
+- `StringAttribute`
 ## JSON Serialization
 The generated types are transparent to the serializer. They are serialized like the types they wrap.
 ## Custom Attributes
@@ -155,6 +155,16 @@ class The90sAttribute : Attribute, IBaseTypeValidation<DateTime>
 [The90s, Weekend] partial record SomeWeekendInThe90s;
 ```
 ---
+[![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.ModelBinders.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.ModelBinders/)
+## ASP.NET Core
+Du you need model binding support for [ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore-5.0)? Check out `AD.BaseTypes.ModelBinders`. 
+### NuGet Package
+    PM> Install-Package AndreasDorfer.BaseTypes.ModelBinders -Version 0.4.0
+### Configuration
+```csharp
+services.AddControllers(options => options.UseBaseTypeModelBinders());
+```
+---
 [![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.Arbitraries.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.Arbitraries/)
 ## Arbitraries
 Do you use [FsCheck](https://fscheck.github.io/FsCheck/)? Check out `AD.BaseTypes.Arbitraries`.
@@ -180,6 +190,18 @@ Prop.ForAll(arb, arb, (a, b) =>
 }).QuickCheckThrowOnFailure();
 ```
 ---
+[![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.FSharp.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.FSharp/)
+## F#
+Do you want to use the generated types in [F#](https://fsharp.org/)? Check out `AD.BaseTypes.FSharp`. The `BaseType` and `BaseTypeResult` modules offer some useful functions.
+### NuGet Package
+    PM > Install-Package AndreasDorfer.BaseTypes.FSharp -Version 0.4.0
+### Example
+```fsharp
+match (1995, 1, 1) |> DateTime |> BaseType.create<SomeWeekendInThe90s, _> with
+| Ok (BaseType.Value dateTime) -> printf "%s" <| dateTime.ToShortDateString()
+| Error msg -> printf "%s" msg
+```
+---
 ## Options
 You can configure the generator to emit the `Microsoft.FSharp.Core.AllowNullLiteral(false)` attribute.
 
@@ -195,18 +217,6 @@ You can configure the generator to emit the `Microsoft.FSharp.Core.AllowNullLite
 <ItemGroup>
   <AdditionalFiles Include="AD.BaseTypes.Generator.json" />
 </ItemGroup>
-```
----
-[![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.FSharp.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.FSharp/)
-## F#
-Do you want to use the generated types in [F#](https://fsharp.org/)? Check out `AD.BaseTypes.FSharp`. The `BaseType` and `BaseTypeResult` modules offer some useful functions.
-### NuGet Package
-    PM > Install-Package AndreasDorfer.BaseTypes.FSharp -Version 0.4.0
-### Example
-```fsharp
-match (1995, 1, 1) |> DateTime |> BaseType.create<SomeWeekendInThe90s, _> with
-| Ok (BaseType.Value dateTime) -> printf "%s" <| dateTime.ToShortDateString()
-| Error msg -> printf "%s" msg
 ```
 ---
 ## Note
