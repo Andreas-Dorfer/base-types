@@ -5,8 +5,12 @@ using System.Reflection;
 
 namespace AD.BaseTypes.ModelBinders
 {
+    /// <summary>
+    /// Provides model binders for base types.
+    /// </summary>
     public class BaseTypeModelBinderProvider : IModelBinderProvider
     {
+        /// <inheritdoc/>
         public IModelBinder GetBinder(ModelBinderProviderContext context)
         {
             var baseType = context.Metadata.ModelType;

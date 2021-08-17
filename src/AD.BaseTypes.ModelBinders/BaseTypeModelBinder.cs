@@ -4,6 +4,11 @@ using System.Threading.Tasks;
 
 namespace AD.BaseTypes.ModelBinders
 {
+    /// <summary>
+    /// Model binder for a base type.
+    /// </summary>
+    /// <typeparam name="TBaseType">The base type.</typeparam>
+    /// <typeparam name="TWrapped">The wrapped type.</typeparam>
     public class BaseTypeModelBinder<TBaseType, TWrapped> : IModelBinder where TBaseType : IBaseType<TWrapped>
     {
         static readonly TypeConverter converter;
@@ -13,6 +18,7 @@ namespace AD.BaseTypes.ModelBinders
             converter = TypeDescriptor.GetConverter(typeof(TWrapped));
         }
 
+        /// <inheritdoc/>
         public Task BindModelAsync(ModelBindingContext bindingContext)
         {
             var fieldName = bindingContext.FieldName;

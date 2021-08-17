@@ -8,13 +8,42 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace TestApp.Web
 {
+    class SchemaFilter : ISchemaFilter
+    {
+        public void Apply(OpenApiSchema schema, SchemaFilterContext context)
+        {
+            var iBaseType = TryGetBaseType(context);
+            if (iBaseType is null) return;
+
+            var wrapped = iBaseType.GenericTypeArguments[0];
+            if (wrapped == typeof(string))
+            {
+                schema.Type = "string";
+            }
+        }
+
+        static Type? TryGetBaseType(SchemaFilterContext context)
+        {
+            try
+            {
+                return context.Type.GetInterface(typeof(AD.BaseTypes.IBaseType<>).Name);
+            }
+            catch (AmbiguousMatchException)
+            {
+                return null;
+            }
+        }
+    }
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -28,10 +57,11 @@ namespace TestApp.Web
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers(options => options.ModelBinderProviders.Insert(0, new BaseTypeModelBinderProvider()));
+            services.AddControllers(options => options.UseBaseTypeModelBinders());
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TestApp.Web", Version = "v1" });
+                c.SchemaFilter<SchemaFilter>();
             });
         }
 
