@@ -21,7 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AD.BaseTypes.ModelBinders",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestApp.Web", "TestApp.Web\TestApp.Web.csproj", "{5CF1A766-14AF-4A12-A67E-F0EFC367307E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AD.BaseTypes.Tests", "AD.BaseTypes.Tests\AD.BaseTypes.Tests.csproj", "{9E193EED-73A4-4C0D-9823-9ED8FFB3F52B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AD.BaseTypes.Tests", "AD.BaseTypes.Tests\AD.BaseTypes.Tests.csproj", "{9E193EED-73A4-4C0D-9823-9ED8FFB3F52B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AD.BaseTypes.OpenApiSchemas", "AD.BaseTypes.OpenApiSchemas\AD.BaseTypes.OpenApiSchemas.csproj", "{FD16942F-A075-4F71-9B31-F3807DF77F4A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +71,10 @@ Global
 		{9E193EED-73A4-4C0D-9823-9ED8FFB3F52B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E193EED-73A4-4C0D-9823-9ED8FFB3F52B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E193EED-73A4-4C0D-9823-9ED8FFB3F52B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD16942F-A075-4F71-9B31-F3807DF77F4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD16942F-A075-4F71-9B31-F3807DF77F4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD16942F-A075-4F71-9B31-F3807DF77F4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD16942F-A075-4F71-9B31-F3807DF77F4A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
