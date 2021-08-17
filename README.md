@@ -180,6 +180,18 @@ Prop.ForAll(arb, arb, (a, b) =>
 }).QuickCheckThrowOnFailure();
 ```
 ---
+[![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.FSharp.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.FSharp/)
+## F#
+Do you want to use the generated types in [F#](https://fsharp.org/)? Check out `AD.BaseTypes.FSharp`. The `BaseType` and `BaseTypeResult` modules offer some useful functions.
+### NuGet Package
+    PM > Install-Package AndreasDorfer.BaseTypes.FSharp -Version 0.4.0
+### Example
+```fsharp
+match (1995, 1, 1) |> DateTime |> BaseType.create<SomeWeekendInThe90s, _> with
+| Ok (BaseType.Value dateTime) -> printf "%s" <| dateTime.ToShortDateString()
+| Error msg -> printf "%s" msg
+```
+---
 ## Options
 You can configure the generator to emit the `Microsoft.FSharp.Core.AllowNullLiteral(false)` attribute.
 
@@ -195,18 +207,6 @@ You can configure the generator to emit the `Microsoft.FSharp.Core.AllowNullLite
 <ItemGroup>
   <AdditionalFiles Include="AD.BaseTypes.Generator.json" />
 </ItemGroup>
-```
----
-[![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.FSharp.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.FSharp/)
-## F#
-Do you want to use the generated types in [F#](https://fsharp.org/)? Check out `AD.BaseTypes.FSharp`. The `BaseType` and `BaseTypeResult` modules offer some useful functions.
-### NuGet Package
-    PM > Install-Package AndreasDorfer.BaseTypes.FSharp -Version 0.4.0
-### Example
-```fsharp
-match (1995, 1, 1) |> DateTime |> BaseType.create<SomeWeekendInThe90s, _> with
-| Ok (BaseType.Value dateTime) -> printf "%s" <| dateTime.ToShortDateString()
-| Error msg -> printf "%s" msg
 ```
 ---
 ## Note
