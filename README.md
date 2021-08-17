@@ -199,7 +199,7 @@ Do you use [Swagger](https://swagger.io/)? Check out `AD.BaseTypes.OpenApiSchema
 ```csharp
 services.AddSwaggerGen(c =>
 {
-    //...
+    //c.SwaggerDoc(...)
     c.UseBaseTypeSchemas();
 });
 ```
