@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 
 namespace TestApp.Web
 {
+#nullable enable
     class SchemaFilter : ISchemaFilter
     {
         public void Apply(OpenApiSchema schema, SchemaFilterContext context)
@@ -43,6 +44,7 @@ namespace TestApp.Web
             }
         }
     }
+#nullable disable
 
     public class Startup
     {
