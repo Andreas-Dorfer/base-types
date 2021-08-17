@@ -5,8 +5,12 @@ using System.Reflection;
 
 namespace AD.BaseTypes.OpenApiSchemas
 {
+    /// <summary>
+    /// Schema filter for base types.
+    /// </summary>
     public class BaseTypeSchemaFilter : ISchemaFilter
     {
+        /// <inheritdoc/>
         public void Apply(OpenApiSchema schema, SchemaFilterContext context)
         {
             var iBaseType = TryGetBaseType(context.Type);
@@ -28,7 +32,7 @@ namespace AD.BaseTypes.OpenApiSchemas
         {
             try
             {
-                return type.GetInterface(typeof(IBaseType<>).Name);
+                return type.GetInterface(typeof(IBaseType<>).FullName!);
             }
             catch (AmbiguousMatchException)
             {

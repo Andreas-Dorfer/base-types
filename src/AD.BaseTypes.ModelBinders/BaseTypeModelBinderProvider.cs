@@ -25,7 +25,7 @@ namespace AD.BaseTypes.ModelBinders
         {
             try
             {
-                return baseType.GetInterface(typeof(IBaseType<>).Name);
+                return baseType.GetInterface(typeof(IBaseType<>).FullName!);
             }
             catch (AmbiguousMatchException)
             {
