@@ -4,6 +4,12 @@
     <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageId>AndreasDorfer.BaseTypes.OpenApiSchemas</PackageId>
+    <Version>0.4.0</Version>
+    <Authors>Andreas Dorfer</Authors>
+    <Description>OpenAPI schemas for generated base types.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/Andreas-Dorfer/base-types</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(Configuration)'!='Debug'">
