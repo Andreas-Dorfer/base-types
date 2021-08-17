@@ -190,6 +190,20 @@ Du you need model binding support for [ASP.NET Core](https://docs.microsoft.com/
 services.AddControllers(options => options.UseBaseTypeModelBinders());
 ```
 ---
+[![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.OpenApiSchemas.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.OpenApiSchemas/)
+## Swagger
+Do you use [Swagger](https://swagger.io/)? Check out `AD.BaseTypes.OpenApiSchemas`.
+### NuGetPackage
+    PM> Install-Package AndreasDorfer.BaseTypes.OpenApiSchemas -Version 0.4.0
+### Configuration
+```csharp
+services.AddSwaggerGen(c =>
+{
+    //...
+    c.UseBaseTypeSchemas();
+});
+```
+---
 [![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.FSharp.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.FSharp/)
 ## F#
 Do you want to use the generated types in [F#](https://fsharp.org/)? Check out `AD.BaseTypes.FSharp`. The `BaseType` and `BaseTypeResult` modules offer some useful functions.
