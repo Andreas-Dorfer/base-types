@@ -155,16 +155,6 @@ class The90sAttribute : Attribute, IBaseTypeValidation<DateTime>
 [The90s, Weekend] partial record SomeWeekendInThe90s;
 ```
 ---
-[![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.ModelBinders.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.ModelBinders/)
-## ASP.NET Core
-Du you need model binding support for [ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore-5.0)? Check out `AD.BaseTypes.ModelBinders`. 
-### NuGet Package
-    PM> Install-Package AndreasDorfer.BaseTypes.ModelBinders -Version 0.4.0
-### Configuration
-```csharp
-services.AddControllers(options => options.UseBaseTypeModelBinders());
-```
----
 [![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.Arbitraries.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.Arbitraries/)
 ## Arbitraries
 Do you use [FsCheck](https://fscheck.github.io/FsCheck/)? Check out `AD.BaseTypes.Arbitraries`.
@@ -188,6 +178,16 @@ Prop.ForAll(arb, arb, (a, b) =>
     var product = a * b;
     return product >= MinProduct && product <= MaxProduct;
 }).QuickCheckThrowOnFailure();
+```
+---
+[![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.ModelBinders.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.ModelBinders/)
+## ASP.NET Core
+Du you need model binding support for [ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore-5.0)? Check out `AD.BaseTypes.ModelBinders`. 
+### NuGet Package
+    PM> Install-Package AndreasDorfer.BaseTypes.ModelBinders -Version 0.4.0
+### Configuration
+```csharp
+services.AddControllers(options => options.UseBaseTypeModelBinders());
 ```
 ---
 [![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.FSharp.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.FSharp/)
