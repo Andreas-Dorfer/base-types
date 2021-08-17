@@ -106,22 +106,22 @@ Or you need to model a serial number that must follow a certain pattern:
 ```
 ## Included Attributes
 The included attributes are:
-- `IntAttribute`
-- `DoubleAttribute`
-- `DecimalAttribute`
-- `StringAttribute`
-- `GuidAttribute`
+- `BoolAttribute`
 - `DateTimeAttribute`
-- `IntMinAttribute`
+- `DecimalAttribute`
+- `DoubleAttribute`
+- `GuidAttribute`
+- `IntAttribute`
 - `IntMaxAttribute`
+- `IntMinAttribute`
 - `IntRangeAttribute`
-- `PositiveDecimalAttribute`
-- `NonEmptyStringAttribute`
-- `MinLengthAttribute`
 - `MaxLengthAttribute`
+- `MinLengthAttribute`
 - `MinMaxLengthAttribute`
+- `NonEmptyStringAttribute`
+- `PositiveDecimalAttribute`
 - `RegexAttribute`
-- `NonEmptyGuidAttribute`
+- `StringAttribute`
 ## JSON Serialization
 The generated types are transparent to the serializer. They are serialized like the types they wrap.
 ## Custom Attributes
