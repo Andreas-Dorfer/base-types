@@ -8,6 +8,7 @@ namespace AD.BaseTypes.Tests
     public abstract class BaseTypeTest<TBaseType, TWrapped> where TBaseType : IBaseType<TWrapped>
     {
         protected abstract Arbitrary<TBaseType> Arbitrary { get; }
+        protected virtual bool JsonFilter(TWrapped value) => true;
 
         protected TypeConverter Converter { get; } = TypeDescriptor.GetConverter(typeof(TBaseType));
         protected TypeConverter WrappedConverter { get; } = TypeDescriptor.GetConverter(typeof(TWrapped));
@@ -38,7 +39,7 @@ namespace AD.BaseTypes.Tests
 
         [TestMethod]
         public void Json() =>
-            Prop.ForAll(Arbitrary, baseType =>
+            Prop.ForAll(Arbitrary.Filter(_ => JsonFilter(_.Value)), baseType =>
             {
                 var serializedValue = JsonSerializer.Serialize(baseType.Value);
                 var serialized = JsonSerializer.Serialize(baseType);
