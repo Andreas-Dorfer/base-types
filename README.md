@@ -22,6 +22,7 @@ catch (ArgumentException)
 }
 
 [IntRange(0, 100)] partial record Rating;
+//the source generator creates the validation code for you
 ```
 ## Motivation
 Consider the following snippet:
