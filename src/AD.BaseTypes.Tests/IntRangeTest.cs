@@ -1,6 +1,6 @@
-﻿using FsCheck;
+﻿using AD.BaseTypes.Arbitraries;
+using FsCheck;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
 
 namespace AD.BaseTypes.Tests
 {
@@ -10,11 +10,9 @@ namespace AD.BaseTypes.Tests
         public const int Min = -100, Max = 100;
     }
 
-    //[TestClass]
-    //public class IntRangeTest : ValidatedBaseTypeTest<MyIntRange, int>
-    //{
-    //    protected override Arbitrary<int> Arbitrary => Arb.From(Gen.Choose(MyIntRange.Min, MyIntRange.Max), value => Arb.Shrink(value).Where(_ => _ >= MyIntRange.Min && _ <= MyIntRange.Max));
-
-    //    protected override MyIntRange New(int value) => new(value);
-    //}
+    [TestClass]
+    public class IntRangeTest : BaseTypeTest<MyIntRange, int>
+    {
+        protected override Arbitrary<MyIntRange> Arbitrary => new IntRangeArbitrary<MyIntRange>(MyIntRange.Min, MyIntRange.Max);
+    }
 }
