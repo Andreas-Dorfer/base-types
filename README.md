@@ -18,7 +18,7 @@ try
 }
 catch (ArgumentException)
 {
-    Console.WriteLine("The rating must be between 0 and 100.");
+    Console.WriteLine("The rating must be from 0 to 100.");
 }
 
 [IntRange(0, 100)] partial record Rating;
