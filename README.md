@@ -10,7 +10,6 @@ using AD.BaseTypes;
 using System;
 
 Rating ok = new(75);
-Console.WriteLine($"The rating is {ok}.");
 
 try
 {
