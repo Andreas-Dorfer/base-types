@@ -3,6 +3,21 @@
 Fight primitive obsession and create expressive domain models with source generators.
 ## NuGet Package
     PM> Install-Package AndreasDorfer.BaseTypes -Version 0.4.0
+## TL;DR
+A succinct way to create wrappers around primitive types with records and source generators.
+```csharp
+using AD.BaseTypes;
+
+[IntRange(0, 100)] partial record Rating;
+
+Rating ok = new(75);
+
+try
+{
+    Rating invalid = new(125);
+}
+catch (ArgumentOutOfRangeException ex) { /* ... */ }
+```
 ## Motivation
 Consider the following snippet:
 ```csharp
