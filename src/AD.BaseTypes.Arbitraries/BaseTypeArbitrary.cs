@@ -19,8 +19,14 @@ namespace AD.BaseTypes.Arbitraries
         /// </summary>
         public BaseTypeArbitrary()
         {
-            arb = Arb.From<TWrapped>().Filter(Filter);
+            arb = WrappedArb().Filter(Filter);
         }
+
+        /// <summary>
+        /// The arbitrary for the wrapped type.
+        /// </summary>
+        /// <returns>The arbitrary for the wrapped type.</returns>
+        protected virtual Arbitrary<TWrapped> WrappedArb() => Arb.From<TWrapped>();
 
         /// <summary>
         /// The base type's creator.

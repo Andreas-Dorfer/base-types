@@ -1,5 +1,4 @@
 ﻿using FsCheck;
-using System.Collections.Generic;
 
 namespace AD.BaseTypes.Arbitraries
 {
@@ -7,14 +6,16 @@ namespace AD.BaseTypes.Arbitraries
     /// Arbitrary for non-empty string base types.
     /// </summary>
     /// <typeparam name="TBaseType"></typeparam>
-    public class NonEmptyStringArbitrary<TBaseType> : Arbitrary<TBaseType> where TBaseType : IBaseType<string>
+    public class NonEmptyStringArbitrary<TBaseType> : BaseTypeArbitrary<TBaseType, string> where TBaseType : IBaseType<string>
     {
-        readonly Arbitrary<TBaseType> arb = Arb.Default.NonEmptyString().Convert(str => BaseType<TBaseType, string>.Create(str.Item), baseType => NonEmptyString.NewNonEmptyString(baseType.Value));
-
         /// <inheritdoc/>
-        public override Gen<TBaseType> Generator => arb.Generator;
+        protected override Arbitrary<string> WrappedArb() => Arb.Default.NonEmptyString().Convert(str => str.Item, str => NonEmptyString.NewNonEmptyString(str));
 
-        /// <inheritdoc/>
-        public override IEnumerable<TBaseType> Shrinker(TBaseType baseType) => arb.Shrinker(baseType);
+        /// <summary>
+        /// Filters empty strings.
+        /// </summary>
+        /// <param name="value">The string to check.</param>
+        /// <returns>True, if the string is valid.</returns>
+        protected override bool Filter(string value) => !string.IsNullOrEmpty(value);
     }
 }
