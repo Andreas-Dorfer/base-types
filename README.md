@@ -180,30 +180,6 @@ Prop.ForAll(arb, arb, (a, b) =>
 }).QuickCheckThrowOnFailure();
 ```
 ---
-[![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.ModelBinders.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.ModelBinders/)
-## ASP.NET Core
-Du you need model binding support for [ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore-5.0)? Check out `AD.BaseTypes.ModelBinders`. 
-### NuGet Package
-    PM> Install-Package AndreasDorfer.BaseTypes.ModelBinders -Version 0.4.0
-### Configuration
-```csharp
-services.AddControllers(options => options.UseBaseTypeModelBinders());
-```
----
-[![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.OpenApiSchemas.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.OpenApiSchemas/)
-## Swagger
-Do you use [Swagger](https://swagger.io/)? Check out `AD.BaseTypes.OpenApiSchemas`.
-### NuGetPackage
-    PM> Install-Package AndreasDorfer.BaseTypes.OpenApiSchemas -Version 0.4.0
-### Configuration
-```csharp
-services.AddSwaggerGen(c =>
-{
-    //c.SwaggerDoc(...)
-    c.UseBaseTypeSchemas();
-});
-```
----
 [![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.FSharp.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.FSharp/)
 ## F#
 Do you want to use the generated types in [F#](https://fsharp.org/)? Check out `AD.BaseTypes.FSharp`. The `BaseType` and `BaseTypeResult` modules offer some useful functions.
@@ -231,6 +207,30 @@ You can configure the generator to emit the `Microsoft.FSharp.Core.AllowNullLite
 <ItemGroup>
   <AdditionalFiles Include="AD.BaseTypes.Generator.json" />
 </ItemGroup>
+```
+---
+[![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.ModelBinders.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.ModelBinders/)
+## ASP.NET Core
+Du you need model binding support for [ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore-5.0)? Check out `AD.BaseTypes.ModelBinders`. 
+### NuGet Package
+    PM> Install-Package AndreasDorfer.BaseTypes.ModelBinders -Version 0.4.0
+### Configuration
+```csharp
+services.AddControllers(options => options.UseBaseTypeModelBinders());
+```
+---
+[![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.OpenApiSchemas.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.OpenApiSchemas/)
+## Swagger
+Do you use [Swagger](https://swagger.io/)? Check out `AD.BaseTypes.OpenApiSchemas`.
+### NuGetPackage
+    PM> Install-Package AndreasDorfer.BaseTypes.OpenApiSchemas -Version 0.4.0
+### Configuration
+```csharp
+services.AddSwaggerGen(c =>
+{
+    //c.SwaggerDoc(...)
+    c.UseBaseTypeSchemas();
+});
 ```
 ---
 ## Note
