@@ -1,3 +1,5 @@
+using AD.BaseTypes.Arbitraries;
+using FsCheck;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
@@ -8,6 +10,6 @@ namespace AD.BaseTypes.Tests
     [TestClass]
     public class DateTimeTest : BaseTypeTest<MyDateTime, DateTime>
     {
-        protected override MyDateTime New(DateTime value) => new(value);
+        protected override Arbitrary<MyDateTime> Arbitrary => new DateTimeArbitrary<MyDateTime>();
     }
 }

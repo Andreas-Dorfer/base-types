@@ -20,11 +20,13 @@
 
   <ItemGroup Condition="'$(Configuration)'!='Debug'">
     <PackageReference Include="AndreasDorfer.BaseTypes" Version="0.4.0" />
+    <PackageReference Include="AndreasDorfer.BaseTypes.Arbitraries" Version="0.4.0" />
   </ItemGroup>
-  
+
   <ItemGroup Condition="'$(Configuration)'=='Debug'">
     <ProjectReference Include="..\AD.BaseTypes.Generator\AD.BaseTypes.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\AD.BaseTypes\AD.BaseTypes.csproj" />
+    <ProjectReference Include="..\AD.BaseTypes.Arbitraries\AD.BaseTypes.Arbitraries.csproj" />
   </ItemGroup>
 
 </Project>

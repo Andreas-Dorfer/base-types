@@ -11,14 +11,14 @@ namespace AD.BaseTypes.Tests
         public const int Min = -100;
     }
 
-    [TestClass]
-    public class IntMinTest : ValidatedBaseTypeTest<MyIntMin, int>
-    {
-        protected override Arbitrary<int> Arbitrary => Arb.From(Gen.Choose(MyIntMin.Min, int.MaxValue), value => Arb.Shrink(value).Where(_ => _ >= MyIntMin.Min));
+    //[TestClass]
+    //public class IntMinTest : ValidatedBaseTypeTest<MyIntMin, int>
+    //{
+    //    protected override Arbitrary<int> Arbitrary => Arb.From(Gen.Choose(MyIntMin.Min, int.MaxValue), value => Arb.Shrink(value).Where(_ => _ >= MyIntMin.Min));
 
-        protected override MyIntMin New(int value) => new(value);
+    //    protected override MyIntMin New(int value) => new(value);
 
-        [TestMethod, ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void LessThanMin() => new MyIntMin(MyIntMin.Min - 1);
-    }
+    //    [TestMethod, ExpectedException(typeof(ArgumentOutOfRangeException))]
+    //    public void LessThanMin() => new MyIntMin(MyIntMin.Min - 1);
+    //}
 }

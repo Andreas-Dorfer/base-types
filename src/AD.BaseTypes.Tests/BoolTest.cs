@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using AD.BaseTypes.Arbitraries;
+using FsCheck;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AD.BaseTypes.Tests
 {
@@ -7,6 +9,6 @@ namespace AD.BaseTypes.Tests
     [TestClass]
     public class BoolTest : BaseTypeTest<MyBool, bool>
     {
-        protected override MyBool New(bool value) => new(value);
+        protected override Arbitrary<MyBool> Arbitrary => new BoolArbitrary<MyBool>();
     }
 }
