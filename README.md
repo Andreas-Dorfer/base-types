@@ -7,8 +7,7 @@ Fight primitive obsession and create expressive domain models with source genera
 A succinct way to create wrappers around primitive types with records and source generators.
 ```csharp
 using AD.BaseTypes;
-
-[IntRange(0, 100)] partial record Rating;
+using System;
 
 Rating ok = new(75);
 
@@ -16,7 +15,9 @@ try
 {
     Rating invalid = new(125);
 }
-catch (ArgumentException ex) { /* ... */ }
+catch (ArgumentException ex) { /* .. */ }
+
+[IntRange(0, 100)] partial record Rating;
 ```
 ## Motivation
 Consider the following snippet:
