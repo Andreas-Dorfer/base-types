@@ -16,7 +16,7 @@ try
 {
     Rating invalid = new(125);
 }
-catch (ArgumentOutOfRangeException ex) { /* ... */ }
+catch (ArgumentException ex) { /* ... */ }
 ```
 ## Motivation
 Consider the following snippet:
