@@ -10,12 +10,16 @@ using AD.BaseTypes;
 using System;
 
 Rating ok = new(75);
+Console.WriteLine($"The rating is {ok}.");
 
 try
 {
     Rating invalid = new(125);
 }
-catch (ArgumentException ex) { /* .. */ }
+catch (ArgumentException)
+{
+    Console.WriteLine("The rating must be between 0 and 100.");
+}
 
 [IntRange(0, 100)] partial record Rating;
 ```
