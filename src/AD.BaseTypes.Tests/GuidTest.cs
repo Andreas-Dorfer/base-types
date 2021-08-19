@@ -11,5 +11,8 @@ namespace AD.BaseTypes.Tests
     public class GuidTest : BaseTypeTest<MyGuid, Guid>
     {
         protected override Arbitrary<MyGuid> Arbitrary => new GuidArbitrary<MyGuid>();
+
+        [TestMethod, ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void NotEmpty() => new MyGuid(Guid.Empty);
     }
 }

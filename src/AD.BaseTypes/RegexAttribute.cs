@@ -20,7 +20,8 @@ namespace AD.BaseTypes
         /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> doesn't match.</exception>
         public void Validate(string value)
         {
-            if (value is null || !Regex.IsMatch(value, pattern)) throw new ArgumentOutOfRangeException(nameof(value), value, $"Parameter doesn't match the pattern '{pattern}'.");
+            if (value is null) throw new ArgumentNullException(nameof(value), "Parmeter must not be null");
+            if (!Regex.IsMatch(value, pattern)) throw new ArgumentOutOfRangeException(nameof(value), value, $"Parameter doesn't match the pattern '{pattern}'.");
         }
     }
 }

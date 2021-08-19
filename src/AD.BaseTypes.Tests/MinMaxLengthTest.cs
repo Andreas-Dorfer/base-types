@@ -1,6 +1,7 @@
 ﻿using AD.BaseTypes.Arbitraries;
 using FsCheck;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace AD.BaseTypes.Tests
 {
@@ -14,5 +15,11 @@ namespace AD.BaseTypes.Tests
     public class MinMaxLengthTest : BaseTypeTest<MyMinMaxLength, string>
     {
         protected override Arbitrary<MyMinMaxLength> Arbitrary => new MinMaxLengthArbitrary<MyMinMaxLength>(MyMinMaxLength.MinLength, MyMinMaxLength.MaxLength);
+
+        [TestMethod, ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void TooShort() => new MyMinMaxLength(new('x', MyMinMaxLength.MinLength - 1));
+
+        [TestMethod, ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void TooLong() => new MyMinMaxLength(new('x', MyMinMaxLength.MaxLength + 1));
     }
 }

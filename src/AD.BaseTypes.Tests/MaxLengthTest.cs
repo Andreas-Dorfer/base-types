@@ -1,6 +1,7 @@
 ﻿using AD.BaseTypes.Arbitraries;
 using FsCheck;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace AD.BaseTypes.Tests
 {
@@ -14,5 +15,8 @@ namespace AD.BaseTypes.Tests
     public class MaxLengthTest : BaseTypeTest<MyMaxLength, string>
     {
         protected override Arbitrary<MyMaxLength> Arbitrary => new MaxLengthArbitrary<MyMaxLength>(MyMaxLength.MaxLength);
+
+        [TestMethod, ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void TooLong() => new MyMaxLength(new('x', MyMaxLength.MaxLength + 1));
     }
 }

@@ -11,7 +11,8 @@ namespace AD.BaseTypes
         /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> is empty.</exception>
         public void Validate(string value)
         {
-            if (string.IsNullOrEmpty(value)) throw new ArgumentOutOfRangeException(nameof(value), value, "Parameter must not be empty.");
+            if (value is null) throw new ArgumentNullException(nameof(value), "Parameter must not be null");
+            if (value == string.Empty) throw new ArgumentOutOfRangeException(nameof(value), value, "Parameter must not be empty.");
         }
     }
 }

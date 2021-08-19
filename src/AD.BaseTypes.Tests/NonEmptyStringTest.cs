@@ -1,6 +1,7 @@
 ﻿using AD.BaseTypes.Arbitraries;
 using FsCheck;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace AD.BaseTypes.Tests
 {
@@ -10,5 +11,11 @@ namespace AD.BaseTypes.Tests
     public class NonEmptyStringTest : BaseTypeTest<MyNonEmptyString, string>
     {
         protected override Arbitrary<MyNonEmptyString> Arbitrary => new NonEmptyStringArbitrary<MyNonEmptyString>();
+
+        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        public void NoNull() => new MyNonEmptyString(null!);
+
+        [TestMethod, ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void NotEmpty() => new MyNonEmptyString("");
     }
 }

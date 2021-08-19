@@ -1,6 +1,7 @@
 ﻿using AD.BaseTypes.Arbitraries;
 using FsCheck;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace AD.BaseTypes.Tests
 {
@@ -14,5 +15,8 @@ namespace AD.BaseTypes.Tests
     public class IntMaxTest : BaseTypeTest<MyIntMax, int>
     {
         protected override Arbitrary<MyIntMax> Arbitrary => new IntMaxArbitrary<MyIntMax>(MyIntMax.Max);
+
+        [TestMethod, ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void TooLarge() => new MyIntMax(MyIntMax.Max + 1);
     }
 }
