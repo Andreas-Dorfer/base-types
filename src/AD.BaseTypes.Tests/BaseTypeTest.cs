@@ -7,35 +7,35 @@ namespace AD.BaseTypes.Tests
 {
     public abstract class BaseTypeTest<TBaseType, TWrapped> where TBaseType : IBaseType<TWrapped>
     {
+        readonly TypeConverter converter = TypeDescriptor.GetConverter(typeof(TBaseType));
+        readonly TypeConverter wrappedConverter = TypeDescriptor.GetConverter(typeof(TWrapped));
+
         protected abstract Arbitrary<TBaseType> Arbitrary { get; }
         protected virtual bool JsonFilter(TWrapped value) => true;
-
-        protected TypeConverter Converter { get; } = TypeDescriptor.GetConverter(typeof(TBaseType));
-        protected TypeConverter WrappedConverter { get; } = TypeDescriptor.GetConverter(typeof(TWrapped));
 
         [TestMethod]
         public void Create() => Prop.ForAll(Arbitrary, _ => true).VerboseCheckThrowOnFailure();
 
         [TestMethod]
         public void ConvertFrom() =>
-            Prop.ForAll(Arbitrary, baseType => Converter.CanConvertFrom(typeof(TWrapped)) && Equals(baseType, Converter.ConvertFrom(baseType.Value))).QuickCheckThrowOnFailure();
+            Prop.ForAll(Arbitrary, baseType => converter.CanConvertFrom(typeof(TWrapped)) && Equals(baseType, converter.ConvertFrom(baseType.Value))).QuickCheckThrowOnFailure();
 
         [TestMethod]
         public void ConvertTo() =>
-            Prop.ForAll(Arbitrary, baseType => Converter.CanConvertTo(typeof(TWrapped)) && Equals(baseType.Value, Converter.ConvertTo(baseType, typeof(TWrapped)))).QuickCheckThrowOnFailure();
+            Prop.ForAll(Arbitrary, baseType => converter.CanConvertTo(typeof(TWrapped)) && Equals(baseType.Value, converter.ConvertTo(baseType, typeof(TWrapped)))).QuickCheckThrowOnFailure();
 
         [TestMethod]
         public void ConvertFromString() =>
             Prop.ForAll(Arbitrary, baseType =>
             {
-                var @string = WrappedConverter.ConvertToString(baseType.Value);
-                var value = (TWrapped)WrappedConverter.ConvertFromString(@string);
-                return Converter.CanConvertFrom(typeof(string)) && Equals(BaseType<TBaseType, TWrapped>.Create(value), Converter.ConvertFromString(@string));
+                var @string = wrappedConverter.ConvertToString(baseType.Value);
+                var value = (TWrapped)wrappedConverter.ConvertFromString(@string);
+                return converter.CanConvertFrom(typeof(string)) && Equals(BaseType<TBaseType, TWrapped>.Create(value), converter.ConvertFromString(@string));
             }).QuickCheckThrowOnFailure();
 
         [TestMethod]
         public void ConvertToString() =>
-            Prop.ForAll(Arbitrary, baseType => Converter.CanConvertTo(typeof(string)) && WrappedConverter.ConvertToString(baseType.Value) == Converter.ConvertToString(baseType)).QuickCheckThrowOnFailure();
+            Prop.ForAll(Arbitrary, baseType => converter.CanConvertTo(typeof(string)) && wrappedConverter.ConvertToString(baseType.Value) == converter.ConvertToString(baseType)).QuickCheckThrowOnFailure();
 
         [TestMethod]
         public void Json() =>

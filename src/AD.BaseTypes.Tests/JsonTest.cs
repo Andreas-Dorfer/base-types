@@ -7,6 +7,6 @@ namespace AD.BaseTypes.Tests
     public class JsonTest
     {
         [TestMethod, ExpectedException(typeof(JsonException))]
-        public void DeserializeError() => JsonSerializer.Deserialize<ZeroToTen>(JsonSerializer.Serialize(ZeroToTen.Max + 1));
+        public void InvalidDeserialize() => JsonSerializer.Deserialize<ZeroToTen>(JsonSerializer.Serialize(ZeroToTen.Max + 1));
     }
 }
