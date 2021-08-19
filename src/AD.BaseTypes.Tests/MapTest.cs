@@ -30,5 +30,8 @@ namespace AD.BaseTypes.Tests
 
         [TestMethod]
         public void TryError() => Assert.IsFalse(new ZeroToTen(ZeroToTen.Max).TryMap<ZeroToTen, int>(Add1, out var _, out var _));
+
+        [TestMethod]
+        public void MapValue() => Assert.AreEqual(Add1(ZeroToTen.Max), new ZeroToTen(ZeroToTen.Max).MapValue(Add1));
     }
 }
