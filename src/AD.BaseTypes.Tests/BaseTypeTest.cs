@@ -45,7 +45,6 @@ namespace AD.BaseTypes.Tests
                 var serialized = JsonSerializer.Serialize(baseType);
 
                 return serializedValue == serialized && Equals(baseType, JsonSerializer.Deserialize<TBaseType>(serialized));
-
             }).QuickCheckThrowOnFailure();
     }
 }
