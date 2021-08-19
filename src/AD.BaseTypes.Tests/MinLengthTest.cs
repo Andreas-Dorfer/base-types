@@ -16,6 +16,9 @@ namespace AD.BaseTypes.Tests
     {
         protected override Arbitrary<MyMinLength> Arbitrary => new MinLengthArbitrary<MyMinLength>(MyMinLength.MinLength);
 
+        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        public void NoNull() => new MyMinLength(null!);
+
         [TestMethod, ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void TooShort() => new MyMinLength(new('x', MyMinLength.MinLength - 1));
     }
