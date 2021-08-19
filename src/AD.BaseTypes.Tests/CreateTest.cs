@@ -3,12 +3,6 @@ using System;
 
 namespace AD.BaseTypes.Tests
 {
-    [IntRange(Min, Max)]
-    public partial record ZeroToTen
-    {
-        public const int Min = 0, Max = 10;
-    }
-
     [TestClass]
     public class CreateTest
     {
