@@ -71,7 +71,7 @@ namespace AD.BaseTypes.Generator
                 {
                     sourceBuilder.AppendLine("[Microsoft.FSharp.Core.AllowNullLiteral(false)]");
                 }
-                sourceBuilder.AppendLine($"[System.ComponentModel.TypeConverter(typeof(AD.BaseTypes.Converters.BaseTypeConverter<{recordName}, {baseType}>))]");
+                sourceBuilder.AppendLine($"[System.ComponentModel.TypeConverter(typeof(AD.BaseTypes.Converters.BaseTypeTypeConverter<{recordName}, {baseType}>))]");
                 sourceBuilder.AppendLine($"[System.Text.Json.Serialization.JsonConverter(typeof(AD.BaseTypes.Json.BaseTypeJsonConverter<{recordName}, {baseType}>))]");
                 sourceBuilder.AppendLine($"sealed partial record {recordName} : System.IComparable<{recordName}>, System.IComparable, AD.BaseTypes.IBaseType<{baseType}>");
                 sourceBuilder.AppendLine("{");
