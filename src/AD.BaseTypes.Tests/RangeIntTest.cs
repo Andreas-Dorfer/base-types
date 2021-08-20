@@ -5,21 +5,21 @@ using System;
 
 namespace AD.BaseTypes.Tests
 {
-    [IntRange(Min, Max)]
-    public partial record MyIntRange
+    [RangeInt(Min, Max)]
+    public partial record MyRangeInt
     {
         public const int Min = -100, Max = 100;
     }
 
     [TestClass]
-    public class IntRangeTest : BaseTypeTest<MyIntRange, int>
+    public class RangeIntTest : BaseTypeTest<MyRangeInt, int>
     {
-        protected override Arbitrary<MyIntRange> Arbitrary => new IntRangeArbitrary<MyIntRange>(MyIntRange.Min, MyIntRange.Max);
+        protected override Arbitrary<MyRangeInt> Arbitrary => new RangeIntArbitrary<MyRangeInt>(MyRangeInt.Min, MyRangeInt.Max);
 
         [TestMethod, ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void TooSmall() => new MyIntRange(MyIntRange.Min - 1);
+        public void TooSmall() => new MyRangeInt(MyRangeInt.Min - 1);
 
         [TestMethod, ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void TooLarge() => new MyIntRange(MyIntRange.Max + 1);
+        public void TooLarge() => new MyRangeInt(MyRangeInt.Max + 1);
     }
 }

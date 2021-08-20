@@ -2,7 +2,7 @@
 {
     //type for multiple tests
 
-    [IntRange(Min, Max)]
+    [RangeInt(Min, Max)]
     public partial record ZeroToTen
     {
         public const int Min = 0, Max = 10;

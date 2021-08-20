@@ -6,13 +6,13 @@ namespace AD.BaseTypes
     /// Int within a range.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class IntRangeAttribute : Attribute, IBaseTypeValidation<int>
+    public class RangeIntAttribute : Attribute, IBaseTypeValidation<int>
     {
         readonly int min, max;
 
         /// <param name="min">Minimal value.</param>
         /// <param name="max">Maximal value.</param>
-        public IntRangeAttribute(int min, int max)
+        public RangeIntAttribute(int min, int max)
         {
             this.min = min;
             this.max = max;
