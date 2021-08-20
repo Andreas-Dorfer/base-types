@@ -182,7 +182,7 @@ Do you use [FsCheck](https://fscheck.github.io/FsCheck/)? Check out `AD.BaseType
     PM> Install-Package AndreasDorfer.BaseTypes.Arbitraries -Version 1.0.0
 ### Example
 ```csharp
-[IntRange(Min, Max)]
+[RangeInt(Min, Max)]
 partial record ZeroToTen
 {
     public const int Min = 0, Max = 10;
@@ -191,7 +191,7 @@ partial record ZeroToTen
 const int MinProduct = ZeroToTen.Min * ZeroToTen.Min;
 const int MaxProduct = ZeroToTen.Max * ZeroToTen.Max;
 
-IntRangeArbitrary<ZeroToTen> arb = new(ZeroToTen.Min, ZeroToTen.Max);
+RangeIntArbitrary<ZeroToTen> arb = new(ZeroToTen.Min, ZeroToTen.Max);
 
 Prop.ForAll(arb, arb, (a, b) =>
 {
