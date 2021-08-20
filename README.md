@@ -229,11 +229,7 @@ match (1995, 1, 1) |> DateTime |> BaseType.create<SomeWeekendInThe90s, _> with
 | Ok (BaseType.Value dateTime) -> printf "%s" <| dateTime.ToShortDateString()
 | Error msg -> printf "%s" msg
 ```
-### Note
-`AD.BaseTypes.FSharp` is in an early stage.
-
----
-## Options
+### Options
 You can configure the generator to emit the `Microsoft.FSharp.Core.AllowNullLiteral(false)` attribute.
 
 1. Add a reference to [FSharp.Core](https://www.nuget.org/packages/FSharp.Core/).
@@ -249,6 +245,9 @@ You can configure the generator to emit the `Microsoft.FSharp.Core.AllowNullLite
   <AdditionalFiles Include="AD.BaseTypes.Generator.json" />
 </ItemGroup>
 ```
+### Note
+`AD.BaseTypes.FSharp` is in an early stage.
+
 ---
 [![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.ModelBinders.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.ModelBinders/)
 ## ASP.NET Core
