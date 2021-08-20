@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Text.Json;
 
-namespace AD.BaseTypes.Tests
+namespace AD.BaseTypes.Tests.Core
 {
     [TestClass]
     public class JsonTest

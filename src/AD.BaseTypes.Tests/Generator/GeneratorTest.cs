@@ -5,7 +5,7 @@ using System;
 using System.ComponentModel;
 using System.Text.Json.Serialization;
 
-namespace AD.BaseTypes.Tests
+namespace AD.BaseTypes.Tests.Generator
 {
     [TestClass]
     public class GeneratorTest

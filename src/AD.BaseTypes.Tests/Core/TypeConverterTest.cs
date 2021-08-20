@@ -2,7 +2,7 @@
 using System;
 using System.ComponentModel;
 
-namespace AD.BaseTypes.Tests
+namespace AD.BaseTypes.Tests.Core
 {
     [TestClass]
     public class TypeConverterTest
