@@ -6,12 +6,12 @@ namespace AD.BaseTypes
     /// Int with a maximal value.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class IntMaxAttribute : Attribute, IBaseTypeValidation<int>
+    public class MaxIntAttribute : Attribute, IBaseTypeValidation<int>
     {
         readonly int max;
 
         /// <param name="max">Maximal value.</param>
-        public IntMaxAttribute(int max)
+        public MaxIntAttribute(int max)
         {
             this.max = max;
         }

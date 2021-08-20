@@ -16,7 +16,7 @@ namespace TestApp
 
     [IntMin(-100)] public partial record MyIntMin;
 
-    [IntMax(100)] public partial record MyIntMax;
+    [MaxInt(100)] public partial record MyIntMax;
 
     [IntRange(-10, 10)] public partial record MyIntRange;
 

@@ -7,10 +7,10 @@ namespace AD.BaseTypes.Arbitraries
     /// Arbitrary for int base types with a maximal value.
     /// </summary>
     /// <typeparam name="TBaseType"></typeparam>
-    public class IntMaxArbitrary<TBaseType> : IntArbitrary<TBaseType> where TBaseType : IBaseType<int>
+    public class MaxIntArbitrary<TBaseType> : IntArbitrary<TBaseType> where TBaseType : IBaseType<int>
     {
         /// <param name="max">The maximal value.</param>
-        public IntMaxArbitrary(int max)
+        public MaxIntArbitrary(int max)
         {
             Max = max;
         }
