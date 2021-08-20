@@ -28,7 +28,7 @@ namespace TestApp
 
     [MaxLengthString(25)] public partial record MyMaxLengthString;
 
-    [MinMaxLength(10, 30)] public partial record MinMaxLength;
+    [MinMaxLengthString(10, 30)] public partial record MinMaxLengthString;
 
     [Regex(@"\d\w")] public partial record MyRegex;
 }

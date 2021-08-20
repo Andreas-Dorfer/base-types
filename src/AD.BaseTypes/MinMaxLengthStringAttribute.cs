@@ -6,13 +6,13 @@ namespace AD.BaseTypes
     /// String with a minimal and maximal length.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class MinMaxLengthAttribute : Attribute, IBaseTypeValidation<string>
+    public class MinMaxLengthStringAttribute : Attribute, IBaseTypeValidation<string>
     {
         readonly int minLength, maxLength;
 
         /// <param name="minLength">Minimal length.</param>
         /// <param name="maxLength">Maximal length.</param>
-        public MinMaxLengthAttribute(int minLength, int maxLength)
+        public MinMaxLengthStringAttribute(int minLength, int maxLength)
         {
             this.minLength = minLength;
             this.maxLength = maxLength;
