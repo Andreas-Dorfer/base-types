@@ -132,15 +132,15 @@ The included attributes are:
 - `DoubleAttribute`
 - `GuidAttribute`
 - `IntAttribute`
-- `IntMaxAttribute`
-- `IntMinAttribute`
-- `IntRangeAttribute`
-- `MaxLengthAttribute`
-- `MinLengthAttribute`
-- `MinMaxLengthAttribute`
+- `MaxIntAttribute`
+- `MaxLengthStringAttribute`
+- `MinIntAttribute`
+- `MinLengthStringAttribute`
+- `MinMaxLengthStringAttribute`
 - `NonEmptyStringAttribute`
 - `PositiveDecimalAttribute`
-- `RegexAttribute`
+- `RangeIntAttribute`
+- `RegexStringAttribute`
 - `StringAttribute`
 ## JSON Serialization
 The generated types are transparent to the serializer. They are serialized like the types they wrap.
