@@ -20,7 +20,7 @@ catch (ArgumentException)
     Console.WriteLine("The rating must be from 0 to 100.");
 }
 
-[IntRange(0, 100)] partial record Rating;
+[RangeInt(0, 100)] partial record Rating;
 //the source generator creates the rest of the record
 ```
 ## Motivation
