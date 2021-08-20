@@ -199,6 +199,24 @@ Prop.ForAll(arb, arb, (a, b) =>
     return product >= MinProduct && product <= MaxProduct;
 }).QuickCheckThrowOnFailure();
 ```
+### Included Arbitraries
+The included arbitraries are:
+- `BoolArbitrary`
+- `DateTimeArbitrary`
+- `DecimalArbitrary`
+- `DoubleArbitrary`
+- `ExampleArbitrary`
+- `GuidArbitrary`
+- `IntArbitrary`
+- `MaxIntArbitrary`
+- `MaxLengthStringArbitrary`
+- `MinIntArbitrary`
+- `MinLengthStringArbitrary`
+- `MinMaxLengthStringArbitrary`
+- `NonEmptyStringArbitrary`
+- `PositiveDecimalArbitrary`
+- `RangeIntArbitrary`
+- `StringArbitrary`
 ---
 [![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.FSharp.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.FSharp/)
 ## F#
