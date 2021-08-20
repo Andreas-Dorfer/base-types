@@ -24,7 +24,7 @@ namespace TestApp
 
     [NonEmptyString] public partial record MyNonEmptyString;
 
-    [MinLength(5)] public partial record MyMinLength;
+    [MinLengthString(5)] public partial record MyMinLengthString;
 
     [MaxLengthString(25)] public partial record MyMaxLengthString;
 

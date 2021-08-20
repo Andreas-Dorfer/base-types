@@ -7,11 +7,11 @@ namespace AD.BaseTypes.Arbitraries
     /// Arbitrary for string base types with a minimal range.
     /// </summary>
     /// <typeparam name="TBaseType"></typeparam>
-    public class MinLengthArbitrary<TBaseType> : StringArbitrary<TBaseType> where TBaseType : IBaseType<string>
+    public class MinLengthStringArbitrary<TBaseType> : StringArbitrary<TBaseType> where TBaseType : IBaseType<string>
     {
         /// <param name="minLength">The minimal length.</param>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="minLength"/> is negative.</exception>
-        public MinLengthArbitrary(int minLength)
+        public MinLengthStringArbitrary(int minLength)
         {
             if (minLength < 0) throw new ArgumentOutOfRangeException(nameof(minLength), minLength, "Minimal length must be at least 0.");
             MinLength = minLength;

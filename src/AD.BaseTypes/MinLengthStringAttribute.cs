@@ -6,12 +6,12 @@ namespace AD.BaseTypes
     /// String with a minimal length.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class MinLengthAttribute : Attribute, IBaseTypeValidation<string>
+    public class MinLengthStringAttribute : Attribute, IBaseTypeValidation<string>
     {
         readonly int minLength;
 
         /// <param name="minLength">Minimal length.</param>
-        public MinLengthAttribute(int minLength)
+        public MinLengthStringAttribute(int minLength)
         {
             this.minLength = minLength;
         }
