@@ -10,14 +10,15 @@
 
   <ItemGroup Condition="'$(Configuration)'!='Debug'">
     <PackageReference Include="AndreasDorfer.BaseTypes.ModelBinders" Version="0.5.0" />
+    <PackageReference Include="AndreasDorfer.BaseTypes.OpenApiSchemas" Version="0.5.0" />
   </ItemGroup>
   
   <ItemGroup Condition="'$(Configuration)'=='Debug'">
     <ProjectReference Include="..\AD.BaseTypes.ModelBinders\AD.BaseTypes.ModelBinders.csproj" />
+    <ProjectReference Include="..\AD.BaseTypes.OpenApiSchemas\AD.BaseTypes.OpenApiSchemas.csproj" />
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\AD.BaseTypes.OpenApiSchemas\AD.BaseTypes.OpenApiSchemas.csproj" />
     <ProjectReference Include="..\TestApp\TestApp.csproj" />
   </ItemGroup>
 
