@@ -14,7 +14,7 @@ namespace AD.BaseTypes.Tests
         {
             var attributes = typeof(ZeroToTen).GetCustomAttributes(typeof(T), false);
             Assert.AreEqual(1, attributes.Length);
-            return attributes[0] is T t ? t : throw new AssertFailedException($"attribute {typeof(T)} not found");
+            return attributes[0] as T ?? throw new AssertFailedException($"attribute {typeof(T)} not found");
         }
 
         [TestMethod]
