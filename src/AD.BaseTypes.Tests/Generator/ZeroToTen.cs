@@ -1,4 +1,4 @@
-﻿namespace AD.BaseTypes.Tests
+﻿namespace AD.BaseTypes.Tests.Generator
 {
     //type for multiple tests
 

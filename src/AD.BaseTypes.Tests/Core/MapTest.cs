@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace AD.BaseTypes.Tests
+namespace AD.BaseTypes.Tests.Core
 {
     [TestClass]
     public class MapTest
