@@ -13,7 +13,7 @@ let main argv =
     let message = from "F#" // Call the function
     printfn "Hello world %s" message
 
-    match "abc" |> BaseType.create<MyMaxLength, _> with
+    match "abc" |> BaseType.create<MyMaxLengthString, _> with
     | Ok (BaseType.Value str) -> printf "%s" str
     | Error msg -> printf "%s" msg
 

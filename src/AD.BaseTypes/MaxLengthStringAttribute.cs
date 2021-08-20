@@ -6,12 +6,12 @@ namespace AD.BaseTypes
     /// String with a maximal length.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class MaxLengthAttribute : Attribute, IBaseTypeValidation<string>
+    public class MaxLengthStringAttribute : Attribute, IBaseTypeValidation<string>
     {
         readonly int maxLength;
 
         /// <param name="maxLength">Maximal length.</param>
-        public MaxLengthAttribute(int maxLength)
+        public MaxLengthStringAttribute(int maxLength)
         {
             this.maxLength = maxLength;
         }

@@ -26,7 +26,7 @@ namespace TestApp
 
     [MinLength(5)] public partial record MyMinLength;
 
-    [MaxLength(25)] public partial record MyMaxLength;
+    [MaxLengthString(25)] public partial record MyMaxLengthString;
 
     [MinMaxLength(10, 30)] public partial record MinMaxLength;
 
