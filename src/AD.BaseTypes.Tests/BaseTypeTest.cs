@@ -1,11 +1,12 @@
 ﻿using FsCheck;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.ComponentModel;
 using System.Text.Json;
 
 namespace AD.BaseTypes.Tests
 {
-    public abstract class BaseTypeTest<TBaseType, TWrapped> where TBaseType : IBaseType<TWrapped>
+    public abstract class BaseTypeTest<TBaseType, TWrapped> where TBaseType : IBaseType<TWrapped>, IComparable<TBaseType> where TWrapped : IComparable<TWrapped>
     {
         readonly TypeConverter converter = TypeDescriptor.GetConverter(typeof(TBaseType));
         readonly TypeConverter wrappedConverter = TypeDescriptor.GetConverter(typeof(TWrapped));
@@ -15,6 +16,9 @@ namespace AD.BaseTypes.Tests
 
         [TestMethod]
         public void Create() => Prop.ForAll(Arbitrary, _ => true).VerboseCheckThrowOnFailure();
+
+        [TestMethod]
+        public void Compare() => Prop.ForAll(Arbitrary, Arbitrary, (a, b) => Assert.AreEqual(a.Value.CompareTo(b.Value), a.CompareTo(b))).QuickCheckThrowOnFailure();
 
         [TestMethod]
         public void ConvertFrom() =>
