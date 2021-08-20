@@ -98,7 +98,7 @@ With `AD.BaseTypes` you can write the records like this:
 ```
 **That's it!** All the boilerplate code is [generated](https://docs.microsoft.com/en-us/dotnet/csharp/roslyn-sdk/source-generators-overview) for you. Here's what the *generated* code for `EmployeeId` looks like:
 ```csharp
-[TypeConverter(typeof(BaseTypeConverter<EmployeeId, string>))]
+[TypeConverter(typeof(BaseTypeTypeConverter<EmployeeId, string>))]
 [JsonConverter(typeof(BaseTypeJsonConverter<EmployeeId, string>))]
 sealed partial record EmployeeId : IComparable<EmployeeId>, IComparable, IBaseType<string>
 {
