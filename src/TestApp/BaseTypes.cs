@@ -30,5 +30,5 @@ namespace TestApp
 
     [MinMaxLengthString(10, 30)] public partial record MinMaxLengthString;
 
-    [Regex(@"\d\w")] public partial record MyRegex;
+    [RegexString(@"\d\w")] public partial record MyRegexString;
 }

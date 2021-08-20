@@ -7,12 +7,12 @@ namespace AD.BaseTypes
     /// String with a regex constraint.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class RegexAttribute : Attribute, IBaseTypeValidation<string>
+    public class RegexStringAttribute : Attribute, IBaseTypeValidation<string>
     {
         readonly string pattern;
 
         /// <param name="pattern">Regex pattern.</param>
-        public RegexAttribute(string pattern)
+        public RegexStringAttribute(string pattern)
         {
             this.pattern = pattern;
         }
