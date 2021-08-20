@@ -5,18 +5,18 @@ using System;
 
 namespace AD.BaseTypes.Tests
 {
-    [IntMin(Min)]
-    public partial record MyIntMin
+    [MinInt(Min)]
+    public partial record MyMinInt
     {
         public const int Min = -100;
     }
 
     [TestClass]
-    public class IntMinTest : BaseTypeTest<MyIntMin, int>
+    public class MinIntTest : BaseTypeTest<MyMinInt, int>
     {
-        protected override Arbitrary<MyIntMin> Arbitrary => new IntMinArbitrary<MyIntMin>(MyIntMin.Min);
+        protected override Arbitrary<MyMinInt> Arbitrary => new MinIntArbitrary<MyMinInt>(MyMinInt.Min);
 
         [TestMethod, ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void TooSmall() => new MyIntMin(MyIntMin.Min - 1);
+        public void TooSmall() => new MyMinInt(MyMinInt.Min - 1);
     }
 }

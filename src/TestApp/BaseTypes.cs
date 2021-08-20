@@ -14,9 +14,9 @@ namespace TestApp
 
     [DateTime] public partial record MyDateTime;
 
-    [IntMin(-100)] public partial record MyIntMin;
+    [MinInt(-100)] public partial record MyMinInt;
 
-    [MaxInt(100)] public partial record MyIntMax;
+    [MaxInt(100)] public partial record MyMaxInt;
 
     [IntRange(-10, 10)] public partial record MyIntRange;
 

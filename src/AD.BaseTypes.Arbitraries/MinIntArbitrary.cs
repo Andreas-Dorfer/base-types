@@ -7,10 +7,10 @@ namespace AD.BaseTypes.Arbitraries
     /// Arbitrary for int base types with a minimal value.
     /// </summary>
     /// <typeparam name="TBaseType">The base type.</typeparam>
-    public class IntMinArbitrary<TBaseType> : IntArbitrary<TBaseType> where TBaseType : IBaseType<int>
+    public class MinIntArbitrary<TBaseType> : IntArbitrary<TBaseType> where TBaseType : IBaseType<int>
     {
         /// <param name="min">The minimal value.</param>
-        public IntMinArbitrary(int min)
+        public MinIntArbitrary(int min)
         {
             Min = min;
         }

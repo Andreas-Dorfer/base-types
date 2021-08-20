@@ -6,12 +6,12 @@ namespace AD.BaseTypes
     /// Int with a minimal value.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class IntMinAttribute : Attribute, IBaseTypeValidation<int>
+    public class MinIntAttribute : Attribute, IBaseTypeValidation<int>
     {
         readonly int min;
 
         /// <param name="min">Minimal value.</param>
-        public IntMinAttribute(int min)
+        public MinIntAttribute(int min)
         {
             this.min = min;
         }
