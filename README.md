@@ -118,11 +118,11 @@ sealed partial record EmployeeId : IComparable<EmployeeId>, IComparable, IBaseTy
 ## But there's more!
 Let's say you need to model a name that's from 1 to 20 characters long:
 ```csharp
-[MinMaxLength(1, 20)] partial record Name;
+[MinMaxLengthString(1, 20)] partial record Name;
 ```
 Or you need to model a serial number that must follow a certain pattern:
 ```csharp
-[Regex(@"^\d\d-\w\w\w\w$")] partial record SerialNumber;
+[RegexString(@"^\d\d-\w\w\w\w$")] partial record SerialNumber;
 ```
 ## Included Attributes
 The included attributes are:
