@@ -211,6 +211,9 @@ match (1995, 1, 1) |> DateTime |> BaseType.create<SomeWeekendInThe90s, _> with
 | Ok (BaseType.Value dateTime) -> printf "%s" <| dateTime.ToShortDateString()
 | Error msg -> printf "%s" msg
 ```
+### Note
+`AD.BaseTypes.FSharp` is in an early stage.
+
 ---
 ## Options
 You can configure the generator to emit the `Microsoft.FSharp.Core.AllowNullLiteral(false)` attribute.
@@ -238,6 +241,9 @@ Du you need model binding support for [ASP.NET Core](https://docs.microsoft.com/
 ```csharp
 services.AddControllers(options => options.UseBaseTypeModelBinders());
 ```
+### Note
+`AD.BaseTypes.ModelBinders` is in an early stage.
+
 ---
 [![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.OpenApiSchemas.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.OpenApiSchemas/)
 ## Swagger
@@ -252,6 +258,5 @@ services.AddSwaggerGen(c =>
     c.UseBaseTypeSchemas();
 });
 ```
----
-## Note
-`AD.BaseTypes` is in an early stage.
+### Note
+`AD.BaseTypes.OpenApiSchemas` is in an early stage.
