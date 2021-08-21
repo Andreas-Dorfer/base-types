@@ -128,22 +128,22 @@ Or you need to model a serial number that must follow a certain pattern:
 ```
 ## Included Attributes
 The included attributes are:
-- `BoolAttribute`
-- `DateTimeAttribute`
-- `DecimalAttribute`
-- `DoubleAttribute`
-- `GuidAttribute`
-- `IntAttribute`
-- `MaxIntAttribute`
-- `MaxLengthStringAttribute`
-- `MinIntAttribute`
-- `MinLengthStringAttribute`
-- `MinMaxIntAttribute`
-- `MinMaxLengthStringAttribute`
-- `NonEmptyStringAttribute`
-- `PositiveDecimalAttribute`
-- `RegexStringAttribute`
-- `StringAttribute`
+- `BoolAttribute`: any `bool`
+- `DateTimeAttribute`: any `DateTime`
+- `DecimalAttribute`: any `decimal`
+- `DoubleAttribute`: any `double`
+- `GuidAttribute`: any `Guid` that's not empty
+- `IntAttribute`: any `int`
+- `MaxIntAttribute`: `int`s less than or equal to a maximal value
+- `MaxLengthStringAttribute`: `string`s with a maximal character count
+- `MinIntAttribute`: `int`s greater than or equal to a minimal value
+- `MinLengthStringAttribute`: `string`s with a minimal character count
+- `MinMaxIntAttribute`: `int`s within a range
+- `MinMaxLengthStringAttribute`: `string`s with a character count within a range
+- `NonEmptyStringAttribute`: any `string` that's not null and not empty
+- `PositiveDecimalAttribute`: positive `decimal`s
+- `RegexStringAttribute`: `string`s that follow a certain pattern
+- `StringAttribute`: any `string` that's not null
 
 There are examples in the [test code](https://github.com/Andreas-Dorfer/base-types/tree/main/src/AD.BaseTypes.Tests).
 ## JSON Serialization
