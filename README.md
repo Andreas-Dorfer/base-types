@@ -13,11 +13,13 @@ Rating ok = new(75);
 
 try
 {
-    Rating invalid = new(125);
+    Rating tooHigh = new(125);
 }
-catch (ArgumentException)
+catch (ArgumentException ex)
 {
-    Console.WriteLine("The rating must be from 0 to 100.");
+    Console.WriteLine(ex.Message);
+    //> Parameter must be less than or equal to 100. (Parameter 'value')
+    //> Actual value was 125.
 }
 
 [MinMaxInt(0, 100)] partial record Rating;
