@@ -2,7 +2,7 @@
 # AD.BaseTypes
 Fight primitive obsession and create expressive domain models with source generators.
 ## NuGet Package
-    PM> Install-Package AndreasDorfer.BaseTypes -Version 1.0.0
+    PM> Install-Package AndreasDorfer.BaseTypes -Version 1.0.1
 ## TLDR
 A succinct way to create wrappers around primitive types with records and source generators.
 ```csharp
@@ -20,7 +20,7 @@ catch (ArgumentException)
     Console.WriteLine("The rating must be from 0 to 100.");
 }
 
-[RangeInt(0, 100)] partial record Rating;
+[MinMaxInt(0, 100)] partial record Rating;
 //the source generator creates the rest of the record
 ```
 ## Motivation
@@ -136,10 +136,10 @@ The included attributes are:
 - `MaxLengthStringAttribute`
 - `MinIntAttribute`
 - `MinLengthStringAttribute`
+- `MinMaxIntAttribute`
 - `MinMaxLengthStringAttribute`
 - `NonEmptyStringAttribute`
 - `PositiveDecimalAttribute`
-- `RangeIntAttribute`
 - `RegexStringAttribute`
 - `StringAttribute`
 ## JSON Serialization
@@ -179,10 +179,10 @@ class The90sAttribute : Attribute, IBaseTypeValidation<DateTime>
 ## Arbitraries
 Do you use [FsCheck](https://fscheck.github.io/FsCheck/)? Check out `AD.BaseTypes.Arbitraries`.
 ### NuGet Package
-    PM> Install-Package AndreasDorfer.BaseTypes.Arbitraries -Version 1.0.0
+    PM> Install-Package AndreasDorfer.BaseTypes.Arbitraries -Version 1.0.1
 ### Example
 ```csharp
-[RangeInt(Min, Max)]
+[MinMaxInt(Min, Max)]
 partial record ZeroToTen
 {
     public const int Min = 0, Max = 10;
@@ -191,7 +191,7 @@ partial record ZeroToTen
 const int MinProduct = ZeroToTen.Min * ZeroToTen.Min;
 const int MaxProduct = ZeroToTen.Max * ZeroToTen.Max;
 
-RangeIntArbitrary<ZeroToTen> arb = new(ZeroToTen.Min, ZeroToTen.Max);
+MinMaxIntArbitrary<ZeroToTen> arb = new(ZeroToTen.Min, ZeroToTen.Max);
 
 Prop.ForAll(arb, arb, (a, b) =>
 {
@@ -212,10 +212,10 @@ The included arbitraries are:
 - `MaxLengthStringArbitrary`
 - `MinIntArbitrary`
 - `MinLengthStringArbitrary`
+- `MinMaxIntArbitrary`
 - `MinMaxLengthStringArbitrary`
 - `NonEmptyStringArbitrary`
 - `PositiveDecimalArbitrary`
-- `RangeIntArbitrary`
 - `StringArbitrary`
 ---
 [![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.FSharp.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.FSharp/)
