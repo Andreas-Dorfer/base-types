@@ -12,7 +12,7 @@ namespace AD.BaseTypes.Arbitraries
         protected override Arbitrary<decimal> WrappedArb()
         {
             //the default decimal generator doesn't generate negative values --> invert some values
-            var arb = Arb.Default.Decimal();
+            var arb = base.WrappedArb();
             return Arb.From(arb.Generator.Zip(Arb.Default.Bool().Generator, (value, invert) => invert ? -value : value), arb.Shrinker);
         }
     }
