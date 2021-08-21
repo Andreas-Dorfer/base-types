@@ -165,18 +165,26 @@ class WeekendAttribute : Attribute, IBaseTypeValidation<DateTime>
 You can apply multiple attributes:
 ```csharp
 [AttributeUsage(AttributeTargets.Class)]
-class The90sAttribute : Attribute, IBaseTypeValidation<DateTime>
+class YearsAttribute : Attribute, IBaseTypeValidation<DateTime>
 {
+    readonly int from, to;
+
+    public YearsAttribute(int from, int to)
+    {
+        this.from = from;
+        this.to = to;
+    }
+
     public void Validate(DateTime value)
     {
-        if (value.Year < 1990 || value.Year > 1999)
-            throw new ArgumentOutOfRangeException(nameof(value), value, "must be in the 90s");
+        if (value.Year < from || value.Year > to)
+            throw new ArgumentOutOfRangeException(nameof(value), value, $"must be from {from} to {to}");
     }
 }
 
-[The90s, Weekend] partial record SomeWeekendInThe90s;
+[Years(1990, 1999), Weekend] partial record SomeWeekendInThe90s;
 ```
-Here's what the *generated* code for `SomeWeekendInThe90s` looks like:
+The validations happen in the same order as you've applied the attributes. Here's what the *generated* code for `SomeWeekendInThe90s` looks like:
 ```csharp
 [TypeConverter(typeof(BaseTypeTypeConverter<SomeWeekendInThe90s, DateTime>))]
 [JsonConverter(typeof(BaseTypeJsonConverter<SomeWeekendInThe90s, DateTime>))]
@@ -184,7 +192,7 @@ sealed partial record SomeWeekendInThe90s : IComparable<SomeWeekendInThe90s>, IC
 {
     public SomeWeekendInThe90s(DateTime value)
     {
-        new The90sAttribute().Validate(value);
+        new YearsAttribute(1990, 1999).Validate(value);
         new WeekendAttribute().Validate(value);
         Value = value;
     }
