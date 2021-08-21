@@ -144,6 +144,8 @@ The included attributes are:
 - `PositiveDecimalAttribute`
 - `RegexStringAttribute`
 - `StringAttribute`
+
+There are examples in the [test code](https://github.com/Andreas-Dorfer/base-types/tree/main/src/AD.BaseTypes.Tests).
 ## JSON Serialization
 The generated types are transparent to the serializer. They are serialized like the types they wrap.
 ## Custom Attributes
@@ -247,6 +249,9 @@ The included arbitraries are:
 - `NonEmptyStringArbitrary`
 - `PositiveDecimalArbitrary`
 - `StringArbitrary`
+
+There are examples in the [test code](https://github.com/Andreas-Dorfer/base-types/tree/main/src/AD.BaseTypes.Tests).
+
 ---
 [![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.FSharp.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.FSharp/)
 ## F#
