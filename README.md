@@ -2,7 +2,7 @@
 # AD.BaseTypes
 Fight primitive obsession and create expressive domain models with source generators.
 ## NuGet Package
-    PM> Install-Package AndreasDorfer.BaseTypes -Version 0.4.0
+    PM> Install-Package AndreasDorfer.BaseTypes -Version 1.0.0
 ## TLDR
 A succinct way to create wrappers around primitive types with records and source generators.
 ```csharp
@@ -20,7 +20,7 @@ catch (ArgumentException)
     Console.WriteLine("The rating must be from 0 to 100.");
 }
 
-[IntRange(0, 100)] partial record Rating;
+[RangeInt(0, 100)] partial record Rating;
 //the source generator creates the rest of the record
 ```
 ## Motivation
@@ -98,7 +98,7 @@ With `AD.BaseTypes` you can write the records like this:
 ```
 **That's it!** All the boilerplate code is [generated](https://docs.microsoft.com/en-us/dotnet/csharp/roslyn-sdk/source-generators-overview) for you. Here's what the *generated* code for `EmployeeId` looks like:
 ```csharp
-[TypeConverter(typeof(BaseTypeConverter<EmployeeId, string>))]
+[TypeConverter(typeof(BaseTypeTypeConverter<EmployeeId, string>))]
 [JsonConverter(typeof(BaseTypeJsonConverter<EmployeeId, string>))]
 sealed partial record EmployeeId : IComparable<EmployeeId>, IComparable, IBaseType<string>
 {
@@ -118,11 +118,11 @@ sealed partial record EmployeeId : IComparable<EmployeeId>, IComparable, IBaseTy
 ## But there's more!
 Let's say you need to model a name that's from 1 to 20 characters long:
 ```csharp
-[MinMaxLength(1, 20)] partial record Name;
+[MinMaxLengthString(1, 20)] partial record Name;
 ```
 Or you need to model a serial number that must follow a certain pattern:
 ```csharp
-[Regex(@"^\d\d-\w\w\w\w$")] partial record SerialNumber;
+[RegexString(@"^\d\d-\w\w\w\w$")] partial record SerialNumber;
 ```
 ## Included Attributes
 The included attributes are:
@@ -132,15 +132,15 @@ The included attributes are:
 - `DoubleAttribute`
 - `GuidAttribute`
 - `IntAttribute`
-- `IntMaxAttribute`
-- `IntMinAttribute`
-- `IntRangeAttribute`
-- `MaxLengthAttribute`
-- `MinLengthAttribute`
-- `MinMaxLengthAttribute`
+- `MaxIntAttribute`
+- `MaxLengthStringAttribute`
+- `MinIntAttribute`
+- `MinLengthStringAttribute`
+- `MinMaxLengthStringAttribute`
 - `NonEmptyStringAttribute`
 - `PositiveDecimalAttribute`
-- `RegexAttribute`
+- `RangeIntAttribute`
+- `RegexStringAttribute`
 - `StringAttribute`
 ## JSON Serialization
 The generated types are transparent to the serializer. They are serialized like the types they wrap.
@@ -179,10 +179,10 @@ class The90sAttribute : Attribute, IBaseTypeValidation<DateTime>
 ## Arbitraries
 Do you use [FsCheck](https://fscheck.github.io/FsCheck/)? Check out `AD.BaseTypes.Arbitraries`.
 ### NuGet Package
-    PM> Install-Package AndreasDorfer.BaseTypes.Arbitraries -Version 0.4.0
+    PM> Install-Package AndreasDorfer.BaseTypes.Arbitraries -Version 1.0.0
 ### Example
 ```csharp
-[IntRange(Min, Max)]
+[RangeInt(Min, Max)]
 partial record ZeroToTen
 {
     public const int Min = 0, Max = 10;
@@ -191,7 +191,7 @@ partial record ZeroToTen
 const int MinProduct = ZeroToTen.Min * ZeroToTen.Min;
 const int MaxProduct = ZeroToTen.Max * ZeroToTen.Max;
 
-IntRangeArbitrary<ZeroToTen> arb = new(ZeroToTen.Min, ZeroToTen.Max);
+RangeIntArbitrary<ZeroToTen> arb = new(ZeroToTen.Min, ZeroToTen.Max);
 
 Prop.ForAll(arb, arb, (a, b) =>
 {
@@ -199,20 +199,37 @@ Prop.ForAll(arb, arb, (a, b) =>
     return product >= MinProduct && product <= MaxProduct;
 }).QuickCheckThrowOnFailure();
 ```
+### Included Arbitraries
+The included arbitraries are:
+- `BoolArbitrary`
+- `DateTimeArbitrary`
+- `DecimalArbitrary`
+- `DoubleArbitrary`
+- `ExampleArbitrary`
+- `GuidArbitrary`
+- `IntArbitrary`
+- `MaxIntArbitrary`
+- `MaxLengthStringArbitrary`
+- `MinIntArbitrary`
+- `MinLengthStringArbitrary`
+- `MinMaxLengthStringArbitrary`
+- `NonEmptyStringArbitrary`
+- `PositiveDecimalArbitrary`
+- `RangeIntArbitrary`
+- `StringArbitrary`
 ---
 [![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.FSharp.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.FSharp/)
 ## F#
 Do you want to use the generated types in [F#](https://fsharp.org/)? Check out `AD.BaseTypes.FSharp`. The `BaseType` and `BaseTypeResult` modules offer some useful functions.
 ### NuGet Package
-    PM > Install-Package AndreasDorfer.BaseTypes.FSharp -Version 0.4.0
+    PM > Install-Package AndreasDorfer.BaseTypes.FSharp -Version 0.5.0
 ### Example
 ```fsharp
 match (1995, 1, 1) |> DateTime |> BaseType.create<SomeWeekendInThe90s, _> with
 | Ok (BaseType.Value dateTime) -> printf "%s" <| dateTime.ToShortDateString()
 | Error msg -> printf "%s" msg
 ```
----
-## Options
+### Options
 You can configure the generator to emit the `Microsoft.FSharp.Core.AllowNullLiteral(false)` attribute.
 
 1. Add a reference to [FSharp.Core](https://www.nuget.org/packages/FSharp.Core/).
@@ -228,22 +245,28 @@ You can configure the generator to emit the `Microsoft.FSharp.Core.AllowNullLite
   <AdditionalFiles Include="AD.BaseTypes.Generator.json" />
 </ItemGroup>
 ```
+### Note
+`AD.BaseTypes.FSharp` is in an early stage.
+
 ---
 [![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.ModelBinders.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.ModelBinders/)
 ## ASP.NET Core
 Du you need model binding support for [ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore-5.0)? Check out `AD.BaseTypes.ModelBinders`. 
 ### NuGet Package
-    PM> Install-Package AndreasDorfer.BaseTypes.ModelBinders -Version 0.4.0
+    PM> Install-Package AndreasDorfer.BaseTypes.ModelBinders -Version 0.5.0
 ### Configuration
 ```csharp
 services.AddControllers(options => options.UseBaseTypeModelBinders());
 ```
+### Note
+`AD.BaseTypes.ModelBinders` is in an early stage.
+
 ---
 [![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.OpenApiSchemas.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.OpenApiSchemas/)
 ## Swagger
 Do you use [Swagger](https://swagger.io/)? Check out `AD.BaseTypes.OpenApiSchemas`.
 ### NuGetPackage
-    PM> Install-Package AndreasDorfer.BaseTypes.OpenApiSchemas -Version 0.4.0
+    PM> Install-Package AndreasDorfer.BaseTypes.OpenApiSchemas -Version 0.5.0
 ### Configuration
 ```csharp
 services.AddSwaggerGen(c =>
@@ -252,6 +275,5 @@ services.AddSwaggerGen(c =>
     c.UseBaseTypeSchemas();
 });
 ```
----
-## Note
-`AD.BaseTypes` is in an early stage.
+### Note
+`AD.BaseTypes.OpenApiSchemas` is in an early stage.
