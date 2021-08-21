@@ -8,12 +8,12 @@ namespace AD.BaseTypes.Arbitraries
     /// Arbitrary for int base types with a range.
     /// </summary>
     /// <typeparam name="TBaseType">The base type.</typeparam>
-    public class RangeIntArbitrary<TBaseType> : IntArbitrary<TBaseType> where TBaseType : IBaseType<int>
+    public class MinMaxIntArbitrary<TBaseType> : IntArbitrary<TBaseType> where TBaseType : IBaseType<int>
     {
         /// <param name="min">The minimal value.</param>
         /// <param name="max">The maximal value.</param>
         /// <exception cref="ArgumentException"><paramref name="max"/> is smaller than <paramref name="min"/>.</exception>
-        public RangeIntArbitrary(int min, int max)
+        public MinMaxIntArbitrary(int min, int max)
         {
             if (max < min) throw new ArgumentException("Invalid range.");
 

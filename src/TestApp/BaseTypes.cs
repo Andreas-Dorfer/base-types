@@ -18,7 +18,7 @@ namespace TestApp
 
     [MaxInt(100)] public partial record MyMaxInt;
 
-    [RangeInt(-10, 10)] public partial record MyRangeInt;
+    [MinMaxInt(-10, 10)] public partial record MyMinMaxInt;
 
     [PositiveDecimal] public partial record MyPositiveDecimal;
 
