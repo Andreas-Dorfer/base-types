@@ -176,6 +176,26 @@ class The90sAttribute : Attribute, IBaseTypeValidation<DateTime>
 
 [The90s, Weekend] partial record SomeWeekendInThe90s;
 ```
+Here's what the *generated* code for `SomeWeekendInThe90s` looks like:
+```csharp
+[TypeConverter(typeof(BaseTypeTypeConverter<SomeWeekendInThe90s, DateTime>))]
+[JsonConverter(typeof(BaseTypeJsonConverter<SomeWeekendInThe90s, DateTime>))]
+sealed partial record SomeWeekendInThe90s : IComparable<SomeWeekendInThe90s>, IComparable, IBaseType<DateTime>
+{
+    public SomeWeekendInThe90s(DateTime value)
+    {
+        new The90sAttribute().Validate(value);
+        new WeekendAttribute().Validate(value);
+        Value = value;
+    }
+    public DateTime Value { get; }
+    public override string ToString() => Value.ToString();
+    public int CompareTo(object? obj) => CompareTo(obj as SomeWeekendInThe90s);
+    public int CompareTo(SomeWeekendInThe90s? other) => other is null ? 1 : Comparer<DateTime>.Default.Compare(Value, other.Value);
+    public static implicit operator DateTime(SomeWeekendInThe90s item) => item.Value;
+    public static SomeWeekendInThe90s Create(DateTime value) => new(value);
+}
+```
 ---
 [![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.Arbitraries.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.Arbitraries/)
 ## Arbitraries
