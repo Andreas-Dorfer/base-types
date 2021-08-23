@@ -12,11 +12,10 @@ namespace AD.BaseTypes
     /// <typeparam name="TWrapped">The wrapped type.</typeparam>
     public static class BaseType<TBaseType, TWrapped> where TBaseType : IBaseType<TWrapped>
     {
-        static readonly Func<TWrapped, TBaseType> creator;
+        static readonly Func<TWrapped, TBaseType> creator = _ => throw new NotImplementedException($"The type '{typeof(TBaseType)}' does not define a creator.");
 
         static BaseType()
         {
-            creator = _ => throw new NotImplementedException($"The type '{typeof(TBaseType)}' does not define a creator.");
             try
             {
                 var methodInfo = typeof(TBaseType).GetMethod("Create", BindingFlags.Public | BindingFlags.Static, null, new[] { typeof(TWrapped) }, null);
