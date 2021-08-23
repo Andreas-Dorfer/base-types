@@ -13,11 +13,13 @@ Rating ok = new(75);
 
 try
 {
-    Rating invalid = new(125);
+    Rating tooHigh = new(125);
 }
-catch (ArgumentException)
+catch (ArgumentException ex)
 {
-    Console.WriteLine("The rating must be from 0 to 100.");
+    Console.WriteLine(ex.Message);
+    //> Parameter must be less than or equal to 100. (Parameter 'value')
+    //> Actual value was 125.
 }
 
 [MinMaxInt(0, 100)] partial record Rating;
@@ -126,22 +128,24 @@ Or you need to model a serial number that must follow a certain pattern:
 ```
 ## Included Attributes
 The included attributes are:
-- `BoolAttribute`
-- `DateTimeAttribute`
-- `DecimalAttribute`
-- `DoubleAttribute`
-- `GuidAttribute`
-- `IntAttribute`
-- `MaxIntAttribute`
-- `MaxLengthStringAttribute`
-- `MinIntAttribute`
-- `MinLengthStringAttribute`
-- `MinMaxIntAttribute`
-- `MinMaxLengthStringAttribute`
-- `NonEmptyStringAttribute`
-- `PositiveDecimalAttribute`
-- `RegexStringAttribute`
-- `StringAttribute`
+- `BoolAttribute`: any `bool`
+- `DateTimeAttribute`: any `DateTime`
+- `DecimalAttribute`: any `decimal`
+- `DoubleAttribute`: any `double`
+- `GuidAttribute`: any `Guid` that's not empty
+- `IntAttribute`: any `int`
+- `MaxIntAttribute`: `int`s less than or equal to a maximal value
+- `MaxLengthStringAttribute`: `string`s with a maximal character count
+- `MinIntAttribute`: `int`s greater than or equal to a minimal value
+- `MinLengthStringAttribute`: `string`s with a minimal character count
+- `MinMaxIntAttribute`: `int`s within a range
+- `MinMaxLengthStringAttribute`: `string`s with a character count within a range
+- `NonEmptyStringAttribute`: any `string` that's not null and not empty
+- `PositiveDecimalAttribute`: positive `decimal`s
+- `RegexStringAttribute`: `string`s that follow a certain pattern
+- `StringAttribute`: any `string` that's not null
+
+There are examples in the [test code](https://github.com/Andreas-Dorfer/base-types/tree/main/src/AD.BaseTypes.Tests).
 ## JSON Serialization
 The generated types are transparent to the serializer. They are serialized like the types they wrap.
 ## Custom Attributes
@@ -163,16 +167,44 @@ class WeekendAttribute : Attribute, IBaseTypeValidation<DateTime>
 You can apply multiple attributes:
 ```csharp
 [AttributeUsage(AttributeTargets.Class)]
-class The90sAttribute : Attribute, IBaseTypeValidation<DateTime>
+class YearsAttribute : Attribute, IBaseTypeValidation<DateTime>
 {
+    readonly int from, to;
+
+    public YearsAttribute(int from, int to)
+    {
+        this.from = from;
+        this.to = to;
+    }
+
     public void Validate(DateTime value)
     {
-        if (value.Year < 1990 || value.Year > 1999)
-            throw new ArgumentOutOfRangeException(nameof(value), value, "must be in the 90s");
+        if (value.Year < from || value.Year > to)
+            throw new ArgumentOutOfRangeException(nameof(value), value, $"must be from {from} to {to}");
     }
 }
 
-[The90s, Weekend] partial record SomeWeekendInThe90s;
+[Years(1990, 1999), Weekend] partial record SomeWeekendInThe90s;
+```
+The validations happen in the same order as you've applied the attributes. Here's what the *generated* code for `SomeWeekendInThe90s` looks like:
+```csharp
+[TypeConverter(typeof(BaseTypeTypeConverter<SomeWeekendInThe90s, DateTime>))]
+[JsonConverter(typeof(BaseTypeJsonConverter<SomeWeekendInThe90s, DateTime>))]
+sealed partial record SomeWeekendInThe90s : IComparable<SomeWeekendInThe90s>, IComparable, IBaseType<DateTime>
+{
+    public SomeWeekendInThe90s(DateTime value)
+    {
+        new YearsAttribute(1990, 1999).Validate(value);
+        new WeekendAttribute().Validate(value);
+        Value = value;
+    }
+    public DateTime Value { get; }
+    public override string ToString() => Value.ToString();
+    public int CompareTo(object? obj) => CompareTo(obj as SomeWeekendInThe90s);
+    public int CompareTo(SomeWeekendInThe90s? other) => other is null ? 1 : Comparer<DateTime>.Default.Compare(Value, other.Value);
+    public static implicit operator DateTime(SomeWeekendInThe90s item) => item.Value;
+    public static SomeWeekendInThe90s Create(DateTime value) => new(value);
+}
 ```
 ---
 [![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.Arbitraries.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.Arbitraries/)
@@ -217,6 +249,9 @@ The included arbitraries are:
 - `NonEmptyStringArbitrary`
 - `PositiveDecimalArbitrary`
 - `StringArbitrary`
+
+There are examples in the [test code](https://github.com/Andreas-Dorfer/base-types/tree/main/src/AD.BaseTypes.Tests).
+
 ---
 [![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.FSharp.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.FSharp/)
 ## F#
