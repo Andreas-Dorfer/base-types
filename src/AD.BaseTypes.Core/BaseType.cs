@@ -12,14 +12,15 @@ namespace AD.BaseTypes
     /// <typeparam name="TWrapped">The wrapped type.</typeparam>
     public static class BaseType<TBaseType, TWrapped> where TBaseType : IBaseType<TWrapped>
     {
-        static readonly Func<TWrapped, TBaseType>? creator;
+        static readonly Func<TWrapped, TBaseType> creator;
 
         static BaseType()
         {
+            creator = _ => throw new NotImplementedException($"The type '{typeof(TBaseType)}' does not define a creator.");
             try
             {
                 var methodInfo = typeof(TBaseType).GetMethod("Create", BindingFlags.Public | BindingFlags.Static, null, new[] { typeof(TWrapped) }, null);
-                if (methodInfo is not null)
+                if (methodInfo is not null && methodInfo.ReturnType == typeof(TBaseType))
                 {
                     var arg = Expression.Parameter(typeof(TWrapped));
                     var method = Expression.Call(methodInfo, arg);
@@ -36,11 +37,7 @@ namespace AD.BaseTypes
         /// <returns>The created base type.</returns>
         /// <exception cref="NotImplementedException">The base type does not define a creator.</exception>
         /// <exception cref="ArgumentException">The parameter <paramref name="value"/> is invalid.</exception>
-        public static TBaseType Create(TWrapped value)
-        {
-            if (creator is null) throw new NotImplementedException($"The type '{typeof(TBaseType)}' does not define a creator.");
-            return creator(value);
-        }
+        public static TBaseType Create(TWrapped value) => creator(value);
 
         /// <summary>
         /// Tries to create a base type.
