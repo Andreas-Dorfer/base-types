@@ -15,16 +15,16 @@ namespace AD.BaseTypes.OpenApiSchemas
         {
             var iBaseType = TryGetBaseType(context.Type);
             if (iBaseType is null) return;
+            var wrappedType = iBaseType.GenericTypeArguments[0];
 
-            var wrappedSchema = schema.Properties["value"];
-            if (wrappedSchema is not null)
+            if (!context.SchemaRepository.TryLookupByType(wrappedType, out var wrappedSchema))
             {
-                schema.Properties.Remove("value");
-                schema.Type = wrappedSchema.Type;
-                foreach (var (key, prop) in wrappedSchema.Properties)
-                {
-                    schema.Properties.Add(key, prop);
-                }
+                wrappedSchema = context.SchemaGenerator.GenerateSchema(wrappedType, context.SchemaRepository);
+            }
+            schema.Type = wrappedSchema.Type;
+            foreach (var (key, prop) in wrappedSchema.Properties)
+            {
+                schema.Properties.Add(key, prop);
             }
         }
 
