@@ -62,5 +62,19 @@ namespace AD.BaseTypes.Extensions
 
             return mapper(baseType.Value);
         }
+
+        /// <summary>
+        /// Gets a base type's value.
+        /// </summary>
+        /// <typeparam name="TWrapped">The wrapped type.</typeparam>
+        /// <param name="baseType">The base type.</param>
+        /// <returns>The base type's value.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="baseType"/> is null.</exception>
+        public static TWrapped Value<TWrapped>(this IBaseType<TWrapped> baseType)
+        {
+            if (baseType is null) throw new ArgumentNullException(nameof(baseType));
+
+            return baseType.Value;
+        }
     }
 }
