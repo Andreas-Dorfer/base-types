@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
+    <RootNamespace>AD.BaseTypes</RootNamespace>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageId>AndreasDorfer.BaseTypes.Core</PackageId>
     <Version>1.0.0</Version>

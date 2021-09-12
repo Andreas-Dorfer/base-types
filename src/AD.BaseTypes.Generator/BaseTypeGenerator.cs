@@ -14,8 +14,13 @@ namespace AD.BaseTypes.Generator
     public class BaseTypeGenerator : ISourceGenerator
     {
         static readonly Regex
-            BaseTypeRegex = new Regex("^AD.BaseTypes.IBaseTypeDefinition<(?<type>.+)>$"),
-            ValidatedBaseTypeRegex = new Regex("^AD.BaseTypes.IBaseTypeValidation<(?<type>.+)>$");
+            BaseTypeDefinitionRegex = new Regex("^AD.BaseTypes.IBaseTypeDefinition<(?<type>.+)>$"),
+            BaseTypeValidatedRegex = new Regex("^AD.BaseTypes.IBaseTypeValidation<(?<type>.+)>$");
+        const string
+            BaseTypeAttributeName = "AD.BaseTypes.BaseTypeAttribute",
+            Cast_Explicit = "Explicit",
+            Cast_Implicit = "Implicit",
+            Cast_None = "None";
 
         public void Initialize(GeneratorInitializationContext context)
         {
@@ -96,7 +101,7 @@ namespace AD.BaseTypes.Generator
                 sourceBuilder.AppendLine("public override string ToString() => Value.ToString();");
                 sourceBuilder.AppendLine($"public int CompareTo(object? obj) => CompareTo(obj as {recordName});");
                 sourceBuilder.AppendLine($"public int CompareTo({recordName}? other) => other is null ? 1 : System.Collections.Generic.Comparer<{baseType}>.Default.Compare(Value, other.Value);");
-                sourceBuilder.AppendLine($"public static implicit operator {baseType}({recordName} item) => item.Value;");
+                AppendCast(sourceBuilder, semantics, attributes, baseType, recordName);
                 sourceBuilder.AppendLine($"public static {recordName} Create({baseType} value) => new(value);");
 
                 //record end
@@ -158,11 +163,11 @@ namespace AD.BaseTypes.Generator
 
         static string[] GetBaseTypes(SemanticModel semantics, IEnumerable<AttributeSyntax> attributes) =>
             attributes.SelectMany(attribute =>
-                semantics.GetSymbolInfo(attribute).Symbol.ContainingType.AllInterfaces.Select(@interface =>
+                semantics.GetSymbolInfo(attribute).Symbol?.ContainingType.AllInterfaces.Select(@interface =>
                 {
-                    var match = BaseTypeRegex.Match(@interface.ToDisplayString());
+                    var match = BaseTypeDefinitionRegex.Match(@interface.ToDisplayString());
                     return match.Success ? match.Groups["type"].Value : null;
-                }))
+                }) ?? Enumerable.Empty<string>())
             .Where(_ => _ != null).Distinct().ToArray();
 
         static string GetNamespace(RecordDeclarationSyntax record)
@@ -189,13 +194,42 @@ namespace AD.BaseTypes.Generator
             }
         }
 
+        static void AppendCast(IndentedStringBuilder sourceBuilder, SemanticModel semantics, IEnumerable<AttributeSyntax> attributes, string baseType, string recordName)
+        {
+            switch (GetCast(semantics, attributes))
+            {
+                default:
+                case Cast_Explicit:
+                    sourceBuilder.AppendLine($"public static explicit operator {baseType}({recordName} item) => item.Value;");
+                    break;
+                case Cast_Implicit:
+                    sourceBuilder.AppendLine($"public static implicit operator {baseType}({recordName} item) => item.Value;");
+                    break;
+                case Cast_None:
+                    break;
+            }
+        }
+
+        static string GetCast(SemanticModel semantics, IEnumerable<AttributeSyntax> attributes)
+        {
+            var configs = attributes.Where(attribute => semantics.GetSymbolInfo(attribute).Symbol?.ContainingType.ToDisplayString() == BaseTypeAttributeName).ToArray();
+            if (configs.Length != 1) return null;
+            var args = configs[0].ArgumentList.Arguments;
+            if (args.Count != 1) return null;
+
+            var expression = args[0].Expression as MemberAccessExpressionSyntax;
+            if (expression is null) return null;
+
+            return expression.Name.Identifier.Text;
+        }
+
         static IEnumerable<AttributeSyntax> GetAllValidations(SemanticModel semantics, IEnumerable<AttributeSyntax> attributes, string baseType) =>
             attributes.Where(a =>
-                semantics.GetSymbolInfo(a).Symbol.ContainingType.AllInterfaces.Any(i =>
+                semantics.GetSymbolInfo(a).Symbol?.ContainingType.AllInterfaces.Any(i =>
                 {
-                    var match = ValidatedBaseTypeRegex.Match(i.ToDisplayString());
+                    var match = BaseTypeValidatedRegex.Match(i.ToDisplayString());
                     return match.Success && match.Groups["type"].Value == baseType;
-                }));
+                }) ?? false);
 
 #pragma warning disable IDE0051 // Remove unused private members
         [Conditional("DEBUG")]
