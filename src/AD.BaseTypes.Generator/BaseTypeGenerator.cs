@@ -83,6 +83,8 @@ namespace AD.BaseTypes.Generator
                 sourceBuilder.IncreaseIndent();
                 //*****
 
+                sourceBuilder.AppendLine($"readonly {baseType} value;");
+
                 //constructor start
                 sourceBuilder.AppendLine($"public {recordName}({baseType} value)");
                 sourceBuilder.AppendLine("{");
@@ -90,17 +92,17 @@ namespace AD.BaseTypes.Generator
                 //*****
 
                 AppendValidations(sourceBuilder, semantics, attributes, baseType);
-                sourceBuilder.AppendLine("this.Value = value;");
+                sourceBuilder.AppendLine("this.value = value;");
 
                 //constructor end
                 sourceBuilder.DecreaseIndent();
                 sourceBuilder.AppendLine("}");
                 //*****
 
-                sourceBuilder.AppendLine($"public {baseType} Value {{ get; }}");
-                sourceBuilder.AppendLine("public override string ToString() => Value.ToString();");
+                sourceBuilder.AppendLine($"{baseType} AD.BaseTypes.IBaseType<{baseType}>.Value => value;");
+                sourceBuilder.AppendLine("public override string ToString() => value.ToString();");
                 sourceBuilder.AppendLine($"public int CompareTo(object? obj) => CompareTo(obj as {recordName});");
-                sourceBuilder.AppendLine($"public int CompareTo({recordName}? other) => other is null ? 1 : System.Collections.Generic.Comparer<{baseType}>.Default.Compare(Value, other.Value);");
+                sourceBuilder.AppendLine($"public int CompareTo({recordName}? other) => other is null ? 1 : System.Collections.Generic.Comparer<{baseType}>.Default.Compare(value, other.value);");
                 AppendCast(sourceBuilder, semantics, attributes, baseType, recordName);
                 sourceBuilder.AppendLine($"public static {recordName} Create({baseType} value) => new(value);");
 
@@ -200,10 +202,10 @@ namespace AD.BaseTypes.Generator
             {
                 default:
                 case Cast_Explicit:
-                    sourceBuilder.AppendLine($"public static explicit operator {baseType}({recordName} item) => item.Value;");
+                    sourceBuilder.AppendLine($"public static explicit operator {baseType}({recordName} item) => item.value;");
                     break;
                 case Cast_Implicit:
-                    sourceBuilder.AppendLine($"public static implicit operator {baseType}({recordName} item) => item.Value;");
+                    sourceBuilder.AppendLine($"public static implicit operator {baseType}({recordName} item) => item.value;");
                     break;
                 case Cast_None:
                     break;

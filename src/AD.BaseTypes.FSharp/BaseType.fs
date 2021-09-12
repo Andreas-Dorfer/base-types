@@ -18,10 +18,10 @@ module BaseType =
         | :? ArgumentException as exn -> exn.Message |> Error
 
     /// Gets the base type's value.
-    let value (baseType : IBaseType<_>) = baseType.Value
+    let value (baseType : #IBaseType<_>) = baseType.Value
 
     /// Gets the base type's value.
-    let (|Value|) (baseType : IBaseType<_>) = baseType.Value
+    let (|Value|) (baseType : #IBaseType<_>) = baseType.Value
     
     /// Binds a base type.
     let inline bind binder (baseType : 'baseType) =

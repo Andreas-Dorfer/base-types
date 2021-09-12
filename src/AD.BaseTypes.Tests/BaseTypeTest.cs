@@ -18,6 +18,9 @@ namespace AD.BaseTypes.Tests
         public void Create() => Prop.ForAll(Arbitrary, _ => true).VerboseCheckThrowOnFailure();
 
         [TestMethod]
+        public void Equals() => Prop.ForAll(Arbitrary, a => Assert.AreEqual(a, BaseType<TBaseType, TWrapped>.Create(a.Value))).QuickCheckThrowOnFailure();
+
+        [TestMethod]
         public void Compare() => Prop.ForAll(Arbitrary, Arbitrary, (a, b) => Assert.AreEqual(a.Value.CompareTo(b.Value), a.CompareTo(b))).QuickCheckThrowOnFailure();
 
         [TestMethod]
