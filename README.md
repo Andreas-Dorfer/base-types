@@ -216,7 +216,7 @@ Do you use [FsCheck](https://fscheck.github.io/FsCheck/)? Check out `AD.BaseType
     PM> Install-Package AndreasDorfer.BaseTypes.Arbitraries -Version 1.1.0
 ### Example
 ```csharp
-[MinMaxInt(Min, Max)]
+[MinMaxInt(Min, Max), BaseType(Cast.Implicit)]
 partial record ZeroToTen
 {
     public const int Min = 0, Max = 10;
