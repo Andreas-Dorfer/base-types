@@ -193,17 +193,18 @@ The validations happen in the same order as you've applied the attributes. Here'
 [JsonConverter(typeof(BaseTypeJsonConverter<SomeWeekendInThe90s, DateTime>))]
 sealed partial record SomeWeekendInThe90s : IComparable<SomeWeekendInThe90s>, IComparable, IBaseType<DateTime>
 {
+    readonly DateTime value;
     public SomeWeekendInThe90s(DateTime value)
     {
         new YearsAttribute(1990, 1999).Validate(value);
         new WeekendAttribute().Validate(value);
-        Value = value;
+        this.value = value;
     }
-    public DateTime Value { get; }
-    public override string ToString() => Value.ToString();
+    DateTime IBaseType<DateTime>.Value => value;
+    public override string ToString() => value.ToString();
     public int CompareTo(object? obj) => CompareTo(obj as SomeWeekendInThe90s);
-    public int CompareTo(SomeWeekendInThe90s? other) => other is null ? 1 : Comparer<DateTime>.Default.Compare(Value, other.Value);
-    public static implicit operator DateTime(SomeWeekendInThe90s item) => item.Value;
+    public int CompareTo(SomeWeekendInThe90s? other) => other is null ? 1 : Comparer<DateTime>.Default.Compare(value, other.value);
+    public static explicit operator DateTime(SomeWeekendInThe90s item) => item.value;
     public static SomeWeekendInThe90s Create(DateTime value) => new(value);
 }
 ```
