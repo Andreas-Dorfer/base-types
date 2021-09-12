@@ -104,16 +104,17 @@ With `AD.BaseTypes` you can write the records like this:
 [JsonConverter(typeof(BaseTypeJsonConverter<EmployeeId, string>))]
 sealed partial record EmployeeId : IComparable<EmployeeId>, IComparable, IBaseType<string>
 {
+    readonly string value;
     public EmployeeId(string value)
     {
         new NonEmptyStringAttribute().Validate(value);
-        Value = value;
+        this.value = value;
     }
-    public string Value { get; }
-    public override string ToString() => Value.ToString();
+    string IBaseType<string>.Value => value;
+    public override string ToString() => value.ToString();
     public int CompareTo(object? obj) => CompareTo(obj as EmployeeId);
-    public int CompareTo(EmployeeId? other) => other is null ? 1 : Comparer<string>.Default.Compare(Value, other.Value);
-    public static implicit operator string(EmployeeId item) => item.Value;
+    public int CompareTo(EmployeeId? other) => other is null ? 1 : Comparer<string>.Default.Compare(value, other.value);
+    public static explicit operator string(EmployeeId item) => item.value;
     public static EmployeeId Create(string value) => new(value);
 }
 ```
