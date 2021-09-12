@@ -2,7 +2,7 @@
 # AD.BaseTypes
 Fight primitive obsession and create expressive domain models with source generators.
 ## NuGet Package
-    PM> Install-Package AndreasDorfer.BaseTypes -Version 1.0.1
+    PM> Install-Package AndreasDorfer.BaseTypes -Version 1.1.0
 ## TLDR
 A succinct way to create wrappers around primitive types with records and source generators.
 ```csharp
@@ -211,7 +211,7 @@ sealed partial record SomeWeekendInThe90s : IComparable<SomeWeekendInThe90s>, IC
 ## Arbitraries
 Do you use [FsCheck](https://fscheck.github.io/FsCheck/)? Check out `AD.BaseTypes.Arbitraries`.
 ### NuGet Package
-    PM> Install-Package AndreasDorfer.BaseTypes.Arbitraries -Version 1.0.1
+    PM> Install-Package AndreasDorfer.BaseTypes.Arbitraries -Version 1.1.0
 ### Example
 ```csharp
 [MinMaxInt(Min, Max)]
@@ -257,7 +257,7 @@ There are examples in the [test code](https://github.com/Andreas-Dorfer/base-typ
 ## F#
 Do you want to use the generated types in [F#](https://fsharp.org/)? Check out `AD.BaseTypes.FSharp`. The `BaseType` and `BaseTypeResult` modules offer some useful functions.
 ### NuGet Package
-    PM > Install-Package AndreasDorfer.BaseTypes.FSharp -Version 0.5.0
+    PM > Install-Package AndreasDorfer.BaseTypes.FSharp -Version 0.6.0
 ### Example
 ```fsharp
 match (1995, 1, 1) |> DateTime |> BaseType.create<SomeWeekendInThe90s, _> with
@@ -288,7 +288,7 @@ You can configure the generator to emit the `Microsoft.FSharp.Core.AllowNullLite
 ## ASP.NET Core
 Du you need model binding support for [ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore-5.0)? Check out `AD.BaseTypes.ModelBinders`. 
 ### NuGet Package
-    PM> Install-Package AndreasDorfer.BaseTypes.ModelBinders -Version 0.5.0
+    PM> Install-Package AndreasDorfer.BaseTypes.ModelBinders -Version 0.6.0
 ### Configuration
 ```csharp
 services.AddControllers(options => options.UseBaseTypeModelBinders());
@@ -301,7 +301,7 @@ services.AddControllers(options => options.UseBaseTypeModelBinders());
 ## Swagger
 Do you use [Swagger](https://swagger.io/)? Check out `AD.BaseTypes.OpenApiSchemas`.
 ### NuGetPackage
-    PM> Install-Package AndreasDorfer.BaseTypes.OpenApiSchemas -Version 0.5.0
+    PM> Install-Package AndreasDorfer.BaseTypes.OpenApiSchemas -Version 0.6.0
 ### Configuration
 ```csharp
 services.AddSwaggerGen(c =>
