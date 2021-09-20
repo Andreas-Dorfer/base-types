@@ -10,7 +10,7 @@
 
   <ItemGroup Condition="'$(Configuration)'!='Debug'">
     <PackageReference Include="AndreasDorfer.BaseTypes.ModelBinders" Version="0.6.0" />
-    <PackageReference Include="AndreasDorfer.BaseTypes.OpenApiSchemas" Version="0.5.0" />
+    <PackageReference Include="AndreasDorfer.BaseTypes.OpenApiSchemas" Version="0.6.0" />
   </ItemGroup>
   
   <ItemGroup Condition="'$(Configuration)'=='Debug'">

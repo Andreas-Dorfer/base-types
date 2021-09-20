@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)'!='Debug'">
-    <PackageReference Include="AndreasDorfer.BaseTypes" Version="1.1.0" />
+    <PackageReference Include="AndreasDorfer.BaseTypes" Version="1.1.1" />
     <PackageReference Include="AndreasDorfer.BaseTypes.Arbitraries" Version="1.1.0" />
   </ItemGroup>
 
