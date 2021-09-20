@@ -219,8 +219,7 @@ namespace AD.BaseTypes.Generator
             var args = configs[0].ArgumentList.Arguments;
             if (args.Count != 1) return null;
 
-            var expression = args[0].Expression as MemberAccessExpressionSyntax;
-            if (expression is null) return null;
+            if (!(args[0].Expression is MemberAccessExpressionSyntax expression)) return null;
 
             return expression.Name.Identifier.Text;
         }
