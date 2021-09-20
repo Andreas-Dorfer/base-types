@@ -86,6 +86,9 @@ namespace AD.BaseTypes.Generator
                 sourceBuilder.AppendLine($"readonly {baseType} value;");
 
                 //constructor start
+                AppendSummaryComment(sourceBuilder, $"Creates the <see cref=\"{recordName}\"/>.");
+                AppendParamComment(sourceBuilder, "value", $"The underlying <see cref=\"{baseType}\"/>.");
+                AppendExceptionComment(sourceBuilder, "System.ArgumentException", "The parameter <paramref name=\"value\"/> is invalid.");
                 sourceBuilder.AppendLine($"public {recordName}({baseType} value)");
                 sourceBuilder.AppendLine("{");
                 sourceBuilder.IncreaseIndent();
@@ -100,10 +103,17 @@ namespace AD.BaseTypes.Generator
                 //*****
 
                 sourceBuilder.AppendLine($"{baseType} AD.BaseTypes.IBaseType<{baseType}>.Value => value;");
+                AppendInheritDoc(sourceBuilder);
                 sourceBuilder.AppendLine("public override string ToString() => value.ToString();");
+                AppendInheritDoc(sourceBuilder);
                 sourceBuilder.AppendLine($"public int CompareTo(object? obj) => CompareTo(obj as {recordName});");
+                AppendInheritDoc(sourceBuilder);
                 sourceBuilder.AppendLine($"public int CompareTo({recordName}? other) => other is null ? 1 : System.Collections.Generic.Comparer<{baseType}>.Default.Compare(value, other.value);");
                 AppendCast(sourceBuilder, semantics, attributes, baseType, recordName);
+                AppendSummaryComment(sourceBuilder, $"Creates the <see cref=\"{recordName}\"/>.");
+                AppendParamComment(sourceBuilder, "value", $"The underlying <see cref=\"{baseType}\"/>.");
+                AppendExceptionComment(sourceBuilder, "System.ArgumentException", "The parameter <paramref name=\"value\"/> is invalid.");
+                AppendReturnsComment(sourceBuilder, $"The created <see cref=\"{recordName}\"/>.");
                 sourceBuilder.AppendLine($"public static {recordName} Create({baseType} value) => new(value);");
 
                 //record end
@@ -186,6 +196,25 @@ namespace AD.BaseTypes.Generator
             }
         }
 
+        static void AppendSummaryComment(IndentedStringBuilder sourceBuilder, string summary)
+        {
+            sourceBuilder.AppendLine("/// <summary>");
+            sourceBuilder.AppendLine($"/// {summary}");
+            sourceBuilder.AppendLine("/// </summary>");
+        }
+
+        static void AppendParamComment(IndentedStringBuilder sourceBuilder, string name, string comment) =>
+            sourceBuilder.AppendLine($"/// <param name=\"{name}\">{comment}</param>");
+
+        static void AppendExceptionComment(IndentedStringBuilder sourceBuilder, string name, string comment)=>
+            sourceBuilder.AppendLine($"/// <exception cref=\"{name}\">{comment}</exception>");
+
+        static void AppendInheritDoc(IndentedStringBuilder sourceBuilder) =>
+            sourceBuilder.AppendLine("/// <inheritdoc/>");
+
+        static void AppendReturnsComment(IndentedStringBuilder sourceBuilder, string comment) =>
+            sourceBuilder.AppendLine($"/// <returns>{comment}</returns>");
+
         static void AppendValidations(IndentedStringBuilder sourceBuilder, SemanticModel semantics, IEnumerable<AttributeSyntax> attributes, string baseType)
         {
             foreach (var validation in GetAllValidations(semantics, attributes, baseType))
@@ -202,13 +231,22 @@ namespace AD.BaseTypes.Generator
             {
                 default:
                 case Cast_Explicit:
-                    sourceBuilder.AppendLine($"public static explicit operator {baseType}({recordName} item) => item.value;");
+                    AppendComment();
+                    sourceBuilder.AppendLine($"public static explicit operator {baseType}({recordName} baseType) => baseType.value;");
                     break;
                 case Cast_Implicit:
-                    sourceBuilder.AppendLine($"public static implicit operator {baseType}({recordName} item) => item.value;");
+                    AppendComment();
+                    sourceBuilder.AppendLine($"public static implicit operator {baseType}({recordName} baseType) => baseType.value;");
                     break;
                 case Cast_None:
                     break;
+            }
+
+            void AppendComment()
+            {
+                AppendSummaryComment(sourceBuilder, $"Casts the <see cref=\"{recordName}\"/> to <see cref=\"{baseType}\"/>.");
+                AppendParamComment(sourceBuilder, "baseType", $"The <see cref=\"{recordName}\"/> to cast.");
+                AppendReturnsComment(sourceBuilder, $"The underlying <see cref=\"{baseType}\"/>.");
             }
         }
 
