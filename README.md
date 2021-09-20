@@ -2,7 +2,7 @@
 # AD.BaseTypes
 Fight primitive obsession and create expressive domain models with source generators.
 ## NuGet Package
-    PM> Install-Package AndreasDorfer.BaseTypes -Version 1.0.1
+    PM> Install-Package AndreasDorfer.BaseTypes -Version 1.1.0
 ## TLDR
 A succinct way to create wrappers around primitive types with records and source generators.
 ```csharp
@@ -104,16 +104,17 @@ With `AD.BaseTypes` you can write the records like this:
 [JsonConverter(typeof(BaseTypeJsonConverter<EmployeeId, string>))]
 sealed partial record EmployeeId : IComparable<EmployeeId>, IComparable, IBaseType<string>
 {
+    readonly string value;
     public EmployeeId(string value)
     {
         new NonEmptyStringAttribute().Validate(value);
-        Value = value;
+        this.value = value;
     }
-    public string Value { get; }
-    public override string ToString() => Value.ToString();
+    string IBaseType<string>.Value => value;
+    public override string ToString() => value.ToString();
     public int CompareTo(object? obj) => CompareTo(obj as EmployeeId);
-    public int CompareTo(EmployeeId? other) => other is null ? 1 : Comparer<string>.Default.Compare(Value, other.Value);
-    public static implicit operator string(EmployeeId item) => item.Value;
+    public int CompareTo(EmployeeId? other) => other is null ? 1 : Comparer<string>.Default.Compare(value, other.value);
+    public static explicit operator string(EmployeeId item) => item.value;
     public static EmployeeId Create(string value) => new(value);
 }
 ```
@@ -192,17 +193,18 @@ The validations happen in the same order as you've applied the attributes. Here'
 [JsonConverter(typeof(BaseTypeJsonConverter<SomeWeekendInThe90s, DateTime>))]
 sealed partial record SomeWeekendInThe90s : IComparable<SomeWeekendInThe90s>, IComparable, IBaseType<DateTime>
 {
+    readonly DateTime value;
     public SomeWeekendInThe90s(DateTime value)
     {
         new YearsAttribute(1990, 1999).Validate(value);
         new WeekendAttribute().Validate(value);
-        Value = value;
+        this.value = value;
     }
-    public DateTime Value { get; }
-    public override string ToString() => Value.ToString();
+    DateTime IBaseType<DateTime>.Value => value;
+    public override string ToString() => value.ToString();
     public int CompareTo(object? obj) => CompareTo(obj as SomeWeekendInThe90s);
-    public int CompareTo(SomeWeekendInThe90s? other) => other is null ? 1 : Comparer<DateTime>.Default.Compare(Value, other.Value);
-    public static implicit operator DateTime(SomeWeekendInThe90s item) => item.Value;
+    public int CompareTo(SomeWeekendInThe90s? other) => other is null ? 1 : Comparer<DateTime>.Default.Compare(value, other.value);
+    public static explicit operator DateTime(SomeWeekendInThe90s item) => item.value;
     public static SomeWeekendInThe90s Create(DateTime value) => new(value);
 }
 ```
@@ -211,10 +213,10 @@ sealed partial record SomeWeekendInThe90s : IComparable<SomeWeekendInThe90s>, IC
 ## Arbitraries
 Do you use [FsCheck](https://fscheck.github.io/FsCheck/)? Check out `AD.BaseTypes.Arbitraries`.
 ### NuGet Package
-    PM> Install-Package AndreasDorfer.BaseTypes.Arbitraries -Version 1.0.1
+    PM> Install-Package AndreasDorfer.BaseTypes.Arbitraries -Version 1.1.0
 ### Example
 ```csharp
-[MinMaxInt(Min, Max)]
+[MinMaxInt(Min, Max), BaseType(Cast.Implicit)]
 partial record ZeroToTen
 {
     public const int Min = 0, Max = 10;
@@ -257,7 +259,7 @@ There are examples in the [test code](https://github.com/Andreas-Dorfer/base-typ
 ## F#
 Do you want to use the generated types in [F#](https://fsharp.org/)? Check out `AD.BaseTypes.FSharp`. The `BaseType` and `BaseTypeResult` modules offer some useful functions.
 ### NuGet Package
-    PM > Install-Package AndreasDorfer.BaseTypes.FSharp -Version 0.5.0
+    PM > Install-Package AndreasDorfer.BaseTypes.FSharp -Version 0.6.0
 ### Example
 ```fsharp
 match (1995, 1, 1) |> DateTime |> BaseType.create<SomeWeekendInThe90s, _> with
@@ -288,7 +290,7 @@ You can configure the generator to emit the `Microsoft.FSharp.Core.AllowNullLite
 ## ASP.NET Core
 Du you need model binding support for [ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore-5.0)? Check out `AD.BaseTypes.ModelBinders`. 
 ### NuGet Package
-    PM> Install-Package AndreasDorfer.BaseTypes.ModelBinders -Version 0.5.0
+    PM> Install-Package AndreasDorfer.BaseTypes.ModelBinders -Version 0.6.0
 ### Configuration
 ```csharp
 services.AddControllers(options => options.UseBaseTypeModelBinders());
@@ -301,7 +303,7 @@ services.AddControllers(options => options.UseBaseTypeModelBinders());
 ## Swagger
 Do you use [Swagger](https://swagger.io/)? Check out `AD.BaseTypes.OpenApiSchemas`.
 ### NuGetPackage
-    PM> Install-Package AndreasDorfer.BaseTypes.OpenApiSchemas -Version 0.5.0
+    PM> Install-Package AndreasDorfer.BaseTypes.OpenApiSchemas -Version 0.6.0
 ### Configuration
 ```csharp
 services.AddSwaggerGen(c =>
