@@ -1,10 +1,9 @@
-﻿namespace TestApp
+﻿namespace TestApp;
+
+class Program
 {
-    class Program
+    static void Main(string[] _)
     {
-        static void Main(string[] _)
-        {
-            Console.WriteLine("Hello World!");
-        }
+        Console.WriteLine("Hello World!");
     }
 }

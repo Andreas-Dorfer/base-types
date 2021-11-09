@@ -1,32 +1,31 @@
-﻿namespace TestApp
-{
-    [Int] public partial record MyInt;
+﻿namespace TestApp;
 
-    [Double] public partial record MyDouble;
+[Int] public partial record MyInt;
 
-    [Decimal] public partial record MyDecimal;
+[Double] public partial record MyDouble;
 
-    [String] public partial record MyString;
+[Decimal] public partial record MyDecimal;
 
-    [Guid] public partial record MyGuid;
+[String] public partial record MyString;
 
-    [DateTime] public partial record MyDateTime;
+[Guid] public partial record MyGuid;
 
-    [MinInt(-100)] public partial record MyMinInt;
+[DateTime] public partial record MyDateTime;
 
-    [MaxInt(100)] public partial record MyMaxInt;
+[MinInt(-100)] public partial record MyMinInt;
 
-    [MinMaxInt(-10, 10)] public partial record MyMinMaxInt;
+[MaxInt(100)] public partial record MyMaxInt;
 
-    [PositiveDecimal] public partial record MyPositiveDecimal;
+[MinMaxInt(-10, 10)] public partial record MyMinMaxInt;
 
-    [NonEmptyString] public partial record MyNonEmptyString;
+[PositiveDecimal] public partial record MyPositiveDecimal;
 
-    [MinLengthString(5)] public partial record MyMinLengthString;
+[NonEmptyString] public partial record MyNonEmptyString;
 
-    [MaxLengthString(25)] public partial record MyMaxLengthString;
+[MinLengthString(5)] public partial record MyMinLengthString;
 
-    [MinMaxLengthString(10, 30)] public partial record MinMaxLengthString;
+[MaxLengthString(25)] public partial record MyMaxLengthString;
 
-    [RegexString(@"\d\w")] public partial record MyRegexString;
-}
+[MinMaxLengthString(10, 30)] public partial record MinMaxLengthString;
+
+[RegexString(@"\d\w")] public partial record MyRegexString;
