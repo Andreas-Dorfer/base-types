@@ -60,14 +60,11 @@ namespace AD.BaseTypes.Generator
                 sourceBuilder.AppendLine("#nullable enable");
 
                 var @namespace = GetNamespace(record);
-                var hasNamespace = !string.IsNullOrEmpty(@namespace);
-                if (hasNamespace)
+                if (!string.IsNullOrEmpty(@namespace))
                 {
-                    //namespace start
-                    sourceBuilder.AppendLine($"namespace {@namespace}");
-                    sourceBuilder.AppendLine("{");
-                    sourceBuilder.IncreaseIndent();
-                    //*****
+                    //namespace
+                    sourceBuilder.AppendLine($"namespace {@namespace};");
+                    sourceBuilder.AppendLine("");
                 }
 
                 //record start
@@ -121,15 +118,7 @@ namespace AD.BaseTypes.Generator
                 sourceBuilder.AppendLine("}");
                 //*****
 
-                if (hasNamespace)
-                {
-                    //namespace end
-                    sourceBuilder.DecreaseIndent();
-                    sourceBuilder.AppendLine("}");
-                    //*****
-                }
-
-                var fileHint = hasNamespace ? $"{@namespace}.{recordName}" : recordName;
+                var fileHint = !string.IsNullOrEmpty(@namespace) ? $"{@namespace}.{recordName}" : recordName;
                 context.AddSource($"{fileHint}.g", sourceBuilder.ToString());
             }
         }
