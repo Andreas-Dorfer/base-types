@@ -1,4 +1,5 @@
-﻿namespace AD.BaseTypes.Tests.Core
+﻿//ToDo convert to file-scoped namespace
+namespace AD.BaseTypes.Tests.Core
 {
     [TestClass]
     public class CreateTest
