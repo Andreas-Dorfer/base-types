@@ -1,10 +1,9 @@
-﻿namespace AD.BaseTypes.Arbitraries
+﻿namespace AD.BaseTypes.Arbitraries;
+
+static class StringGeneration
 {
-    static class StringGeneration
-    {
-        public static Gen<TBaseType> Generate<TBaseType>(int minLength, int maxLength, Func<string, TBaseType> creator) where TBaseType : IBaseType<string> =>
-            Gen.Choose(minLength, maxLength)
-            .SelectMany(length => Gen.ArrayOf(length, Arb.Generate<char>()))
-            .Select(_ => creator(new(_)));
-    }
+    public static Gen<TBaseType> Generate<TBaseType>(int minLength, int maxLength, Func<string, TBaseType> creator) where TBaseType : IBaseType<string> =>
+        Gen.Choose(minLength, maxLength)
+        .SelectMany(length => Gen.ArrayOf(length, Arb.Generate<char>()))
+        .Select(_ => creator(new(_)));
 }
