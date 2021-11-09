@@ -1,7 +1,4 @@
-﻿using FsCheck;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace AD.BaseTypes.Tests
+﻿namespace AD.BaseTypes.Tests
 {
     [String] public partial record DefaultString;
     [String, BaseType(Cast.Explicit)] public partial record ExplicitString;

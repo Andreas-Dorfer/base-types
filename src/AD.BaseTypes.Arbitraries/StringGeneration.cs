@@ -1,6 +1,4 @@
-﻿using FsCheck;
-
-namespace AD.BaseTypes.Arbitraries
+﻿namespace AD.BaseTypes.Arbitraries
 {
     static class StringGeneration
     {

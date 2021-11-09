@@ -1,6 +1,4 @@
-﻿using FsCheck;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Text.Json;
 
 namespace AD.BaseTypes.Tests

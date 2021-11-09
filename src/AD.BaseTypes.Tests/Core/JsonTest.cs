@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Text.Json;
+﻿using System.Text.Json;
 
 namespace AD.BaseTypes.Tests.Core
 {

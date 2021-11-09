@@ -1,5 +1,4 @@
 ﻿using AD.BaseTypes.Extensions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AD.BaseTypes.Tests.Core
 {

@@ -1,6 +1,4 @@
-﻿using AD.BaseTypes;
-
-namespace TestApp
+﻿namespace TestApp
 {
     [AttributeUsage(AttributeTargets.Class)]
     class WeekendAttribute : Attribute, IBaseTypeValidation<DateTime>

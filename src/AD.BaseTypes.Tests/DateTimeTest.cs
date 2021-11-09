@@ -1,7 +1,3 @@
-using AD.BaseTypes.Arbitraries;
-using FsCheck;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace AD.BaseTypes.Tests
 {
     [DateTime] public partial record MyDateTime;

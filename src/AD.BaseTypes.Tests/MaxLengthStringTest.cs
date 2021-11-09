@@ -1,8 +1,4 @@
-﻿using AD.BaseTypes.Arbitraries;
-using FsCheck;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace AD.BaseTypes.Tests
+﻿namespace AD.BaseTypes.Tests
 {
     [MaxLengthString(MaxLength)]
     public partial record MyMaxLengthString

@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace AD.BaseTypes.Tests.Core
+﻿namespace AD.BaseTypes.Tests.Core
 {
     [TestClass]
     public class CreateTest

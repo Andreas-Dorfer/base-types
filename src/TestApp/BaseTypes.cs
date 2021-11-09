@@ -1,6 +1,4 @@
-﻿using AD.BaseTypes;
-
-namespace TestApp
+﻿namespace TestApp
 {
     [Int] public partial record MyInt;
 

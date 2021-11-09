@@ -1,8 +1,4 @@
-﻿using AD.BaseTypes.Arbitraries;
-using FsCheck;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace AD.BaseTypes.Tests
+﻿namespace AD.BaseTypes.Tests
 {
     [RegexString(@"\d\d\w\w")] public partial record MyRegexString;
 

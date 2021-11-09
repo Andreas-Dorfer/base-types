@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace AD.BaseTypes.Tests.Core
 {
