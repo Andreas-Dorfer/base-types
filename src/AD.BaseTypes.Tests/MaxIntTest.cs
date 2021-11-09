@@ -1,17 +1,16 @@
-﻿namespace AD.BaseTypes.Tests
+﻿namespace AD.BaseTypes.Tests;
+
+[MaxInt(Max)]
+public partial record MyMaxInt
 {
-    [MaxInt(Max)]
-    public partial record MyMaxInt
-    {
-        public const int Max = 100;
-    }
+    public const int Max = 100;
+}
 
-    [TestClass]
-    public class MaxIntTest : BaseTypeTest<MyMaxInt, int>
-    {
-        protected override Arbitrary<MyMaxInt> Arbitrary => new MaxIntArbitrary<MyMaxInt>(MyMaxInt.Max);
+[TestClass]
+public class MaxIntTest : BaseTypeTest<MyMaxInt, int>
+{
+    protected override Arbitrary<MyMaxInt> Arbitrary => new MaxIntArbitrary<MyMaxInt>(MyMaxInt.Max);
 
-        [TestMethod, ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void TooLarge() => new MyMaxInt(MyMaxInt.Max + 1);
-    }
+    [TestMethod, ExpectedException(typeof(ArgumentOutOfRangeException))]
+    public void TooLarge() => new MyMaxInt(MyMaxInt.Max + 1);
 }

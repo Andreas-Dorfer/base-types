@@ -1,12 +1,11 @@
-﻿namespace AD.BaseTypes.Tests
+﻿namespace AD.BaseTypes.Tests;
+
+[Double] public partial record MyDouble;
+
+[TestClass]
+public class DoubleTest : BaseTypeTest<MyDouble, double>
 {
-    [Double] public partial record MyDouble;
+    protected override Arbitrary<MyDouble> Arbitrary => new DoubleArbitrary<MyDouble>();
 
-    [TestClass]
-    public class DoubleTest : BaseTypeTest<MyDouble, double>
-    {
-        protected override Arbitrary<MyDouble> Arbitrary => new DoubleArbitrary<MyDouble>();
-
-        protected override bool JsonFilter(double value) => double.IsFinite(value);
-    }
+    protected override bool JsonFilter(double value) => double.IsFinite(value);
 }
