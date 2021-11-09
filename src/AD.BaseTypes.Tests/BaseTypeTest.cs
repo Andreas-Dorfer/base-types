@@ -36,8 +36,8 @@ namespace AD.BaseTypes.Tests
             Prop.ForAll(Arbitrary, baseType =>
             {
                 var @string = wrappedConverter.ConvertToString(baseType.Value);
-                var value = (TWrapped)wrappedConverter.ConvertFromString(@string);
-                return converter.CanConvertFrom(typeof(string)) && Equals(BaseType<TBaseType, TWrapped>.Create(value), converter.ConvertFromString(@string));
+                var value = (TWrapped)wrappedConverter.ConvertFromString(@string!)!;
+                return converter.CanConvertFrom(typeof(string)) && Equals(BaseType<TBaseType, TWrapped>.Create(value), converter.ConvertFromString(@string!));
             }).QuickCheckThrowOnFailure();
 
         [TestMethod]
