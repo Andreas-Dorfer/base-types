@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AD.BaseTypes
+﻿namespace AD.BaseTypes
 {
     /// <summary>
     /// Bool wrapper.

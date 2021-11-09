@@ -1,5 +1,3 @@
-using System;
-
 namespace TestApp.Web
 {
     public class WeatherForecast

@@ -1,10 +1,5 @@
 using AD.BaseTypes.ModelBinders;
 using AD.BaseTypes.OpenApiSchemas;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
 namespace TestApp.Web

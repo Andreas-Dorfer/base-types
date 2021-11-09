@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AD.BaseTypes.Arbitraries
+﻿namespace AD.BaseTypes.Arbitraries
 {
     /// <summary>
     /// Arbitrary for non-empty GUID base types.

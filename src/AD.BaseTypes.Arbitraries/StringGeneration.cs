@@ -1,6 +1,4 @@
 ﻿using FsCheck;
-using System;
-using System.Linq;
 
 namespace AD.BaseTypes.Arbitraries
 {

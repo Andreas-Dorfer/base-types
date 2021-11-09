@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TestApp
+﻿namespace TestApp
 {
     class Program
     {

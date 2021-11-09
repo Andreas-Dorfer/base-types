@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AD.BaseTypes
+﻿namespace AD.BaseTypes
 {
     /// <summary>
     /// A validated wrapper around a (primitive) type.
