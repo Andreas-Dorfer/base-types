@@ -9,7 +9,7 @@ public partial record MyMinMaxLengthString
 [TestClass]
 public class MinMaxLengthStringTest : BaseTypeTest<MyMinMaxLengthString, string>
 {
-    protected override Arbitrary<MyMinMaxLengthString> Arbitrary => new MinMaxLengthStringArbitrary<MyMinMaxLengthString>(MyMinMaxLengthString.MinLength, MyMinMaxLengthString.MaxLength);
+    protected override MinMaxLengthStringArbitrary<MyMinMaxLengthString> Arbitrary => new(MyMinMaxLengthString.MinLength, MyMinMaxLengthString.MaxLength);
 
     [TestMethod, ExpectedException(typeof(ArgumentNullException))]
     public void NoNull() => new MyMinMaxLengthString(null!);

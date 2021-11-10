@@ -5,7 +5,7 @@
 [TestClass]
 public class DoubleTest : BaseTypeTest<MyDouble, double>
 {
-    protected override Arbitrary<MyDouble> Arbitrary => new DoubleArbitrary<MyDouble>();
+    protected override DoubleArbitrary<MyDouble> Arbitrary => new();
 
     protected override bool JsonFilter(double value) => double.IsFinite(value);
 }

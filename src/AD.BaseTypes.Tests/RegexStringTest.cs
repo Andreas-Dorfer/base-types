@@ -5,7 +5,7 @@
 [TestClass]
 public class RegexStringTest : BaseTypeTest<MyRegexString, string>
 {
-    protected override Arbitrary<MyRegexString> Arbitrary => new ExampleArbitrary<MyRegexString, string>("00aa", "11bb", "42Ek", "72mI", "99XX");
+    protected override ExampleArbitrary<MyRegexString, string> Arbitrary => new("00aa", "11bb", "42Ek", "72mI", "99XX");
 
     [TestMethod, ExpectedException(typeof(ArgumentNullException))]
     public void NoNull() => new MyRegexString(null!);

@@ -5,5 +5,5 @@
 [TestClass]
 public class BoolTest : BaseTypeTest<MyBool, bool>
 {
-    protected override Arbitrary<MyBool> Arbitrary => new BoolArbitrary<MyBool>();
+    protected override BoolArbitrary<MyBool> Arbitrary => new();
 }

@@ -5,5 +5,5 @@ namespace AD.BaseTypes.Tests;
 [TestClass]
 public class DateTimeTest : BaseTypeTest<MyDateTime, DateTime>
 {
-    protected override Arbitrary<MyDateTime> Arbitrary => new DateTimeArbitrary<MyDateTime>();
+    protected override DateTimeArbitrary<MyDateTime> Arbitrary => new();
 }

@@ -5,5 +5,5 @@
 [TestClass]
 public class DecimalTest : BaseTypeTest<MyDecimal, decimal>
 {
-    protected override Arbitrary<MyDecimal> Arbitrary => new DecimalArbitrary<MyDecimal>();
+    protected override DecimalArbitrary<MyDecimal> Arbitrary => new();
 }

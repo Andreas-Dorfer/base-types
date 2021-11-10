@@ -5,7 +5,7 @@
 [TestClass]
 public class GuidTest : BaseTypeTest<MyGuid, Guid>
 {
-    protected override Arbitrary<MyGuid> Arbitrary => new GuidArbitrary<MyGuid>();
+    protected override GuidArbitrary<MyGuid> Arbitrary => new();
 
     [TestMethod, ExpectedException(typeof(ArgumentOutOfRangeException))]
     public void NotEmpty() => new MyGuid(Guid.Empty);

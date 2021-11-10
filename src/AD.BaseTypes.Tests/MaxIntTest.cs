@@ -9,7 +9,7 @@ public partial record MyMaxInt
 [TestClass]
 public class MaxIntTest : BaseTypeTest<MyMaxInt, int>
 {
-    protected override Arbitrary<MyMaxInt> Arbitrary => new MaxIntArbitrary<MyMaxInt>(MyMaxInt.Max);
+    protected override MaxIntArbitrary<MyMaxInt> Arbitrary => new(MyMaxInt.Max);
 
     [TestMethod, ExpectedException(typeof(ArgumentOutOfRangeException))]
     public void TooLarge() => new MyMaxInt(MyMaxInt.Max + 1);

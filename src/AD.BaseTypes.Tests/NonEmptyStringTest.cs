@@ -5,7 +5,7 @@
 [TestClass]
 public class NonEmptyStringTest : BaseTypeTest<MyNonEmptyString, string>
 {
-    protected override Arbitrary<MyNonEmptyString> Arbitrary => new NonEmptyStringArbitrary<MyNonEmptyString>();
+    protected override NonEmptyStringArbitrary<MyNonEmptyString> Arbitrary => new();
 
     [TestMethod, ExpectedException(typeof(ArgumentNullException))]
     public void NoNull() => new MyNonEmptyString(null!);

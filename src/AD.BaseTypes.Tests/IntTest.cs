@@ -5,5 +5,5 @@
 [TestClass]
 public class IntTest : BaseTypeTest<MyInt, int>
 {
-    protected override Arbitrary<MyInt> Arbitrary => new IntArbitrary<MyInt>();
+    protected override IntArbitrary<MyInt> Arbitrary => new();
 }

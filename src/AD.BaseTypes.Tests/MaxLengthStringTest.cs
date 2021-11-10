@@ -9,7 +9,7 @@ public partial record MyMaxLengthString
 [TestClass]
 public class MaxLengthStringTest : BaseTypeTest<MyMaxLengthString, string>
 {
-    protected override Arbitrary<MyMaxLengthString> Arbitrary => new MaxLengthStringArbitrary<MyMaxLengthString>(MyMaxLengthString.MaxLength);
+    protected override MaxLengthStringArbitrary<MyMaxLengthString> Arbitrary => new(MyMaxLengthString.MaxLength);
 
     [TestMethod, ExpectedException(typeof(ArgumentNullException))]
     public void NoNull() => new MyMaxLengthString(null!);

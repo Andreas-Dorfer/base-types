@@ -9,7 +9,7 @@ public partial record MyMinMaxInt
 [TestClass]
 public class MinMaxIntTest : BaseTypeTest<MyMinMaxInt, int>
 {
-    protected override Arbitrary<MyMinMaxInt> Arbitrary => new MinMaxIntArbitrary<MyMinMaxInt>(MyMinMaxInt.Min, MyMinMaxInt.Max);
+    protected override MinMaxIntArbitrary<MyMinMaxInt> Arbitrary => new(MyMinMaxInt.Min, MyMinMaxInt.Max);
 
     [TestMethod, ExpectedException(typeof(ArgumentOutOfRangeException))]
     public void TooSmall() => new MyMinMaxInt(MyMinMaxInt.Min - 1);

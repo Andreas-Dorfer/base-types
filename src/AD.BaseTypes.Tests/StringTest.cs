@@ -5,7 +5,7 @@
 [TestClass]
 public class StringTest : BaseTypeTest<MyString, string>
 {
-    protected override Arbitrary<MyString> Arbitrary => new StringArbitrary<MyString>();
+    protected override StringArbitrary<MyString> Arbitrary => new();
 
     [TestMethod, ExpectedException(typeof(ArgumentNullException))]
     public void NoNull() => new MyString(null!);

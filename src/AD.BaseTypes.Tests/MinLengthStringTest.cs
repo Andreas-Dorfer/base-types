@@ -9,7 +9,7 @@ public partial record MyMinLengthString
 [TestClass]
 public class MinLengthStringTest : BaseTypeTest<MyMinLengthString, string>
 {
-    protected override Arbitrary<MyMinLengthString> Arbitrary => new MinLengthStringArbitrary<MyMinLengthString>(MyMinLengthString.MinLength);
+    protected override MinLengthStringArbitrary<MyMinLengthString> Arbitrary => new(MyMinLengthString.MinLength);
 
     [TestMethod, ExpectedException(typeof(ArgumentNullException))]
     public void NoNull() => new MyMinLengthString(null!);
