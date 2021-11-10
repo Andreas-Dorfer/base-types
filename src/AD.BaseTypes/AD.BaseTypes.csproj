@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageId>AndreasDorfer.BaseTypes</PackageId>
-    <Version>1.1.1</Version>
+    <Version>1.2.0</Version>
     <Authors>Andreas Dorfer</Authors>
     <Description>Fight primitive obsession and create expressive domain models with source generators.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -15,8 +15,8 @@
   </PropertyGroup>
   
   <ItemGroup Condition="'$(Configuration)'!='Debug'">
-    <PackageReference Include="AndreasDorfer.BaseTypes.Core" Version="1.1.0" />
-    <PackageReference Include="AndreasDorfer.BaseTypes.Generator" Version="1.1.1" />
+    <PackageReference Include="AndreasDorfer.BaseTypes.Core" Version="1.2.0" />
+    <PackageReference Include="AndreasDorfer.BaseTypes.Generator" Version="1.2.0" />
   </ItemGroup>
   
   <ItemGroup Condition="'$(Configuration)'=='Debug'">
