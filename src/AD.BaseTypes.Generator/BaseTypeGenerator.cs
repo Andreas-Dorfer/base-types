@@ -50,9 +50,11 @@ namespace AD.BaseTypes.Generator
             foreach (var record in ((PartialRecordsWithAttributesReceiver)context.SyntaxReceiver).Records)
             {
                 var semantics = context.Compilation.GetSemanticModel(record.SyntaxTree);
+                var compilation = context.Compilation;
 
                 var attributes = GetAllAttributes(record);
-                if (!TryGetBaseType(semantics, attributes, out var baseType)) continue;
+                var iComparable = compilation.GetTypeByMetadataName("System.IComparable`1");
+                if (!TryGetBaseType(semantics, compilation, iComparable, attributes, out var baseType, out var comparable)) continue;
 
                 var sourceBuilder = new IndentedStringBuilder();
 
@@ -75,7 +77,14 @@ namespace AD.BaseTypes.Generator
                 }
                 sourceBuilder.AppendLine($"[System.ComponentModel.TypeConverter(typeof(AD.BaseTypes.Converters.BaseTypeTypeConverter<{recordName}, {baseType}>))]");
                 sourceBuilder.AppendLine($"[System.Text.Json.Serialization.JsonConverter(typeof(AD.BaseTypes.Json.BaseTypeJsonConverter<{recordName}, {baseType}>))]");
-                sourceBuilder.AppendLine($"sealed partial record {recordName} : System.IComparable<{recordName}>, System.IComparable, AD.BaseTypes.IBaseType<{baseType}>");
+                if (comparable)
+                {
+                    sourceBuilder.AppendLine($"sealed partial record {recordName} : System.IComparable<{recordName}>, System.IComparable, AD.BaseTypes.IBaseType<{baseType}>");
+                }
+                else
+                {
+                    sourceBuilder.AppendLine($"sealed partial record {recordName} : AD.BaseTypes.IBaseType<{baseType}>");
+                }
                 sourceBuilder.AppendLine("{");
                 sourceBuilder.IncreaseIndent();
                 //*****
@@ -102,10 +111,13 @@ namespace AD.BaseTypes.Generator
                 sourceBuilder.AppendLine($"{baseType} AD.BaseTypes.IBaseType<{baseType}>.Value => value;");
                 AppendInheritDoc(sourceBuilder);
                 sourceBuilder.AppendLine("public override string ToString() => value.ToString();");
-                AppendInheritDoc(sourceBuilder);
-                sourceBuilder.AppendLine($"public int CompareTo(object? obj) => CompareTo(obj as {recordName});");
-                AppendInheritDoc(sourceBuilder);
-                sourceBuilder.AppendLine($"public int CompareTo({recordName}? other) => other is null ? 1 : System.Collections.Generic.Comparer<{baseType}>.Default.Compare(value, other.value);");
+                if (comparable)
+                {
+                    AppendInheritDoc(sourceBuilder);
+                    sourceBuilder.AppendLine($"public int CompareTo(object? obj) => CompareTo(obj as {recordName});");
+                    AppendInheritDoc(sourceBuilder);
+                    sourceBuilder.AppendLine($"public int CompareTo({recordName}? other) => other is null ? 1 : System.Collections.Generic.Comparer<{baseType}>.Default.Compare(value, other.value);");
+                }
                 AppendCast(sourceBuilder, semantics, attributes, baseType, recordName);
                 AppendSummaryComment(sourceBuilder, $"Creates the <see cref=\"{recordName}\"/>.");
                 AppendParamComment(sourceBuilder, "value", $"The underlying <see cref=\"{baseType}\"/>.");
@@ -150,26 +162,34 @@ namespace AD.BaseTypes.Generator
         static IEnumerable<AttributeSyntax> GetAllAttributes(RecordDeclarationSyntax record) =>
             record.AttributeLists.SelectMany(_ => _.Attributes);
 
-        static bool TryGetBaseType(SemanticModel semantics, IEnumerable<AttributeSyntax> attributes, out string baseType)
+        static bool TryGetBaseType(SemanticModel semantics, Compilation compilation, INamedTypeSymbol iComparable, IEnumerable<AttributeSyntax> attributes, out string baseType, out bool comparable)
         {
-            var baseTypes = GetBaseTypes(semantics, attributes);
+            var baseTypes = GetBaseTypes(semantics, compilation, iComparable, attributes);
             if (baseTypes.Length != 1)
             {
                 baseType = default;
+                comparable = default;
                 return false;
             }
-            baseType = baseTypes[0];
+            baseType = baseTypes[0].BaseType;
+            comparable = baseTypes[0].Comparable;
             return true;
         }
 
-        static string[] GetBaseTypes(SemanticModel semantics, IEnumerable<AttributeSyntax> attributes) =>
+        static (string BaseType, bool Comparable)[] GetBaseTypes(SemanticModel semantics, Compilation compilation, INamedTypeSymbol iComparable, IEnumerable<AttributeSyntax> attributes) =>
             attributes.SelectMany(attribute =>
                 semantics.GetSymbolInfo(attribute).Symbol?.ContainingType.AllInterfaces.Select(@interface =>
                 {
                     var match = BaseTypeDefinitionRegex.Match(@interface.ToDisplayString());
-                    return match.Success ? match.Groups["type"].Value : null;
-                }) ?? Enumerable.Empty<string>())
-            .Where(_ => _ != null).Distinct().ToArray();
+                    if (!match.Success) return default;
+
+                    var baseType = @interface.TypeArguments[0];
+                    var baseTypeComparable = iComparable.Construct(baseType);
+                    var comparable = baseType.AllInterfaces.Any(_ => SymbolEqualityComparer.Default.Equals(_, baseTypeComparable));
+
+                    return (BaseType: match.Groups["type"].Value, comparable);
+                }) ?? Enumerable.Empty<(string, bool)>())
+            .Where(_ => _.BaseType != null).Distinct().ToArray();
 
         static string GetNamespace(RecordDeclarationSyntax record, SemanticModel semantics) =>
             semantics.GetDeclaredSymbol(record).ContainingNamespace?.ToDisplayString() ?? "";
@@ -184,7 +204,7 @@ namespace AD.BaseTypes.Generator
         static void AppendParamComment(IndentedStringBuilder sourceBuilder, string name, string comment) =>
             sourceBuilder.AppendLine($"/// <param name=\"{name}\">{comment}</param>");
 
-        static void AppendExceptionComment(IndentedStringBuilder sourceBuilder, string name, string comment)=>
+        static void AppendExceptionComment(IndentedStringBuilder sourceBuilder, string name, string comment) =>
             sourceBuilder.AppendLine($"/// <exception cref=\"{name}\">{comment}</exception>");
 
         static void AppendInheritDoc(IndentedStringBuilder sourceBuilder) =>
