@@ -1,4 +1,6 @@
-﻿namespace AD.BaseTypes;
+﻿using System.Runtime.CompilerServices;
+
+namespace AD.BaseTypes;
 
 /// <summary>
 /// Non-empty GUID.
@@ -7,8 +9,8 @@
 public class GuidAttribute : Attribute, IBaseTypeValidation<Guid>
 {
     /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> is empty.</exception>
-    public void Validate(Guid value)
+    public void Validate(Guid value, [CallerArgumentExpression("value")] string paramName = "")
     {
-        if (value == Guid.Empty) throw new ArgumentOutOfRangeException(nameof(value), value, "Parameter must not be empty.");
+        if (value == Guid.Empty) throw new ArgumentOutOfRangeException(paramName, value, $"'{paramName}' must not be empty.");
     }
 }
