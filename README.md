@@ -133,7 +133,7 @@ The included attributes are:
 - `DateTimeAttribute`: any `DateTime`
 - `DecimalAttribute`: any `decimal`
 - `DoubleAttribute`: any `double`
-- `GuidAttribute`: any `Guid` that's not empty
+- `GuidAttribute`: any `Guid`
 - `IntAttribute`: any `int`
 - `MaxIntAttribute`: `int`s less than or equal to a maximal value
 - `MaxLengthStringAttribute`: `string`s with a maximal character count
@@ -141,6 +141,7 @@ The included attributes are:
 - `MinLengthStringAttribute`: `string`s with a minimal character count
 - `MinMaxIntAttribute`: `int`s within a range
 - `MinMaxLengthStringAttribute`: `string`s with a character count within a range
+- `NonEmptyGuidAttribute`: any `Guid` that's not empty
 - `NonEmptyStringAttribute`: any `string` that's not null and not empty
 - `PositiveDecimalAttribute`: positive `decimal`s
 - `RegexStringAttribute`: `string`s that follow a certain pattern
@@ -248,6 +249,7 @@ The included arbitraries are:
 - `MinLengthStringArbitrary`
 - `MinMaxIntArbitrary`
 - `MinMaxLengthStringArbitrary`
+- `NonEmptyGuidArbitrary`
 - `NonEmptyStringArbitrary`
 - `PositiveDecimalArbitrary`
 - `StringArbitrary`
