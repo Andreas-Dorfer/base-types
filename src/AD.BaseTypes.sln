@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31515.178
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AD.BaseTypes", "AD.BaseTypes\AD.BaseTypes.csproj", "{3E6FCE55-7292-47A9-A177-CD1E9BEC67E2}"
 EndProject
@@ -23,7 +23,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestApp.Web", "TestApp.Web\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AD.BaseTypes.Tests", "AD.BaseTypes.Tests\AD.BaseTypes.Tests.csproj", "{9E193EED-73A4-4C0D-9823-9ED8FFB3F52B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AD.BaseTypes.OpenApiSchemas", "AD.BaseTypes.OpenApiSchemas\AD.BaseTypes.OpenApiSchemas.csproj", "{FD16942F-A075-4F71-9B31-F3807DF77F4A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AD.BaseTypes.OpenApiSchemas", "AD.BaseTypes.OpenApiSchemas\AD.BaseTypes.OpenApiSchemas.csproj", "{FD16942F-A075-4F71-9B31-F3807DF77F4A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{447BB9F5-B737-4E47-97FF-7EC80BEE8E43}"
+	ProjectSection(SolutionItems) = preProject
+		ESD_512.png = ESD_512.png
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

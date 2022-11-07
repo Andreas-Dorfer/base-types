@@ -3,6 +3,6 @@
 /// <summary>
 /// Int wrapper.
 /// </summary>
-[AttributeUsage(AttributeTargets.Class)]
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
 public class IntAttribute : Attribute, IBaseTypeDefinition<int>
 { }

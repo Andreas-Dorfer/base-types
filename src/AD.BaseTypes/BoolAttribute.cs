@@ -3,6 +3,6 @@
 /// <summary>
 /// Bool wrapper.
 /// </summary>
-[AttributeUsage(AttributeTargets.Class)]
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
 public class BoolAttribute : Attribute, IBaseTypeDefinition<bool>
 { }

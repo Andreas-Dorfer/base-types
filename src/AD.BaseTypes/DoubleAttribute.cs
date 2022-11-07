@@ -3,6 +3,6 @@
 /// <summary>
 /// Double wrapper.
 /// </summary>
-[AttributeUsage(AttributeTargets.Class)]
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
 public class DoubleAttribute : Attribute, IBaseTypeDefinition<double>
 { }

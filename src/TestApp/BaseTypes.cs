@@ -1,16 +1,16 @@
 ﻿namespace TestApp;
 
-[Int] public partial record MyInt;
+[Int] public partial record struct MyInt;
 
-[Double] public partial record MyDouble;
+[Double] public partial record struct MyDouble;
 
-[Decimal] public partial record MyDecimal;
+[Decimal] public partial record struct MyDecimal;
+
+[Guid] public partial record struct MyGuid;
+
+[DateTime] public partial record struct MyDateTime;
 
 [String] public partial record MyString;
-
-[Guid] public partial record MyGuid;
-
-[DateTime] public partial record MyDateTime;
 
 [MinInt(-100)] public partial record MyMinInt;
 
@@ -19,6 +19,8 @@
 [MinMaxInt(-10, 10)] public partial record MyMinMaxInt;
 
 [PositiveDecimal] public partial record MyPositiveDecimal;
+
+[NonEmptyGuid] public partial record MyNonEmptyGuid;
 
 [NonEmptyString] public partial record MyNonEmptyString;
 

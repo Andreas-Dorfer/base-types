@@ -6,7 +6,12 @@
 public class GuidTest : BaseTypeTest<MyGuid, Guid>
 {
     protected override GuidArbitrary<MyGuid> Arbitrary => new();
+}
 
-    [TestMethod, ExpectedException(typeof(ArgumentOutOfRangeException))]
-    public void NotEmpty() => new MyGuid(Guid.Empty);
+[Guid] public partial record struct MyGuidStruct;
+
+[TestClass]
+public class GuidStructTest : BaseTypeTest<MyGuidStruct, Guid>
+{
+    protected override GuidArbitrary<MyGuidStruct> Arbitrary => new();
 }
