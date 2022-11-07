@@ -8,19 +8,19 @@
 [TestClass]
 public class CastTest
 {
-    [TestMethod]
-    public void Default_is_explicit() =>
-        Prop.ForAll<NonEmptyString>(str => Assert.AreEqual(str.Item, (string)BaseType<DefaultString, string>.Create(str.Item))).QuickCheckThrowOnFailure();
+    [Property]
+    public void Default_is_explicit(NonEmptyString str) =>
+        Assert.AreEqual(str.Item, (string)BaseType<DefaultString, string>.Create(str.Item));
 
-    [TestMethod]
-    public void Explicit() =>
-        Prop.ForAll<NonEmptyString>(str => Assert.AreEqual(str.Item, (string)BaseType<ExplicitString, string>.Create(str.Item))).QuickCheckThrowOnFailure();
+    [Property]
+    public void Explicit(NonEmptyString str) =>
+        Assert.AreEqual(str.Item, (string)BaseType<ExplicitString, string>.Create(str.Item));
 
-    [TestMethod]
-    public void Implicit() =>
-        Prop.ForAll<NonEmptyString>(str => Assert.AreEqual(str.Item, BaseType<ImplicitString, string>.Create(str.Item))).QuickCheckThrowOnFailure();
+    [Property]
+    public void Implicit(NonEmptyString str) =>
+        Assert.AreEqual(str.Item, BaseType<ImplicitString, string>.Create(str.Item));
 
-    [TestMethod]
-    public void None() =>
-        Prop.ForAll<NonEmptyString>(str => Assert.AreNotEqual(str.Item, BaseType<NoneString, string>.Create(str.Item))).QuickCheckThrowOnFailure();
+    [Property]
+    public void None(NonEmptyString str) =>
+        Assert.AreNotEqual(str.Item, BaseType<NoneString, string>.Create(str.Item));
 }
