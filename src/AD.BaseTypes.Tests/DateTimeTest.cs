@@ -7,3 +7,11 @@ public class DateTimeTest : BaseTypeTest<MyDateTime, DateTime>
 {
     protected override DateTimeArbitrary<MyDateTime> Arbitrary => new();
 }
+
+[DateTime] public partial record struct MyDateTimeStruct;
+
+[TestClass]
+public class DateTimeStructTest : BaseTypeTest<MyDateTimeStruct, DateTime>
+{
+    protected override DateTimeArbitrary<MyDateTimeStruct> Arbitrary => new();
+}

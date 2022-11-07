@@ -3,6 +3,6 @@
 /// <summary>
 /// Decimal wrapper.
 /// </summary>
-[AttributeUsage(AttributeTargets.Class)]
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
 public class DecimalAttribute : Attribute, IBaseTypeDefinition<decimal>
 { }

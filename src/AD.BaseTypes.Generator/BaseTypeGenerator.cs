@@ -53,6 +53,9 @@ namespace AD.BaseTypes.Generator
 
                 var attributes = GetAllAttributes(record);
                 if (!TryGetBaseType(semantics, attributes, out var baseType)) continue;
+                var isRecord = record.ClassOrStructKeyword.IsKind(SyntaxKind.StructKeyword);
+                var @sealed = isRecord ? "" : "sealed ";
+                var recordType = isRecord ? " struct" : "";
 
                 var sourceBuilder = new IndentedStringBuilder();
 
@@ -75,7 +78,7 @@ namespace AD.BaseTypes.Generator
                 }
                 sourceBuilder.AppendLine($"[System.ComponentModel.TypeConverter(typeof(AD.BaseTypes.Converters.BaseTypeTypeConverter<{recordName}, {baseType}>))]");
                 sourceBuilder.AppendLine($"[System.Text.Json.Serialization.JsonConverter(typeof(AD.BaseTypes.Json.BaseTypeJsonConverter<{recordName}, {baseType}>))]");
-                sourceBuilder.AppendLine($"sealed partial record {recordName} : System.IComparable<{recordName}>, System.IComparable, AD.BaseTypes.IBaseType<{baseType}>");
+                sourceBuilder.AppendLine($"{@sealed}partial record{recordType} {recordName} : System.IComparable<{recordName}>, System.IComparable, AD.BaseTypes.IBaseType<{baseType}>");
                 sourceBuilder.AppendLine("{");
                 sourceBuilder.IncreaseIndent();
                 //*****
@@ -103,9 +106,29 @@ namespace AD.BaseTypes.Generator
                 AppendInheritDoc(sourceBuilder);
                 sourceBuilder.AppendLine("public override string ToString() => value.ToString();");
                 AppendInheritDoc(sourceBuilder);
-                sourceBuilder.AppendLine($"public int CompareTo(object? obj) => CompareTo(obj as {recordName});");
+                if (isRecord)
+                {
+                    sourceBuilder.AppendLine($"public int CompareTo(object? obj)");
+                    sourceBuilder.AppendLine("{");
+                    sourceBuilder.IncreaseIndent();
+                    sourceBuilder.AppendLine($"if(obj is not {recordName} other) return 1;");
+                    sourceBuilder.AppendLine("return CompareTo(other);");
+                    sourceBuilder.DecreaseIndent();
+                    sourceBuilder.AppendLine("}");
+                }
+                else
+                {
+                    sourceBuilder.AppendLine($"public int CompareTo(object? obj) => CompareTo(obj as {recordName});");
+                }
                 AppendInheritDoc(sourceBuilder);
-                sourceBuilder.AppendLine($"public int CompareTo({recordName}? other) => other is null ? 1 : System.Collections.Generic.Comparer<{baseType}>.Default.Compare(value, other.value);");
+                if (isRecord)
+                {
+                    sourceBuilder.AppendLine($"public int CompareTo({recordName} other) => System.Collections.Generic.Comparer<{baseType}>.Default.Compare(value, other.value);");
+                }
+                else
+                {
+                    sourceBuilder.AppendLine($"public int CompareTo({recordName}? other) => other is null ? 1 : System.Collections.Generic.Comparer<{baseType}>.Default.Compare(value, other.value);");
+                }
                 AppendCast(sourceBuilder, semantics, attributes, baseType, recordName);
                 AppendSummaryComment(sourceBuilder, $"Creates the <see cref=\"{recordName}\"/>.");
                 AppendParamComment(sourceBuilder, "value", $"The underlying <see cref=\"{baseType}\"/>.");
