@@ -8,6 +8,8 @@
 
 [String] public partial record MyString;
 
+[Guid] public partial record MyGuid;
+
 [DateTime] public partial record MyDateTime;
 
 [MinInt(-100)] public partial record MyMinInt;
