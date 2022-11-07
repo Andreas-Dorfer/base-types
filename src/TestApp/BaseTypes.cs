@@ -10,6 +10,8 @@
 
 [DateTime] public partial record struct MyDateTime;
 
+[String] public partial record MyString;
+
 [MinInt(-100)] public partial record MyMinInt;
 
 [MaxInt(100)] public partial record MyMaxInt;
@@ -19,8 +21,6 @@
 [PositiveDecimal] public partial record MyPositiveDecimal;
 
 [NonEmptyGuid] public partial record MyNonEmptyGuid;
-
-[NonNullString] public partial record MyNonNullString;
 
 [NonEmptyString] public partial record MyNonEmptyString;
 
