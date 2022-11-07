@@ -4,7 +4,7 @@
 /// Arbitrary for string base types with a length range.
 /// </summary>
 /// <typeparam name="TBaseType"></typeparam>
-public class MinMaxLengthStringArbitrary<TBaseType> : StringArbitrary<TBaseType> where TBaseType : IBaseType<string>
+public class MinMaxLengthStringArbitrary<TBaseType> : NonNullStringArbitrary<TBaseType> where TBaseType : IBaseType<string>
 {
     /// <param name="minLength">The minimal length.</param>
     /// <param name="maxLength">The maximal length.</param>

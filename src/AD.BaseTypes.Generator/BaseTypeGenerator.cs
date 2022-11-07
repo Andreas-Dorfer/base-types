@@ -75,7 +75,7 @@ namespace AD.BaseTypes.Generator
 
                 //record start
                 var recordName = record.Identifier.Text;
-                if (config?.AllowNullLiteral == false)
+                if (!isStruct && config?.AllowNullLiteral == false)
                 {
                     sourceBuilder.AppendLine("[Microsoft.FSharp.Core.AllowNullLiteral(false)]");
                 }

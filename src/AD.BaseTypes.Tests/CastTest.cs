@@ -1,9 +1,9 @@
 ﻿namespace AD.BaseTypes.Tests;
 
-[String] public partial record DefaultString;
-[String, BaseType(Cast.Explicit)] public partial record ExplicitString;
-[String, BaseType(Cast.Implicit)] public partial record ImplicitString;
-[String, BaseType(Cast.None)] public partial record NoneString;
+[NonNullString] public partial record DefaultString;
+[NonNullString, BaseType(Cast.Explicit)] public partial record ExplicitString;
+[NonNullString, BaseType(Cast.Implicit)] public partial record ImplicitString;
+[NonNullString, BaseType(Cast.None)] public partial record NoneString;
 
 [TestClass]
 public class CastTest
