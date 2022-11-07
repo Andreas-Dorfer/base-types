@@ -4,7 +4,7 @@
 /// Non-empty GUID.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class)]
-public class GuidAttribute : Attribute, IBaseTypeValidation<Guid>
+public class NonEmptyGuidAttribute : Attribute, IBaseTypeValidation<Guid>
 {
     /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> is empty.</exception>
     public void Validate(Guid value)

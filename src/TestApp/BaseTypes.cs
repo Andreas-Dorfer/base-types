@@ -8,8 +8,6 @@
 
 [String] public partial record MyString;
 
-[Guid] public partial record MyGuid;
-
 [DateTime] public partial record MyDateTime;
 
 [MinInt(-100)] public partial record MyMinInt;
@@ -19,6 +17,8 @@
 [MinMaxInt(-10, 10)] public partial record MyMinMaxInt;
 
 [PositiveDecimal] public partial record MyPositiveDecimal;
+
+[NonEmptyGuid] public partial record MyNonEmptyGuid;
 
 [NonEmptyString] public partial record MyNonEmptyString;
 
