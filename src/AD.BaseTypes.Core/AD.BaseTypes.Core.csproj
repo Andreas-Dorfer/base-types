@@ -7,12 +7,17 @@
     <RootNamespace>AD.BaseTypes</RootNamespace>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageId>AndreasDorfer.BaseTypes.Core</PackageId>
-    <Version>1.2.0</Version>
+    <Version>1.3.0</Version>
     <Authors>Andreas Dorfer</Authors>
     <Description>Fight primitive obsession and create expressive domain models with source generators.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/Andreas-Dorfer/base-types</RepositoryUrl>
     <PackageTags>C#, source-generator, domain-modeling, validation, primitive-obsession</PackageTags>
+    <PackageIcon>ESD_512.png</PackageIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\ESD_512.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
 </Project>
