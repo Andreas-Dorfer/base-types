@@ -53,9 +53,12 @@ namespace AD.BaseTypes.Generator
 
                 var attributes = GetAllAttributes(record);
                 if (!TryGetBaseType(semantics, attributes, out var baseType)) continue;
-                var isRecord = record.ClassOrStructKeyword.IsKind(SyntaxKind.StructKeyword);
-                var @sealed = isRecord ? "" : "sealed ";
-                var recordType = isRecord ? " struct" : "";
+                var isStruct = record.ClassOrStructKeyword.IsKind(SyntaxKind.StructKeyword);
+                var validations = GetAllValidations(semantics, attributes, baseType).ToList();
+                if (isStruct && validations.Count > 0) continue;
+
+                var @sealed = isStruct ? "" : "sealed ";
+                var recordType = isStruct ? " struct" : "";
 
                 var sourceBuilder = new IndentedStringBuilder();
 
@@ -94,7 +97,7 @@ namespace AD.BaseTypes.Generator
                 sourceBuilder.IncreaseIndent();
                 //*****
 
-                AppendValidations(sourceBuilder, semantics, attributes, baseType);
+                AppendValidations(sourceBuilder, semantics, validations);
                 sourceBuilder.AppendLine("this.value = value;");
 
                 //constructor end
@@ -106,7 +109,7 @@ namespace AD.BaseTypes.Generator
                 AppendInheritDoc(sourceBuilder);
                 sourceBuilder.AppendLine("public override string ToString() => value.ToString();");
                 AppendInheritDoc(sourceBuilder);
-                if (isRecord)
+                if (isStruct)
                 {
                     sourceBuilder.AppendLine($"public int CompareTo(object? obj)");
                     sourceBuilder.AppendLine("{");
@@ -121,7 +124,7 @@ namespace AD.BaseTypes.Generator
                     sourceBuilder.AppendLine($"public int CompareTo(object? obj) => CompareTo(obj as {recordName});");
                 }
                 AppendInheritDoc(sourceBuilder);
-                if (isRecord)
+                if (isStruct)
                 {
                     sourceBuilder.AppendLine($"public int CompareTo({recordName} other) => System.Collections.Generic.Comparer<{baseType}>.Default.Compare(value, other.value);");
                 }
@@ -216,9 +219,9 @@ namespace AD.BaseTypes.Generator
         static void AppendReturnsComment(IndentedStringBuilder sourceBuilder, string comment) =>
             sourceBuilder.AppendLine($"/// <returns>{comment}</returns>");
 
-        static void AppendValidations(IndentedStringBuilder sourceBuilder, SemanticModel semantics, IEnumerable<AttributeSyntax> attributes, string baseType)
+        static void AppendValidations(IndentedStringBuilder sourceBuilder, SemanticModel semantics, IEnumerable<AttributeSyntax> validations)
         {
-            foreach (var validation in GetAllValidations(semantics, attributes, baseType))
+            foreach (var validation in validations)
             {
                 var validationType = semantics.GetSymbolInfo(validation).Symbol.ContainingType;
                 var args = validation?.ArgumentList?.Arguments.ToString() ?? "";
