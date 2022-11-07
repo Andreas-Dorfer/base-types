@@ -283,6 +283,7 @@ You can configure the generator to emit the `Microsoft.FSharp.Core.AllowNullLite
 <ItemGroup>
   <AdditionalFiles Include="AD.BaseTypes.Generator.json" />
 </ItemGroup>
+```
 
 ---
 [![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.BaseTypes.ModelBinders.svg)](https://www.nuget.org/packages/AndreasDorfer.BaseTypes.ModelBinders/)
