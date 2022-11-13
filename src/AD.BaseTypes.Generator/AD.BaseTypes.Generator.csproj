@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <IncludeBuildOutput>false</IncludeBuildOutput>
@@ -8,11 +7,9 @@
     <Authors>Andreas Dorfer</Authors>
     <Description>A source generator to fight primitive obsession and create expressive domain models.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <RepositoryUrl>https://github.com/Andreas-Dorfer/base-types</RepositoryUrl>
     <PackageTags>C#, source-generator, domain-modeling, validation, primitive-obsession</PackageTags>
     <PackageIcon>ESD_512.png</PackageIcon>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.3.1" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3" PrivateAssets="all" />
@@ -20,5 +17,4 @@
     <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
     <None Include="..\ESD_512.png" Pack="true" PackagePath="\" />
   </ItemGroup>
-
 </Project>
