@@ -210,7 +210,7 @@ namespace AD.BaseTypes.Generator
         static void AppendParamComment(IndentedStringBuilder sourceBuilder, string name, string comment) =>
             sourceBuilder.AppendLine($"/// <param name=\"{name}\">{comment}</param>");
 
-        static void AppendExceptionComment(IndentedStringBuilder sourceBuilder, string name, string comment)=>
+        static void AppendExceptionComment(IndentedStringBuilder sourceBuilder, string name, string comment) =>
             sourceBuilder.AppendLine($"/// <exception cref=\"{name}\">{comment}</exception>");
 
         static void AppendInheritDoc(IndentedStringBuilder sourceBuilder) =>

@@ -1,6 +1,5 @@
 namespace AD.BaseTypes.Tests;
 
- 
 [DateTimeOffset] public partial record MyDateTimeOffset;
 
 [TestClass]

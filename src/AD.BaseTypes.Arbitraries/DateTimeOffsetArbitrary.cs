@@ -1,10 +1,5 @@
 namespace AD.BaseTypes.Arbitraries;
 
-public class DateTimeOffsetArbitrary
-{
-    
-}
-
 /// <summary>
 /// Arbitrary for DateTimeOffset base types.
 /// </summary>

@@ -1,6 +1,5 @@
 namespace AD.BaseTypes;
 
- 
 /// <summary>
 /// DateTimeOffset wrapper.
 /// </summary>
