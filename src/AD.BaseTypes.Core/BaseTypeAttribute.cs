@@ -3,7 +3,7 @@
 /// <summary>
 /// Arguments to the source generator.
 /// </summary>
-[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = false)]
 public sealed class BaseTypeAttribute : Attribute
 {
     /// <summary>
