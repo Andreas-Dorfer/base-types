@@ -1,26 +1,16 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
-
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">  
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
-
   <ItemGroup Condition="'$(Configuration)'!='Debug'">
     <PackageReference Include="AndreasDorfer.BaseTypes.ModelBinders" Version="0.7.0" />
     <PackageReference Include="AndreasDorfer.BaseTypes.OpenApiSchemas" Version="0.7.0" />
   </ItemGroup>
-  
   <ItemGroup Condition="'$(Configuration)'=='Debug'">
     <ProjectReference Include="..\AD.BaseTypes.ModelBinders\AD.BaseTypes.ModelBinders.csproj" />
     <ProjectReference Include="..\AD.BaseTypes.OpenApiSchemas\AD.BaseTypes.OpenApiSchemas.csproj" />
   </ItemGroup>
-  
   <ItemGroup>
     <ProjectReference Include="..\TestApp\TestApp.csproj" />
   </ItemGroup>
-
 </Project>

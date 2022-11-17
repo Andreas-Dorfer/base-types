@@ -1,0 +1,11 @@
+<Project>
+	<PropertyGroup>
+		<TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+		<LangVersion>latest</LangVersion>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+	<PropertyGroup Label="PackageMetadata">
+		<RepositoryUrl>https://github.com/Andreas-Dorfer/base-types</RepositoryUrl>
+	</PropertyGroup>
+</Project>
