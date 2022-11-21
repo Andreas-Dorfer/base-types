@@ -47,7 +47,7 @@ namespace AD.BaseTypes.Generator
         {
             var config = ReadConfig(context);
 
-            foreach (var record in ((PartialRecordsWithAttributesReceiver)context.SyntaxReceiver).Records)
+            foreach (var record in (context.SyntaxReceiver as PartialRecordsWithAttributesReceiver)?.Records ?? Enumerable.Empty<RecordDeclarationSyntax>())
             {
                 var semantics = context.Compilation.GetSemanticModel(record.SyntaxTree);
 
@@ -151,7 +151,7 @@ namespace AD.BaseTypes.Generator
 
         static readonly Regex ConfigKeyValueRegex = new Regex(@"""(?<key>.+)""\s*:\s*(?<value>.+);?");
 
-        static Config ReadConfig(GeneratorExecutionContext context)
+        static Config? ReadConfig(GeneratorExecutionContext context)
         {
             var configFile = context.AdditionalFiles.FirstOrDefault(_ => _.Path.EndsWith("AD.BaseTypes.Generator.json"));
             if (configFile == null) return default;
@@ -181,7 +181,7 @@ namespace AD.BaseTypes.Generator
             var baseTypes = GetBaseTypes(semantics, attributes);
             if (baseTypes.Length != 1)
             {
-                baseType = default;
+                baseType = default!;
                 return false;
             }
             baseType = baseTypes[0];
@@ -195,10 +195,10 @@ namespace AD.BaseTypes.Generator
                     var match = BaseTypeDefinitionRegex.Match(@interface.ToDisplayString());
                     return match.Success ? match.Groups["type"].Value : null;
                 }) ?? Enumerable.Empty<string>())
-            .Where(_ => _ != null).Distinct().ToArray();
+            .Where(_ => _ != null).Distinct().ToArray()!;
 
         static string GetNamespace(RecordDeclarationSyntax record, SemanticModel semantics) =>
-            semantics.GetDeclaredSymbol(record).ContainingNamespace?.ToDisplayString() ?? "";
+            semantics.GetDeclaredSymbol(record)?.ContainingNamespace?.ToDisplayString() ?? "";
 
         static void AppendSummaryComment(IndentedStringBuilder sourceBuilder, string summary)
         {
@@ -223,7 +223,8 @@ namespace AD.BaseTypes.Generator
         {
             foreach (var validation in validations)
             {
-                var validationType = semantics.GetSymbolInfo(validation).Symbol.ContainingType;
+                var validationType = semantics.GetSymbolInfo(validation).Symbol?.ContainingType;
+                if (validationType is null) continue;
                 var args = validation?.ArgumentList?.Arguments.ToString() ?? "";
                 sourceBuilder.AppendLine($"new {validationType.ToDisplayString()}({args}).Validate(value);");
             }
@@ -254,14 +255,15 @@ namespace AD.BaseTypes.Generator
             }
         }
 
-        static string GetCast(SemanticModel semantics, IEnumerable<AttributeSyntax> attributes)
+        static string? GetCast(SemanticModel semantics, IEnumerable<AttributeSyntax> attributes)
         {
             var configs = attributes.Where(attribute => semantics.GetSymbolInfo(attribute).Symbol?.ContainingType.ToDisplayString() == BaseTypeAttributeName).ToArray();
             if (configs.Length != 1) return null;
-            var args = configs[0].ArgumentList.Arguments;
-            if (args.Count != 1) return null;
+            var args = configs[0].ArgumentList?.Arguments;
+            if (args is null) return null;
+            if (args.Value.Count != 1) return null;
 
-            if (!(args[0].Expression is MemberAccessExpressionSyntax expression)) return null;
+            if (!(args.Value[0].Expression is MemberAccessExpressionSyntax expression)) return null;
 
             return expression.Name.Identifier.Text;
         }
