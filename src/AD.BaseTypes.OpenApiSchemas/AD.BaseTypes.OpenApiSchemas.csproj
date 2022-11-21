@@ -1,19 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <PackageId>AndreasDorfer.BaseTypes.OpenApiSchemas</PackageId>
-    <Version>0.8.0</Version>
-    <Authors>Andreas Dorfer</Authors>
-    <Description>OpenAPI schemas for generated base types.</Description>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-  </PropertyGroup>
-  <ItemGroup Condition="'$(Configuration)'!='Debug'">
-    <PackageReference Include="AndreasDorfer.BaseTypes.Core" Version="1.3.0" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(Configuration)'=='Debug'">
-    <ProjectReference Include="..\AD.BaseTypes.Core\AD.BaseTypes.Core.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.4.0" />
-  </ItemGroup>
+	
+	<PropertyGroup>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<PackageId>AndreasDorfer.BaseTypes.OpenApiSchemas</PackageId>
+		<Version>0.8.0</Version>
+		<Description>OpenAPI schemas for generated base types.</Description>
+	</PropertyGroup>
+	
+	<ItemGroup Condition="'$(Configuration)'!='Debug'">
+		<PackageReference Include="AndreasDorfer.BaseTypes.Core" Version="1.3.0" />
+	</ItemGroup>
+	
+	<ItemGroup Condition="'$(Configuration)'=='Debug'">
+		<ProjectReference Include="..\AD.BaseTypes.Core\AD.BaseTypes.Core.csproj" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.4.0" />
+	</ItemGroup>
 </Project>

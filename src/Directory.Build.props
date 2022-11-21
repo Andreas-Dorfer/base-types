@@ -5,7 +5,10 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
+
 	<PropertyGroup Label="PackageMetadata">
+		<Authors>Andreas Dorfer</Authors>
 		<RepositoryUrl>https://github.com/Andreas-Dorfer/base-types</RepositoryUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	</PropertyGroup>
 </Project>

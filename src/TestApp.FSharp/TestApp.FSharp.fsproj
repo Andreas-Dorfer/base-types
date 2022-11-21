@@ -1,21 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <WarnOn>3390;$(WarnOn)</WarnOn>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="Program.fs" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(Configuration)'!='Debug'">
-    <PackageReference Include="AndreasDorfer.BaseTypes.FSharp" Version="1.3.0" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(Configuration)'=='Debug'">
-    <ProjectReference Include="..\AD.BaseTypes.FSharp\AD.BaseTypes.FSharp.fsproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TestApp\TestApp.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Update="FSharp.Core" Version="7.0.0" />
-  </ItemGroup>
+	
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<WarnOn>3390;$(WarnOn)</WarnOn>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
+	
+	<ItemGroup>
+		<Compile Include="Program.fs" />
+	</ItemGroup>
+	
+	<ItemGroup Condition="'$(Configuration)'!='Debug'">
+		<PackageReference Include="AndreasDorfer.BaseTypes.FSharp" Version="1.3.0" />
+	</ItemGroup>
+	
+	<ItemGroup Condition="'$(Configuration)'=='Debug'">
+		<ProjectReference Include="..\AD.BaseTypes.FSharp\AD.BaseTypes.FSharp.fsproj" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<ProjectReference Include="..\TestApp\TestApp.csproj" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<PackageReference Update="FSharp.Core" Version="7.0.0" />
+	</ItemGroup>
 </Project>

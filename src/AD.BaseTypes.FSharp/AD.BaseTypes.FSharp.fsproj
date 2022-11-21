@@ -1,29 +1,32 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <WarnOn>3390;$(WarnOn)</WarnOn>
-    <PackageId>AndreasDorfer.BaseTypes.FSharp</PackageId>
-    <Version>1.3.0</Version>
-    <Authors>Andreas Dorfer</Authors>
-    <Description>F# extensions for generated base types.</Description>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <RepositoryUrl>https://github.com/Andreas-Dorfer/base-types</RepositoryUrl>
-    <PackageIcon>ESD_512.png</PackageIcon>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="BaseType.fs" />
-    <Compile Include="BaseTypeResult.fs" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(Configuration)'!='Debug'">
-    <PackageReference Include="AndreasDorfer.BaseTypes.Core" Version="1.3.0" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(Configuration)'=='Debug'">
-    <ProjectReference Include="..\AD.BaseTypes.Core\AD.BaseTypes.Core.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\ESD_512.png" Pack="true" PackagePath="\" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Update="FSharp.Core" Version="7.0.0" />
-  </ItemGroup>
+	<PropertyGroup>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<WarnOn>3390;$(WarnOn)</WarnOn>
+		<PackageId>AndreasDorfer.BaseTypes.FSharp</PackageId>
+		<Version>1.3.0</Version>
+		<Description>F# extensions for generated base types.</Description>
+		<RepositoryUrl>https://github.com/Andreas-Dorfer/base-types</RepositoryUrl>
+		<PackageIcon>ESD_512.png</PackageIcon>
+	</PropertyGroup>
+	
+	<ItemGroup>
+		<Compile Include="BaseType.fs" />
+		<Compile Include="BaseTypeResult.fs" />
+	</ItemGroup>
+	
+	<ItemGroup Condition="'$(Configuration)'!='Debug'">
+		<PackageReference Include="AndreasDorfer.BaseTypes.Core" Version="1.3.0" />
+	</ItemGroup>
+	
+	<ItemGroup Condition="'$(Configuration)'=='Debug'">
+		<ProjectReference Include="..\AD.BaseTypes.Core\AD.BaseTypes.Core.csproj" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<None Include="..\ESD_512.png" Pack="true" PackagePath="\" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<PackageReference Update="FSharp.Core" Version="7.0.0" />
+	</ItemGroup>
 </Project>

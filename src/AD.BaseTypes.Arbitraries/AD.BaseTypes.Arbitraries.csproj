@@ -1,23 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <PackageId>AndreasDorfer.BaseTypes.Arbitraries</PackageId>
-    <Version>1.3.0</Version>
-    <Authors>Andreas Dorfer</Authors>
-    <Description>Arbitraries for generated base types.</Description>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageIcon>ESD_512.png</PackageIcon>
-  </PropertyGroup>
-  <ItemGroup Condition="'$(Configuration)'!='Debug'">
-    <PackageReference Include="AndreasDorfer.BaseTypes.Core" Version="1.3.0" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(Configuration)'=='Debug'">
-    <ProjectReference Include="..\AD.BaseTypes.Core\AD.BaseTypes.Core.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\ESD_512.png" Pack="true" PackagePath="\" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="FsCheck" Version="2.16.5" />
-  </ItemGroup>
+	
+	<PropertyGroup>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<PackageId>AndreasDorfer.BaseTypes.Arbitraries</PackageId>
+		<Version>1.3.0</Version>
+		<Description>Arbitraries for generated base types.</Description>
+		<PackageIcon>ESD_512.png</PackageIcon>
+	</PropertyGroup>
+	
+	<ItemGroup Condition="'$(Configuration)'!='Debug'">
+		<PackageReference Include="AndreasDorfer.BaseTypes.Core" Version="1.3.0" />
+	</ItemGroup>
+	
+	<ItemGroup Condition="'$(Configuration)'=='Debug'">
+		<ProjectReference Include="..\AD.BaseTypes.Core\AD.BaseTypes.Core.csproj" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<None Include="..\ESD_512.png" Pack="true" PackagePath="\" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<PackageReference Include="FsCheck" Version="2.16.5" />
+	</ItemGroup>
 </Project>
