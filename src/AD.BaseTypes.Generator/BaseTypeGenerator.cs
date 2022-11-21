@@ -1,11 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace AD.BaseTypes.Generator
@@ -14,8 +10,8 @@ namespace AD.BaseTypes.Generator
     public class BaseTypeGenerator : ISourceGenerator
     {
         static readonly Regex
-            BaseTypeDefinitionRegex = new Regex("^AD.BaseTypes.IBaseTypeDefinition<(?<type>.+)>$"),
-            BaseTypeValidatedRegex = new Regex("^AD.BaseTypes.IBaseTypeValidation<(?<type>.+)>$");
+            BaseTypeDefinitionRegex = new("^AD.BaseTypes.IBaseTypeDefinition<(?<type>.+)>$"),
+            BaseTypeValidatedRegex = new("^AD.BaseTypes.IBaseTypeValidation<(?<type>.+)>$");
         const string
             BaseTypeAttributeName = "AD.BaseTypes.BaseTypeAttribute",
             Cast_Explicit = "Explicit",
@@ -149,7 +145,7 @@ namespace AD.BaseTypes.Generator
             }
         }
 
-        static readonly Regex ConfigKeyValueRegex = new Regex(@"""(?<key>.+)""\s*:\s*(?<value>.+);?");
+        static readonly Regex ConfigKeyValueRegex = new(@"""(?<key>.+)""\s*:\s*(?<value>.+);?");
 
         static Config? ReadConfig(GeneratorExecutionContext context)
         {
@@ -263,7 +259,7 @@ namespace AD.BaseTypes.Generator
             if (args is null) return null;
             if (args.Value.Count != 1) return null;
 
-            if (!(args.Value[0].Expression is MemberAccessExpressionSyntax expression)) return null;
+            if (args.Value[0].Expression is not MemberAccessExpressionSyntax expression) return null;
 
             return expression.Name.Identifier.Text;
         }

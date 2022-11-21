@@ -8,7 +8,7 @@ public class GuidTest : BaseTypeTest<MyGuid, Guid>
     protected override GuidArbitrary<MyGuid> Arbitrary => new();
 }
 
-[Guid] public partial record struct MyGuidStruct;
+[Guid] public readonly partial record struct MyGuidStruct;
 
 [TestClass]
 public class GuidStructTest : BaseTypeTest<MyGuidStruct, Guid>

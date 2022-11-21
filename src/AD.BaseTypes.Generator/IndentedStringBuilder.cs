@@ -6,7 +6,7 @@ namespace AD.BaseTypes.Generator
     class IndentedStringBuilder
     {
         int indent = 0;
-        readonly StringBuilder builder = new StringBuilder();
+        readonly StringBuilder builder = new();
 
         public void IncreaseIndent() => indent++;
 

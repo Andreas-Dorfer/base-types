@@ -8,7 +8,7 @@ public class DateTimeOffsetTest : BaseTypeTest<MyDateTimeOffset, DateTimeOffset>
     protected override DateTimeOffsetArbitrary<MyDateTimeOffset> Arbitrary => new();
 }
 
-[DateTimeOffset] public partial record struct MyDateTimeOffsetStruct;
+[DateTimeOffset] public readonly partial record struct MyDateTimeOffsetStruct;
 
 [TestClass]
 public class DateTimeOffsetStructTest : BaseTypeTest<MyDateTimeOffsetStruct, DateTimeOffset>

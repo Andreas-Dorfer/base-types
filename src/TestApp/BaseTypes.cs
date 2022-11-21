@@ -1,14 +1,14 @@
 ﻿namespace TestApp;
 
-[Int] public partial record struct MyInt;
+[Int] public readonly partial record struct MyInt;
 
-[Double] public partial record struct MyDouble;
+[Double] public readonly partial record struct MyDouble;
 
-[Decimal] public partial record struct MyDecimal;
+[Decimal] public readonly partial record struct MyDecimal;
 
-[Guid] public partial record struct MyGuid;
+[Guid] public readonly partial record struct MyGuid;
 
-[DateTime] public partial record struct MyDateTime;
+[DateTime] public readonly partial record struct MyDateTime;
 
 [String] public partial record MyString;
 

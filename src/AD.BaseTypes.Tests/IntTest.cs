@@ -9,7 +9,7 @@ public class IntTest : BaseTypeTest<MyInt, int>
 }
 
 
-[Int] public partial record struct MyIntStruct;
+[Int] public readonly partial record struct MyIntStruct;
 
 [TestClass]
 public class IntStructTest : BaseTypeTest<MyIntStruct, int>

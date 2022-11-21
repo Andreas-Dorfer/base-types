@@ -10,7 +10,7 @@ public class DoubleTest : BaseTypeTest<MyDouble, double>
     protected override bool JsonFilter(double value) => double.IsFinite(value);
 }
 
-[Double] public partial record struct MyDoubleStruct;
+[Double] public readonly partial record struct MyDoubleStruct;
 
 [TestClass]
 public class DoubleStrictTest : BaseTypeTest<MyDoubleStruct, double>
