@@ -3,12 +3,12 @@
 	<PropertyGroup>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<PackageId>AndreasDorfer.BaseTypes.ModelBinders</PackageId>
-		<Version>0.8.0</Version>
+		<Version>0.9.0</Version>
 		<Description>Model binders for generated base types.</Description>
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(Configuration)'!='Debug'">
-		<PackageReference Include="AndreasDorfer.BaseTypes.Core" Version="1.3.0" />
+		<PackageReference Include="AndreasDorfer.BaseTypes.Core" Version="1.4.0" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(Configuration)'=='Debug'">
