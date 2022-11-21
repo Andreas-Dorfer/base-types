@@ -26,7 +26,7 @@ public class CastTest
 }
 
 
-[Int] public partial record struct DefaultIntStruct;
+[Int] public readonly partial record struct DefaultIntStruct;
 [Int, BaseType(Cast.Explicit)] public readonly partial record struct ExplicitIntStruct;
 [Int, BaseType(Cast.Implicit)] public readonly partial record struct ImplicitIntStruct;
 [Int, BaseType(Cast.None)] public readonly partial record struct NoneIntStruct;
