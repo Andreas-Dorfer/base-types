@@ -7,5 +7,5 @@
 public class StringAttribute : Attribute, IBaseTypeValidation<string>
 {
     /// <exception cref="ArgumentNullException">The parameter <paramref name="value"/> is null.</exception>
-    public void Validate(string value) => ArgumentNullException.ThrowIfNull(value);
+    public void Validate(string value, string baseTypeName) => ArgumentNullException.ThrowIfNull(value, baseTypeName);
 }

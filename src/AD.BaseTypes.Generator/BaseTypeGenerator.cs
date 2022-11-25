@@ -93,7 +93,7 @@ namespace AD.BaseTypes.Generator
                 sourceBuilder.IncreaseIndent();
                 //*****
 
-                AppendValidations(sourceBuilder, semantics, validations);
+                AppendValidations(sourceBuilder, semantics, validations, recordName);
                 sourceBuilder.AppendLine("this.value = value;");
 
                 //constructor end
@@ -227,14 +227,14 @@ namespace AD.BaseTypes.Generator
         static void AppendReturnsComment(IndentedStringBuilder sourceBuilder, string comment) =>
             sourceBuilder.AppendLine($"/// <returns>{comment}</returns>");
 
-        static void AppendValidations(IndentedStringBuilder sourceBuilder, SemanticModel semantics, IEnumerable<AttributeSyntax> validations)
+        static void AppendValidations(IndentedStringBuilder sourceBuilder, SemanticModel semantics, IEnumerable<AttributeSyntax> validations, string recordName)
         {
             foreach (var validation in validations)
             {
                 var validationType = semantics.GetSymbolInfo(validation).Symbol?.ContainingType;
                 if (validationType is null) continue;
                 var args = validation?.ArgumentList?.Arguments.ToString() ?? "";
-                sourceBuilder.AppendLine($"new {validationType.ToDisplayString()}({args}).Validate(value);");
+                sourceBuilder.AppendLine($"new {validationType.ToDisplayString()}({args}).Validate(value, nameof({recordName}));");
             }
         }
 

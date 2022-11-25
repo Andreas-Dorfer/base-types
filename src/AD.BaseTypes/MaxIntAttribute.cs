@@ -15,5 +15,5 @@ public class MaxIntAttribute : Attribute, IBaseTypeValidation<int>
     }
 
     /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> is too large.</exception>
-    public void Validate(int value) => IntValidation.Max(max, value);
+    public void Validate(int value, string baseTypeName) => IntValidation.Max(max, value, baseTypeName);
 }

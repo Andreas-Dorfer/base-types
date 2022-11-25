@@ -10,6 +10,7 @@ public interface IBaseTypeValidation<TWrapped> : IBaseTypeDefinition<TWrapped>
     /// Validates the wrapped value.
     /// </summary>
     /// <param name="value">The value to be validated.</param>
+    /// <param name="baseTypeName">The base type's name.</param>
     /// <exception cref="ArgumentException">The parameter <paramref name="value"/> is invalid.</exception>
-    void Validate(TWrapped value);
+    void Validate(TWrapped value, string baseTypeName);
 }

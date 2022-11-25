@@ -7,8 +7,8 @@
 public class PositiveDecimalAttribute : Attribute, IBaseTypeValidation<decimal>
 {
     /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> is negative.</exception>
-    public void Validate(decimal value)
+    public void Validate(decimal value, string baseTypeName)
     {
-        if (value < 0) throw new ArgumentOutOfRangeException(nameof(value), value, "Parameter must not be negative.");
+        if (value < 0) throw new ArgumentOutOfRangeException(baseTypeName, value, $"'{baseTypeName}' must not be negative.");
     }
 }

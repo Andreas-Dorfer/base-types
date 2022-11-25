@@ -15,5 +15,5 @@ public class MinIntAttribute : Attribute, IBaseTypeValidation<int>
     }
 
     /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> is too small.</exception>
-    public void Validate(int value) => IntValidation.Min(min, value);
+    public void Validate(int value, string baseTypeName) => IntValidation.Min(min, value, baseTypeName);
 }

@@ -17,9 +17,9 @@ public class MinMaxIntAttribute : Attribute, IBaseTypeValidation<int>
     }
 
     /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> is too small or too large.</exception>
-    public void Validate(int value)
+    public void Validate(int value, string baseTypeName)
     {
-        IntValidation.Min(min, value);
-        IntValidation.Max(max, value);
+        IntValidation.Min(min, value, baseTypeName);
+        IntValidation.Max(max, value, baseTypeName);
     }
 }

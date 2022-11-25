@@ -15,5 +15,5 @@ public class MinLengthStringAttribute : Attribute, IBaseTypeValidation<string>
     }
 
     /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> is too short.</exception>
-    public void Validate(string value) => StringValidation.MinLength(minLength, value);
+    public void Validate(string value, string baseTypeName) => StringValidation.MinLength(minLength, value, baseTypeName);
 }

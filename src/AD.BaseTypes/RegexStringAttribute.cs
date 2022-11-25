@@ -17,9 +17,9 @@ public class RegexStringAttribute : Attribute, IBaseTypeValidation<string>
     }
 
     /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> doesn't match.</exception>
-    public void Validate(string value)
+    public void Validate(string value, string baseTypeName)
     {
-        ArgumentNullException.ThrowIfNull(value);
-        if (!Regex.IsMatch(value, pattern)) throw new ArgumentOutOfRangeException(nameof(value), value, $"Parameter doesn't match the pattern '{pattern}'.");
+        ArgumentNullException.ThrowIfNull(value, baseTypeName);
+        if (!Regex.IsMatch(value, pattern)) throw new ArgumentOutOfRangeException(baseTypeName, value, $"'{baseTypeName}' doesn't match the pattern '{pattern}'.");
     }
 }

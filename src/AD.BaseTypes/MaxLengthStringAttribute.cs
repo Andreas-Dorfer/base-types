@@ -15,5 +15,5 @@ public class MaxLengthStringAttribute : Attribute, IBaseTypeValidation<string>
     }
 
     /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> is too long.</exception>
-    public void Validate(string value) => StringValidation.MaxLength(maxLength, value);
+    public void Validate(string value, string baseTypeName) => StringValidation.MaxLength(maxLength, value, baseTypeName);
 }
