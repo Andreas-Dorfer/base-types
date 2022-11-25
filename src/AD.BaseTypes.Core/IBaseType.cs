@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace AD.BaseTypes;
+﻿namespace AD.BaseTypes;
 
 /// <summary>
 /// Common interface for all generated base types.

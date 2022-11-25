@@ -20,8 +20,8 @@ public static class BaseTypeExtensions
     /// <exception cref="ArgumentException">The mapped value is invalid.</exception>
     public static TBaseType Map<TBaseType, TWrapped>(this TBaseType baseType, Func<TWrapped, TWrapped> mapper) where TBaseType : IBaseType<TBaseType, TWrapped>
     {
-        if (baseType is null) throw new ArgumentNullException(nameof(baseType));
-        if (mapper is null) throw new ArgumentNullException(nameof(mapper));
+        ArgumentNullException.ThrowIfNull(baseType);
+        ArgumentNullException.ThrowIfNull(mapper);
 
         return TBaseType.Create(mapper(baseType.Value));
     }
@@ -40,8 +40,8 @@ public static class BaseTypeExtensions
     /// <exception cref="NotImplementedException">The base type does not define a creator.</exception>
     public static bool TryMap<TBaseType, TWrapped>(this TBaseType baseType, Func<TWrapped, TWrapped> mapper, [MaybeNullWhen(false)] out TBaseType mapped, [MaybeNullWhen(true)] out string errorMessage) where TBaseType : IBaseType<TBaseType, TWrapped>
     {
-        if (baseType is null) throw new ArgumentNullException(nameof(baseType));
-        if (mapper is null) throw new ArgumentNullException(nameof(mapper));
+        ArgumentNullException.ThrowIfNull(baseType);
+        ArgumentNullException.ThrowIfNull(mapper);
 
         return BaseType<TBaseType, TWrapped>.TryCreate(mapper(baseType.Value), out mapped, out errorMessage);
     }
@@ -56,8 +56,8 @@ public static class BaseTypeExtensions
     /// <exception cref="ArgumentNullException"><paramref name="baseType"/> or <paramref name="mapper"/> is null.</exception>
     public static TWrapped MapValue<TWrapped>(this IBaseType<TWrapped> baseType, Func<TWrapped, TWrapped> mapper)
     {
-        if (baseType is null) throw new ArgumentNullException(nameof(baseType));
-        if (mapper is null) throw new ArgumentNullException(nameof(mapper));
+        ArgumentNullException.ThrowIfNull(baseType);
+        ArgumentNullException.ThrowIfNull(mapper);
 
         return mapper(baseType.Value);
     }
@@ -71,7 +71,7 @@ public static class BaseTypeExtensions
     /// <exception cref="ArgumentNullException"><paramref name="baseType"/> is null.</exception>
     public static TWrapped Value<TWrapped>(this IBaseType<TWrapped> baseType)
     {
-        if (baseType is null) throw new ArgumentNullException(nameof(baseType));
+        ArgumentNullException.ThrowIfNull(baseType);
 
         return baseType.Value;
     }
