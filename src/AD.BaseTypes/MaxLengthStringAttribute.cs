@@ -1,4 +1,6 @@
-﻿namespace AD.BaseTypes;
+﻿using System.Runtime.CompilerServices;
+
+namespace AD.BaseTypes;
 
 /// <summary>
 /// String with a maximal length.
@@ -15,5 +17,6 @@ public class MaxLengthStringAttribute : Attribute, IBaseTypeValidation<string>
     }
 
     /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> is too long.</exception>
-    public void Validate(string value) => StringValidation.MaxLength(maxLength, value);
+    public void Validate(string value, [CallerArgumentExpression(nameof(value))] string? paramName = null) =>
+        StringValidation.MaxLength(maxLength, value, paramName ?? nameof(value));
 }

@@ -1,4 +1,6 @@
-﻿namespace AD.BaseTypes;
+﻿using System.Runtime.CompilerServices;
+
+namespace AD.BaseTypes;
 
 /// <summary>
 /// String with a minimal and maximal length.
@@ -17,9 +19,10 @@ public class MinMaxLengthStringAttribute : Attribute, IBaseTypeValidation<string
     }
 
     /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> is too short or too long.</exception>
-    public void Validate(string value)
+    public void Validate(string value, [CallerArgumentExpression(nameof(value))] string? paramName = null)
     {
-        StringValidation.MinLength(minLength, value);
-        StringValidation.MaxLength(maxLength, value);
+        paramName ??= nameof(value);
+        StringValidation.MinLength(minLength, value, paramName);
+        StringValidation.MaxLength(maxLength, value, paramName);
     }
 }

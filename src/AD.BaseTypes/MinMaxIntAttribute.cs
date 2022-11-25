@@ -1,4 +1,6 @@
-﻿namespace AD.BaseTypes;
+﻿using System.Runtime.CompilerServices;
+
+namespace AD.BaseTypes;
 
 /// <summary>
 /// Int within a range.
@@ -17,9 +19,10 @@ public class MinMaxIntAttribute : Attribute, IBaseTypeValidation<int>
     }
 
     /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> is too small or too large.</exception>
-    public void Validate(int value)
+    public void Validate(int value, [CallerArgumentExpression(nameof(value))] string? paramName = null)
     {
-        IntValidation.Min(min, value);
-        IntValidation.Max(max, value);
+        paramName ??= nameof(value);
+        IntValidation.Min(min, value, paramName);
+        IntValidation.Max(max, value, paramName);
     }
 }

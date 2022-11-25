@@ -1,4 +1,6 @@
-﻿namespace AD.BaseTypes;
+﻿using System.Runtime.CompilerServices;
+
+namespace AD.BaseTypes;
 
 /// <summary>
 /// Int with a minimal value.
@@ -15,5 +17,5 @@ public class MinIntAttribute : Attribute, IBaseTypeValidation<int>
     }
 
     /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> is too small.</exception>
-    public void Validate(int value) => IntValidation.Min(min, value);
+    public void Validate(int value, [CallerArgumentExpression(nameof(value))] string? paramName = null) => IntValidation.Min(min, value, paramName ?? nameof(value));
 }

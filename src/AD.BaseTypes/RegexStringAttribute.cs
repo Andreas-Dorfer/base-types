@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 
 namespace AD.BaseTypes;
 
@@ -17,9 +18,10 @@ public class RegexStringAttribute : Attribute, IBaseTypeValidation<string>
     }
 
     /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> doesn't match.</exception>
-    public void Validate(string value)
+    public void Validate(string value, [CallerArgumentExpression(nameof(value))] string? paramName = null)
     {
-        ArgumentNullException.ThrowIfNull(value);
-        if (!Regex.IsMatch(value, pattern)) throw new ArgumentOutOfRangeException(nameof(value), value, $"Parameter doesn't match the pattern '{pattern}'.");
+        paramName ??= nameof(value);
+        ArgumentNullException.ThrowIfNull(value, paramName);
+        if (!Regex.IsMatch(value, pattern)) throw new ArgumentOutOfRangeException(paramName, value, $"'{paramName}' doesn't match the pattern '{pattern}'.");
     }
 }
