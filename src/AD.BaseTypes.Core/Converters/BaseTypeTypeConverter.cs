@@ -4,7 +4,7 @@ using System.Globalization;
 namespace AD.BaseTypes.Converters;
 
 /// <inheritdoc/>
-public class BaseTypeTypeConverter<TBaseType, TWrapped> : TypeConverter where TBaseType : IBaseType<TWrapped>
+public class BaseTypeTypeConverter<TBaseType, TWrapped> : TypeConverter where TBaseType : IBaseType<TBaseType, TWrapped>
 {
     readonly TypeConverter wrappedConverter = TypeDescriptor.GetConverter(typeof(TWrapped));
 
@@ -23,13 +23,13 @@ public class BaseTypeTypeConverter<TBaseType, TWrapped> : TypeConverter where TB
         {
             wrapped = (TWrapped)wrappedConverter.ConvertFrom(context, culture, value)!;
         }
-        return BaseType<TBaseType, TWrapped>.Create(wrapped);
+        return TBaseType.Create(wrapped);
     }
 
     /// <inheritdoc/>
     public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
     {
-        if (value is not IBaseType<TWrapped> baseType) return default!;
+        if (value is not IBaseType<TBaseType, TWrapped> baseType) return default!;
 
         var wrapped = baseType.Value;
         return destinationType == typeof(TWrapped) ? wrapped! : wrappedConverter.ConvertTo(context, culture, wrapped, destinationType);

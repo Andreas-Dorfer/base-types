@@ -4,5 +4,5 @@
 /// Arbitrary for DateTime base types.
 /// </summary>
 /// <typeparam name="TBaseType">The base type.</typeparam>
-public class DateTimeArbitrary<TBaseType> : BaseTypeArbitrary<TBaseType, DateTime> where TBaseType : IBaseType<DateTime>
+public class DateTimeArbitrary<TBaseType> : BaseTypeArbitrary<TBaseType, DateTime> where TBaseType : IBaseType<TBaseType, DateTime>
 { }

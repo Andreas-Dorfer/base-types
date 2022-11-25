@@ -4,7 +4,7 @@
 /// Arbitrary for positive deicmal base types.
 /// </summary>
 /// <typeparam name="TBaseType"></typeparam>
-public class PositiveDecimalArbitrary<TBaseType> : BaseTypeArbitrary<TBaseType, decimal> where TBaseType : IBaseType<decimal>
+public class PositiveDecimalArbitrary<TBaseType> : BaseTypeArbitrary<TBaseType, decimal> where TBaseType : IBaseType<TBaseType, decimal>
 {
     /// <summary>
     /// Filters negative decimals.

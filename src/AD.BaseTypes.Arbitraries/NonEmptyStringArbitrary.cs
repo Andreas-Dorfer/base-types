@@ -4,7 +4,7 @@
 /// Arbitrary for non-empty string base types.
 /// </summary>
 /// <typeparam name="TBaseType"></typeparam>
-public class NonEmptyStringArbitrary<TBaseType> : BaseTypeArbitrary<TBaseType, string> where TBaseType : IBaseType<string>
+public class NonEmptyStringArbitrary<TBaseType> : BaseTypeArbitrary<TBaseType, string> where TBaseType : IBaseType<TBaseType, string>
 {
     /// <inheritdoc/>
     protected override Arbitrary<string> WrappedArb() => Arb.Default.NonEmptyString().Convert(str => str.Item, str => NonEmptyString.NewNonEmptyString(str));

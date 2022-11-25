@@ -8,7 +8,7 @@ namespace AD.BaseTypes.Json;
 /// </summary>
 /// <typeparam name="TBaseType">The base type.</typeparam>
 /// <typeparam name="TWrapped">The wrapped type.</typeparam>
-public class BaseTypeJsonConverter<TBaseType, TWrapped> : JsonConverter<TBaseType> where TBaseType : IBaseType<TWrapped>
+public class BaseTypeJsonConverter<TBaseType, TWrapped> : JsonConverter<TBaseType> where TBaseType : IBaseType<TBaseType, TWrapped>
 {
     /// <inheritdoc/>
     public override void Write(Utf8JsonWriter writer, TBaseType baseType, JsonSerializerOptions options) =>

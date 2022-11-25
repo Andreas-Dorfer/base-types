@@ -4,5 +4,5 @@ namespace AD.BaseTypes.Arbitraries;
 /// Arbitrary for DateTimeOffset base types.
 /// </summary>
 /// <typeparam name="TBaseType">The base type.</typeparam>
-public class DateTimeOffsetArbitrary<TBaseType> : BaseTypeArbitrary<TBaseType, DateTimeOffset> where TBaseType : IBaseType<DateTimeOffset>
+public class DateTimeOffsetArbitrary<TBaseType> : BaseTypeArbitrary<TBaseType, DateTimeOffset> where TBaseType : IBaseType<TBaseType, DateTimeOffset>
 { }

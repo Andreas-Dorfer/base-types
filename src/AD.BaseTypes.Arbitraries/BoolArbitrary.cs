@@ -4,5 +4,5 @@
 /// Arbitrary for bool base types.
 /// </summary>
 /// <typeparam name="TBaseType">The base type.</typeparam>
-public class BoolArbitrary<TBaseType> : BaseTypeArbitrary<TBaseType, bool> where TBaseType : IBaseType<bool>
+public class BoolArbitrary<TBaseType> : BaseTypeArbitrary<TBaseType, bool> where TBaseType : IBaseType<TBaseType, bool>
 { }
