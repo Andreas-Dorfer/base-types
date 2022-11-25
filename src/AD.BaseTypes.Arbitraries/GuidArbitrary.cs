@@ -4,5 +4,5 @@
 /// Arbitrary for Guid base types.
 /// </summary>
 /// <typeparam name="TBaseType">The base type.</typeparam>
-public class GuidArbitrary<TBaseType> : BaseTypeArbitrary<TBaseType, Guid> where TBaseType : IBaseType<Guid>
+public class GuidArbitrary<TBaseType> : BaseTypeArbitrary<TBaseType, Guid> where TBaseType : IBaseType<TBaseType, Guid>
 { }

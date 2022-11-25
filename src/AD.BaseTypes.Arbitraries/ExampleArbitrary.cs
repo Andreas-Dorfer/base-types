@@ -5,7 +5,7 @@
 /// </summary>
 /// <typeparam name="TBaseType">The base type.</typeparam>
 /// <typeparam name="TWrapped">The wrapped type.</typeparam>
-public class ExampleArbitrary<TBaseType, TWrapped> : Arbitrary<TBaseType> where TBaseType : IBaseType<TWrapped>
+public class ExampleArbitrary<TBaseType, TWrapped> : Arbitrary<TBaseType> where TBaseType : IBaseType<TBaseType, TWrapped>
 {
     readonly TWrapped[] examples;
 
@@ -20,5 +20,5 @@ public class ExampleArbitrary<TBaseType, TWrapped> : Arbitrary<TBaseType> where 
     }
 
     /// <inheritdoc/>
-    public override Gen<TBaseType> Generator => Gen.Elements(examples).Select(BaseType<TBaseType, TWrapped>.Create);
+    public override Gen<TBaseType> Generator => Gen.Elements(examples).Select(TBaseType.Create);
 }

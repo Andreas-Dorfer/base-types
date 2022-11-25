@@ -4,7 +4,7 @@
 /// Arbitrary for int base types with a minimal value.
 /// </summary>
 /// <typeparam name="TBaseType">The base type.</typeparam>
-public class MinIntArbitrary<TBaseType> : IntArbitrary<TBaseType> where TBaseType : IBaseType<int>
+public class MinIntArbitrary<TBaseType> : IntArbitrary<TBaseType> where TBaseType : IBaseType<TBaseType, int>
 {
     /// <param name="min">The minimal value.</param>
     public MinIntArbitrary(int min)

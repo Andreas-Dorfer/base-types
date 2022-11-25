@@ -7,7 +7,7 @@ namespace AD.BaseTypes.ModelBinders;
 /// </summary>
 /// <typeparam name="TBaseType">The base type.</typeparam>
 /// <typeparam name="TWrapped">The wrapped type.</typeparam>
-public class BaseTypeModelBinder<TBaseType, TWrapped> : IModelBinder where TBaseType : IBaseType<TWrapped>
+public class BaseTypeModelBinder<TBaseType, TWrapped> : IModelBinder where TBaseType : IBaseType<TBaseType, TWrapped>
 {
     static readonly TypeConverter converter;
 

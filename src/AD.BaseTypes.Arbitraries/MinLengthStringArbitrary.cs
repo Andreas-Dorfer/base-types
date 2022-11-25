@@ -4,7 +4,7 @@
 /// Arbitrary for string base types with a minimal range.
 /// </summary>
 /// <typeparam name="TBaseType"></typeparam>
-public class MinLengthStringArbitrary<TBaseType> : StringArbitrary<TBaseType> where TBaseType : IBaseType<string>
+public class MinLengthStringArbitrary<TBaseType> : StringArbitrary<TBaseType> where TBaseType : IBaseType<TBaseType, string>
 {
     /// <param name="minLength">The minimal length.</param>
     /// <exception cref="ArgumentOutOfRangeException"><paramref name="minLength"/> is negative.</exception>

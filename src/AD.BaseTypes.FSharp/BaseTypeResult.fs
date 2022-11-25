@@ -2,10 +2,10 @@
 module AD.BaseTypes.FSharp.BaseTypeResult
 
 /// Binds the result.
-let inline bind binder = Result.bind (BaseType.bind binder)
+let bind binder = Result.bind (BaseType.bind binder)
 
 /// Maps the result.
-let inline map mapper = Result.bind (BaseType.map mapper)
+let map mapper = Result.bind (BaseType.map mapper)
 
 /// Binds the result's Ok value.
 let bindValue binder = Result.bind (BaseType.mapValue binder)

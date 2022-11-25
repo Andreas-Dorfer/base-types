@@ -4,14 +4,14 @@
 public class CreateTest
 {
     [TestMethod]
-    public void Ok() => BaseType<ZeroToTen, int>.Create(ZeroToTen.Max / 2);
+    public void Ok() => ZeroToTen.Create(ZeroToTen.Max / 2);
 
     [TestMethod, ExpectedException(typeof(ArgumentException), AllowDerivedTypes = true)]
-    public void Error() => BaseType<ZeroToTen, int>.Create(ZeroToTen.Max + 1);
+    public void Error() => ZeroToTen.Create(ZeroToTen.Max + 1);
 
     [TestMethod]
-    public void TryOk() => Assert.IsTrue(BaseType<ZeroToTen, int>.TryCreate(ZeroToTen.Max / 2, out var _, out var _));
+    public void TryOk() => Assert.IsTrue(ZeroToTen.TryCreate(ZeroToTen.Max / 2, out var _, out var _));
 
     [TestMethod]
-    public void TryError() => Assert.IsFalse(BaseType<ZeroToTen, int>.TryCreate(ZeroToTen.Max + 1, out var _, out var _));
+    public void TryError() => Assert.IsFalse(ZeroToTen.TryCreate(ZeroToTen.Max + 1, out var _, out var _));
 }

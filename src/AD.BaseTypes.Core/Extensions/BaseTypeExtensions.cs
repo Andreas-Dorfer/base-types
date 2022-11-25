@@ -18,12 +18,12 @@ public static class BaseTypeExtensions
     /// <exception cref="ArgumentNullException"><paramref name="baseType"/> or <paramref name="mapper"/> is null.</exception>
     /// <exception cref="NotImplementedException">The base type does not define a creator.</exception>
     /// <exception cref="ArgumentException">The mapped value is invalid.</exception>
-    public static TBaseType Map<TBaseType, TWrapped>(this TBaseType baseType, Func<TWrapped, TWrapped> mapper) where TBaseType : IBaseType<TWrapped>
+    public static TBaseType Map<TBaseType, TWrapped>(this TBaseType baseType, Func<TWrapped, TWrapped> mapper) where TBaseType : IBaseType<TBaseType, TWrapped>
     {
         if (baseType is null) throw new ArgumentNullException(nameof(baseType));
         if (mapper is null) throw new ArgumentNullException(nameof(mapper));
 
-        return BaseType<TBaseType, TWrapped>.Create(mapper(baseType.Value));
+        return TBaseType.Create(mapper(baseType.Value));
     }
 
     /// <summary>
@@ -38,7 +38,7 @@ public static class BaseTypeExtensions
     /// <returns>True, if the base type is created.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="baseType"/> or <paramref name="mapper"/> is null.</exception>
     /// <exception cref="NotImplementedException">The base type does not define a creator.</exception>
-    public static bool TryMap<TBaseType, TWrapped>(this TBaseType baseType, Func<TWrapped, TWrapped> mapper, [MaybeNullWhen(false)] out TBaseType mapped, [MaybeNullWhen(true)] out string errorMessage) where TBaseType : IBaseType<TWrapped>
+    public static bool TryMap<TBaseType, TWrapped>(this TBaseType baseType, Func<TWrapped, TWrapped> mapper, [MaybeNullWhen(false)] out TBaseType mapped, [MaybeNullWhen(true)] out string errorMessage) where TBaseType : IBaseType<TBaseType, TWrapped>
     {
         if (baseType is null) throw new ArgumentNullException(nameof(baseType));
         if (mapper is null) throw new ArgumentNullException(nameof(mapper));

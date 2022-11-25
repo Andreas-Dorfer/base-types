@@ -4,7 +4,7 @@
 /// Arbitrary for non-empty GUID base types.
 /// </summary>
 /// <typeparam name="TBaseType">The base type.</typeparam>
-public class NonEmptyGuidArbitrary<TBaseType> : BaseTypeArbitrary<TBaseType, Guid> where TBaseType : IBaseType<Guid>
+public class NonEmptyGuidArbitrary<TBaseType> : BaseTypeArbitrary<TBaseType, Guid> where TBaseType : IBaseType<TBaseType, Guid>
 {
     /// <summary>
     /// Filters empty GUIDs.

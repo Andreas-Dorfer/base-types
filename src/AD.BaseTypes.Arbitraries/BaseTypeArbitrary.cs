@@ -5,7 +5,7 @@
 /// </summary>
 /// <typeparam name="TBaseType">The base type.</typeparam>
 /// <typeparam name="TWrapped">The wrapped type.</typeparam>
-public class BaseTypeArbitrary<TBaseType, TWrapped> : Arbitrary<TBaseType> where TBaseType : IBaseType<TWrapped>
+public class BaseTypeArbitrary<TBaseType, TWrapped> : Arbitrary<TBaseType> where TBaseType : IBaseType<TBaseType, TWrapped>
 {
     readonly Arbitrary<TWrapped> arb;
 
@@ -30,7 +30,7 @@ public class BaseTypeArbitrary<TBaseType, TWrapped> : Arbitrary<TBaseType> where
     /// <returns>The base type.</returns>
     /// <exception cref="NotImplementedException">The base type does not define a creator.</exception>
     /// <exception cref="ArgumentException">The parameter <paramref name="value"/> is invalid.</exception>
-    protected TBaseType Creator(TWrapped value) => BaseType<TBaseType, TWrapped>.Create(value);
+    protected TBaseType Creator(TWrapped value) => TBaseType.Create(value);
 
     /// <summary>
     /// Filters invalid wrapped values.

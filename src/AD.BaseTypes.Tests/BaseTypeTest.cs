@@ -3,7 +3,7 @@ using System.Text.Json;
 
 namespace AD.BaseTypes.Tests;
 
-public abstract class BaseTypeTest<TBaseType, TWrapped> where TBaseType : IBaseType<TWrapped>, IComparable<TBaseType> where TWrapped : IComparable<TWrapped>
+public abstract class BaseTypeTest<TBaseType, TWrapped> where TBaseType : IBaseType<TBaseType, TWrapped>, IComparable<TBaseType> where TWrapped : IComparable<TWrapped>
 {
     readonly TypeConverter converter = TypeDescriptor.GetConverter(typeof(TBaseType));
     readonly TypeConverter wrappedConverter = TypeDescriptor.GetConverter(typeof(TWrapped));
@@ -15,7 +15,7 @@ public abstract class BaseTypeTest<TBaseType, TWrapped> where TBaseType : IBaseT
     public void Create() => Prop.ForAll(Arbitrary, _ => true).VerboseCheckThrowOnFailure();
 
     [TestMethod]
-    public void Equals() => Prop.ForAll(Arbitrary, a => Assert.AreEqual(a, BaseType<TBaseType, TWrapped>.Create(a.Value))).QuickCheckThrowOnFailure();
+    public void Equals() => Prop.ForAll(Arbitrary, a => Assert.AreEqual(a, TBaseType.Create(a.Value))).QuickCheckThrowOnFailure();
 
     [TestMethod]
     public void Compare() => Prop.ForAll(Arbitrary, Arbitrary, (a, b) => Assert.AreEqual(a.Value.CompareTo(b.Value), a.CompareTo(b))).QuickCheckThrowOnFailure();
@@ -34,7 +34,7 @@ public abstract class BaseTypeTest<TBaseType, TWrapped> where TBaseType : IBaseT
         {
             var @string = wrappedConverter.ConvertToString(baseType.Value);
             var value = (TWrapped)wrappedConverter.ConvertFromString(@string!)!;
-            return converter.CanConvertFrom(typeof(string)) && Equals(BaseType<TBaseType, TWrapped>.Create(value), converter.ConvertFromString(@string!));
+            return converter.CanConvertFrom(typeof(string)) && Equals(TBaseType.Create(value), converter.ConvertFromString(@string!));
         }).QuickCheckThrowOnFailure();
 
     [TestMethod]

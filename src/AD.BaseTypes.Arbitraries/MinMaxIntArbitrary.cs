@@ -4,7 +4,7 @@
 /// Arbitrary for int base types with a range.
 /// </summary>
 /// <typeparam name="TBaseType">The base type.</typeparam>
-public class MinMaxIntArbitrary<TBaseType> : IntArbitrary<TBaseType> where TBaseType : IBaseType<int>
+public class MinMaxIntArbitrary<TBaseType> : IntArbitrary<TBaseType> where TBaseType : IBaseType<TBaseType, int>
 {
     /// <param name="min">The minimal value.</param>
     /// <param name="max">The maximal value.</param>

@@ -10,19 +10,19 @@ public class CastTest
 {
     [Property]
     public void Default_is_explicit(NonEmptyString str) =>
-        Assert.AreEqual(str.Item, (string)BaseType<DefaultString, string>.Create(str.Item));
+        Assert.AreEqual(str.Item, (string)DefaultString.Create(str.Item));
 
     [Property]
     public void Explicit(NonEmptyString str) =>
-        Assert.AreEqual(str.Item, (string)BaseType<ExplicitString, string>.Create(str.Item));
+        Assert.AreEqual(str.Item, (string)ExplicitString.Create(str.Item));
 
     [Property]
     public void Implicit(NonEmptyString str) =>
-        Assert.AreEqual(str.Item, BaseType<ImplicitString, string>.Create(str.Item));
+        Assert.AreEqual(str.Item, ImplicitString.Create(str.Item));
 
     [Property]
     public void None(NonEmptyString str) =>
-        Assert.AreNotEqual(str.Item, BaseType<NoneString, string>.Create(str.Item));
+        Assert.AreNotEqual(str.Item, NoneString.Create(str.Item));
 }
 
 
@@ -36,17 +36,17 @@ public class CastStructTest
 {
     [Property]
     public void Default_is_explicit(int x) =>
-        Assert.AreEqual(x, (int)BaseType<DefaultIntStruct, int>.Create(x));
+        Assert.AreEqual(x, (int)DefaultIntStruct.Create(x));
 
     [Property]
     public void Explicit(int x) =>
-        Assert.AreEqual(x, (int)BaseType<ExplicitIntStruct, int>.Create(x));
+        Assert.AreEqual(x, (int)ExplicitIntStruct.Create(x));
 
     [Property]
     public void Implicit(int x) =>
-        Assert.AreEqual(x, BaseType<ImplicitIntStruct, int>.Create(x));
+        Assert.AreEqual(x, ImplicitIntStruct.Create(x));
 
     [Property]
     public void None(int x) =>
-        Assert.AreNotEqual(x, BaseType<NoneIntStruct, int>.Create(x));
+        Assert.AreNotEqual(x, NoneIntStruct.Create(x));
 }

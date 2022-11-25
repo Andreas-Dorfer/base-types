@@ -1,7 +1,6 @@
 ﻿/// Module for base types.
 module AD.BaseTypes.FSharp.BaseType
 
-open System
 open AD.BaseTypes
 
 /// <summary>
@@ -9,11 +8,10 @@ open AD.BaseTypes
 /// </summary>
 /// <param name="value">The base type's value.</param>
 /// <returns>The created base type or an error message.</returns>
-let inline create<'baseType, 'wrapped when 'baseType :> IBaseType<'wrapped> and 'baseType : (static member Create: 'wrapped -> 'baseType)> value =
-    try
-        (^baseType : (static member Create: 'wrapped -> 'baseType) value) |> Ok
-    with
-    | :? ArgumentException as exn -> exn.Message |> Error
+let create<'baseType, 'wrapped when 'baseType :> IBaseType<'baseType, 'wrapped>> value =
+    match value |> BaseType<'baseType, _>.TryCreate with
+    | true, baseType, _ -> baseType |> Ok
+    | false, _, error -> error |> Error
 
 /// Gets the base type's value.
 let value (baseType : #IBaseType<_>) = baseType.Value
@@ -22,11 +20,11 @@ let value (baseType : #IBaseType<_>) = baseType.Value
 let (|Value|) (baseType : #IBaseType<_>) = baseType.Value
 
 /// Binds a base type.
-let inline bind binder (baseType : 'baseType) =
+let bind binder (baseType : 'baseType) =
     baseType |> value |> binder |> Result.bind create<'baseType, _>
 
 /// Maps a base type.
-let inline map mapper (baseType : 'baseType) =
+let map mapper (baseType : 'baseType) =
     baseType |> value |> mapper |> create<'baseType, _>
 
 /// Maps the base type's value.

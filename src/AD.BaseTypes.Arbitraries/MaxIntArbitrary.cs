@@ -4,7 +4,7 @@
 /// Arbitrary for int base types with a maximal value.
 /// </summary>
 /// <typeparam name="TBaseType"></typeparam>
-public class MaxIntArbitrary<TBaseType> : IntArbitrary<TBaseType> where TBaseType : IBaseType<int>
+public class MaxIntArbitrary<TBaseType> : IntArbitrary<TBaseType> where TBaseType : IBaseType<TBaseType, int>
 {
     /// <param name="max">The maximal value.</param>
     public MaxIntArbitrary(int max)
