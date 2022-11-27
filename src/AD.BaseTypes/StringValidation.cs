@@ -1,6 +1,6 @@
 ﻿namespace AD.BaseTypes;
 
-static class StringValidation
+public static class StringValidation
 {
     public static void MinLength(int minLength, string value)
     {
