@@ -1,6 +1,10 @@
-﻿namespace AD.BaseTypes;
+﻿using System.Runtime.CompilerServices;
 
-public static class StringValidation
+[assembly: InternalsVisibleTo("AD.BaseTypes.Benchmarks")]
+
+namespace AD.BaseTypes;
+
+static class StringValidation
 {
     public static void MinLength(int minLength, string value)
     {
