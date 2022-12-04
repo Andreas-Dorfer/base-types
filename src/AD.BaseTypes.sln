@@ -36,7 +36,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AD.BaseTypes.EFCore", "AD.B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AD.BaseTypes.Benchmarks", "AD.BaseTypes.Benchmarks\AD.BaseTypes.Benchmarks.csproj", "{5370BAD0-143D-40AF-ADA7-2FDCBA8EAAC0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AD.BaseTypes.EFCore.Tests", "AD.BaseTypes.EFCore.Tests\AD.BaseTypes.EFCore.Tests.csproj", "{964639E3-0F1D-45BA-8B59-4FDA90523BB6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AD.BaseTypes.EFCore.Tests", "AD.BaseTypes.EFCore.Tests\AD.BaseTypes.EFCore.Tests.csproj", "{964639E3-0F1D-45BA-8B59-4FDA90523BB6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AD.BaseTypes.Core.Tests", "AD.BaseTypes.Core.Tests\AD.BaseTypes.Core.Tests.csproj", "{6B725B54-3D7C-4125-B3C0-091D33B5E91B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -100,6 +102,10 @@ Global
 		{964639E3-0F1D-45BA-8B59-4FDA90523BB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{964639E3-0F1D-45BA-8B59-4FDA90523BB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{964639E3-0F1D-45BA-8B59-4FDA90523BB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B725B54-3D7C-4125-B3C0-091D33B5E91B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B725B54-3D7C-4125-B3C0-091D33B5E91B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B725B54-3D7C-4125-B3C0-091D33B5E91B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B725B54-3D7C-4125-B3C0-091D33B5E91B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
