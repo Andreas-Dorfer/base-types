@@ -323,7 +323,7 @@ Do you want to use your primitives in EF Core? Check out `AD.BaseTypes.EFCore`.
 ### NuGetPackage
     PM> Install-Package AndreasDorfer.BaseTypes.EFCore -Version 1.4.0
 ### Configuration
-Apply base type conventions to your `DbContext` to automatically configure the database. By default, the conventions will tell EF Core how to save and load your primitives and set the maximum data length.
+Apply base type conventions to your `DbContext` to automatically configure the database. By default, the conventions will tell EF Core how to save and load your primitives, set the maximum data length and set IsRequied.
 ```csharp
 protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
 {
@@ -331,18 +331,21 @@ protected override void ConfigureConventions(ModelConfigurationBuilder configura
     //OR
     configurationBuilder.Conventions
         .AddBaseTypeConversionConvention()
-        .AddBaseTypeMaxLengthConvention();
+        .AddBaseTypeMaxLengthConvention()
+        .AddBaseTypeIsRequiredConvention();
 }
 ```
 If you don't use conventions, you can configure your types manually:
 ```csharp
 builder.Property(x => x.LastName)
+    .IsRequired()
     .HasMaxLength(LastName.MaxLength)
     .HasConversion<BaseTypeValueConverter<LastName, string>>();
 ```
 You can also override the default conventions:
 ```csharp
 builder.Property(x => x.FirstName)
+    .IsRequired(false)
     .HasMaxLength(80)
     .HasConversion((x) => x + "-custom-conversion", (x) => FirstName.Create(x.Replace("-custom-conversion", "")));
 ```
