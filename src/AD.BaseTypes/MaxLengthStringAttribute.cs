@@ -6,14 +6,17 @@
 [AttributeUsage(AttributeTargets.Class)]
 public class MaxLengthStringAttribute : Attribute, IBaseTypeValidation<string>
 {
-    readonly int maxLength;
+    /// <summary>
+    /// Selected max length
+    /// </summary>
+    public int MaxLength { get; }
 
     /// <param name="maxLength">Maximal length.</param>
     public MaxLengthStringAttribute(int maxLength)
     {
-        this.maxLength = maxLength;
+        this.MaxLength = maxLength;
     }
 
     /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> is too long.</exception>
-    public void Validate(string value) => StringValidation.MaxLength(maxLength, value);
+    public void Validate(string value) => StringValidation.MaxLength(MaxLength, value);
 }
