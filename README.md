@@ -316,3 +316,27 @@ services.AddSwaggerGen(c =>
 ```
 ### Note
 `AD.BaseTypes.OpenApiSchemas` is in an early stage.
+
+---
+## Entity Framework Core
+Do you want to use your primitives in EF Core? Check out `AD.BaseTypes.EFCore`.
+### NuGetPackage
+    PM> Install-Package AndreasDorfer.BaseTypes.EFCore -Version 1.4.0
+### Configuration
+Apply a convention to your `DbContext` to tell EF Core how to save and load your primitives to the database.
+```csharp
+protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+{
+    configurationBuilder.Conventions.AddBaseTypeConversionConvention();
+}
+```
+Your can also configure your types manually
+```csharp
+builder.Property(x => x.LastName)
+    .HasConversion<BaseTypeValueConverter<LastName, string>>();
+```
+or overrides the default convention with a custom converter.
+```csharp
+builder.Property(x => x.FirstName)
+    .HasConversion((x) => x + "-custom-conversion", (x) => FirstName.Create(x.Replace("-custom-conversion", "")));
+```

@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <PackageId>AndreasDorfer.BaseTypes.EFCore</PackageId>
+        <Version>1.4.0</Version>
+        <Description>Add support to EntityFrameworkCore data access technology.</Description>
+        <PackageIcon>ESD_512.png</PackageIcon>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="..\ESD_512.png" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(Configuration)'!='Debug'">
+        <PackageReference Include="AndreasDorfer.BaseTypes.Core" Version="1.4.0" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(Configuration)'=='Debug'">
+        <ProjectReference Include="..\AD.BaseTypes.Core\AD.BaseTypes.Core.csproj" />
+    </ItemGroup>
+</Project>
