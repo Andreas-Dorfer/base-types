@@ -26,15 +26,13 @@ public class InstanceMaxIntAttribute : Attribute, IBaseTypeValidation<int>
 [MemoryDiagnoser]
 public class MaxIntBenchmark
 {
-    const int value = StaticMaxInt.Max / 2;
+    readonly int value = StaticMaxInt.Max / 2;
 
-#pragma warning disable CA1822 // Mark members as static
 #pragma warning disable CA1806 // Do not ignore method results
     [Benchmark]
     public void WithInstanceMethod() => new InstanceMaxInt(value);
 
     [Benchmark]
     public void WithStaticMethod() => new StaticMaxInt(value);
-#pragma warning restore CA1822 // Mark members as static
 #pragma warning restore CA1806 // Do not ignore method results
 }

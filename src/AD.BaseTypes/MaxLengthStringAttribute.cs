@@ -4,16 +4,16 @@
 /// String with a maximal length.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class)]
-public class MaxLengthStringAttribute : Attribute, IBaseTypeValidation<string>
+public class MaxLengthStringAttribute : Attribute, IStaticBaseTypeValidation<string>
 {
-    readonly int maxLength;
-
+#pragma warning disable IDE0060 // Remove unused parameter
     /// <param name="maxLength">Maximal length.</param>
     public MaxLengthStringAttribute(int maxLength)
-    {
-        this.maxLength = maxLength;
-    }
+    { }
+#pragma warning restore IDE0060 // Remove unused parameter
 
+    /// <param name="value">The value to be validated.</param>
+    /// <param name="maxLength">Maximal length.</param>
     /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> is too long.</exception>
-    public void Validate(string value) => StringValidation.MaxLength(maxLength, value);
+    public static void Validate(string value, int maxLength) => StringValidation.MaxLength(maxLength, value);
 }
