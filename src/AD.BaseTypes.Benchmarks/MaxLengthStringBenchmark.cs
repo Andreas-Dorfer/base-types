@@ -29,9 +29,9 @@ public class MaxLengthStringBenchmark
 {
     readonly string value = "teststring";
 
-    [Benchmark]
 #pragma warning disable CA1806 // Do not ignore method results
-    public void WithAttribute() => new InstanceMaxLengthString(value);
+    [Benchmark]
+    public void WithInstanceMethod() => new InstanceMaxLengthString(value);
 
     [Benchmark]
     public void WithStaticMethod() => new StaticMaxLengthString(value);
