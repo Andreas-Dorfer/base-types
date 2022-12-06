@@ -4,7 +4,7 @@
 /// String with a maximal length.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class)]
-public class MaxLengthStringAttribute : Attribute, IStaticBaseTypeValidation<string>
+public sealed class MaxLengthStringAttribute : Attribute, IStaticBaseTypeValidation<string>
 {
 #pragma warning disable IDE0060 // Remove unused parameter
     /// <param name="maxLength">Maximal length.</param>

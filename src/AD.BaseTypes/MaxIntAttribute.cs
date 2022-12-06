@@ -4,7 +4,7 @@
 /// Int with a maximal value.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class)]
-public class MaxIntAttribute : Attribute, IStaticBaseTypeValidation<int>
+public sealed class MaxIntAttribute : Attribute, IStaticBaseTypeValidation<int>
 {
 #pragma warning disable IDE0060 // Remove unused parameter
     /// <param name="max">Maximal value.</param>
