@@ -1,7 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.Diagnostics;
 using System.Text.RegularExpressions;
 
 namespace AD.BaseTypes.Generator
@@ -20,7 +19,6 @@ namespace AD.BaseTypes.Generator
 
         public void Initialize(GeneratorInitializationContext context)
         {
-            //AttachDebugger();
             context.RegisterForSyntaxNotifications(() => new PartialRecordsWithAttributesReceiver());
         }
 
@@ -283,16 +281,5 @@ namespace AD.BaseTypes.Generator
                     var match = BaseTypeValidatedRegex.Match(i.ToDisplayString());
                     return match.Success && match.Groups["type"].Value == baseType;
                 }) ?? false);
-
-#pragma warning disable IDE0051 // Remove unused private members
-        [Conditional("DEBUG")]
-        static void AttachDebugger()
-        {
-            if (!Debugger.IsAttached)
-            {
-                Debugger.Launch();
-            }
-        }
-#pragma warning restore IDE0051 // Remove unused private members
     }
 }
