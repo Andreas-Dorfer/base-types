@@ -20,5 +20,5 @@ public class ExampleArbitrary<TBaseType, TWrapped> : Arbitrary<TBaseType> where 
     }
 
     /// <inheritdoc/>
-    public override Gen<TBaseType> Generator => Gen.Elements(examples).Select(TBaseType.Create);
+    public override Gen<TBaseType> Generator => Gen.Elements(examples).Select(TBaseType.From);
 }

@@ -16,7 +16,7 @@ public static class BaseType<TBaseType, TWrapped> where TBaseType : IBaseType<TB
     /// <returns>The created base type.</returns>
     /// <exception cref="NotImplementedException">The base type does not define a creator.</exception>
     /// <exception cref="ArgumentException">The parameter <paramref name="value"/> is invalid.</exception>
-    public static TBaseType Create(TWrapped value) => TBaseType.Create(value);
+    public static TBaseType From(TWrapped value) => TBaseType.From(value);
 
     /// <summary>
     /// Tries to create a base type.
@@ -26,11 +26,11 @@ public static class BaseType<TBaseType, TWrapped> where TBaseType : IBaseType<TB
     /// <param name="errorMessage">The error message.</param>
     /// <returns>True, if the base type is created.</returns>
     /// <exception cref="NotImplementedException">The base type does not define a creator.</exception>
-    public static bool TryCreate(TWrapped value, [MaybeNullWhen(false)] out TBaseType baseType, [MaybeNullWhen(true)] out string errorMessage)
+    public static bool TryFrom(TWrapped value, [MaybeNullWhen(false)] out TBaseType baseType, [MaybeNullWhen(true)] out string errorMessage)
     {
         try
         {
-            baseType = Create(value);
+            baseType = From(value);
             errorMessage = default;
             return true;
         }

@@ -7,7 +7,7 @@ public record WithBaseType : IBaseType<WithBaseType, string>
 {
     public string Value => throw new NotImplementedException();
 
-    public static WithBaseType Create(string value)
+    public static WithBaseType From(string value)
     {
         throw new NotImplementedException();
     }

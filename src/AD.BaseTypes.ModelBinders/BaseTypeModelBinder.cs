@@ -26,7 +26,7 @@ public class BaseTypeModelBinder<TBaseType, TWrapped> : IModelBinder where TBase
         var value = converter.ConvertFrom(null, providerResult.Culture, providerResult.FirstValue);
         if (value is not null)
         {
-            if (BaseType<TBaseType, TWrapped>.TryCreate((TWrapped)value, out var baseType, out var errorMessage))
+            if (BaseType<TBaseType, TWrapped>.TryFrom((TWrapped)value, out var baseType, out var errorMessage))
             {
                 bindingContext.Result = ModelBindingResult.Success(baseType);
             }

@@ -25,5 +25,5 @@ public interface IBaseType<TBaseType, TWrapped> : IBaseType<TWrapped> where TBas
     /// <param name="value">The wrapped value.</param>
     /// <returns>The created base type.</returns>
     /// <exception cref="ArgumentException">The parameter <paramref name="value"/> is invalid.</exception>
-    static abstract TBaseType Create(TWrapped value);
+    static abstract TBaseType From(TWrapped value);
 }
