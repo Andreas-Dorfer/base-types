@@ -1,0 +1,1 @@
+To debug the generator with the `GeneratorWithTestApp` profile, make sure you have the component `.NET Compiler Platform SDK` installed in VS2022.
