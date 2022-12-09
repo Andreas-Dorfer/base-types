@@ -1,6 +1,7 @@
 using AD.BaseTypes.ModelBinders;
 using AD.BaseTypes.OpenApiSchemas;
 using Microsoft.OpenApi.Models;
+using TestApp.Data.Infrastructure;
 
 namespace TestApp.Web;
 
@@ -16,7 +17,7 @@ public class Startup
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-
+        services.AddDbContext<AppDbContext>();
         services.AddControllers(options => options.UseBaseTypeModelBinders());
         services.AddSwaggerGen(c =>
         {

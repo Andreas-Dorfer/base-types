@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "GeneratorWithTestApp": {
+      "commandName": "DebugRoslynComponent",
+      "targetProject": "..\\TestApp\\TestApp.csproj"
+    }
+  }
+}
