@@ -1,13 +1,8 @@
-﻿using AD.BaseTypes;
-using AD.BaseTypes.EFCore;
-using AD.BaseTypes.Extensions;
+﻿using AD.BaseTypes.EFCore.Extensions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using TestApp.UserAggregate;
 
-namespace TestApp.Data.Infrastructure;
+namespace TestApp.Infrastructure;
 
 public class AppDbContext : DbContext
 {
@@ -33,6 +28,6 @@ public class AppDbContext : DbContext
 
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {
-        configurationBuilder.Conventions.AddBaseTypeConversionConvention();
+        configurationBuilder.Conventions.AddBaseTypeConventions();
     }
 }

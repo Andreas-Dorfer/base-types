@@ -1,7 +1,7 @@
 using AD.BaseTypes.ModelBinders;
 using AD.BaseTypes.OpenApiSchemas;
 using Microsoft.OpenApi.Models;
-using TestApp.Data.Infrastructure;
+using TestApp.Infrastructure;
 
 namespace TestApp.Web;
 
