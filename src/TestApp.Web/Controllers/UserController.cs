@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TestApp.Data.Infrastructure;
+using TestApp.Infrastructure;
 using TestApp.UserAggregate;
 
 namespace TestApp.Web.Controllers;

@@ -1,4 +1,4 @@
-using TestApp.Data.Infrastructure;
+using TestApp.Infrastructure;
 
 namespace TestApp.Web;
 

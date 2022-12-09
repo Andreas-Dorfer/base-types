@@ -1,8 +1,8 @@
-﻿using AD.BaseTypes.Extensions;
+﻿using AD.BaseTypes.EFCore.Extensions;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
-namespace AD.BaseTypes.EFCore;
+namespace AD.BaseTypes.EFCore.Conventions;
 
 /// <summary>
 /// Apply the value converter <see cref="BaseTypeValueConverter{TBaseType, TWrapped}"/> as a convention 
@@ -21,12 +21,8 @@ public class BaseTypeConversionConvention : IModelFinalizingConvention
     public void ProcessModelFinalizing(IConventionModelBuilder modelBuilder, IConventionContext<IConventionModelBuilder> context)
     {
         var baseType = typeof(IBaseType<,>);
-        var baseTypesProperties = modelBuilder.Metadata
-            .GetEntityTypes()
-            .SelectMany(x => x.GetDeclaredProperties())
-            .Where(x => x.ClrType.ImplementsIBaseType());
 
-        foreach (var baseTypeProperty in baseTypesProperties)
+        foreach (var baseTypeProperty in modelBuilder.GetBaseTypeConventionProperties())
         {
             var wrappedType = baseTypeProperty.ClrType
                 .GetInterfaces()
