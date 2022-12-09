@@ -28,7 +28,6 @@ public class BaseTypeArbitrary<TBaseType, TWrapped> : Arbitrary<TBaseType> where
     /// </summary>
     /// <param name="value">The wrapped value.</param>
     /// <returns>The base type.</returns>
-    /// <exception cref="NotImplementedException">The base type does not define a creator.</exception>
     /// <exception cref="ArgumentException">The parameter <paramref name="value"/> is invalid.</exception>
     protected TBaseType Creator(TWrapped value) => TBaseType.Create(value);
 
