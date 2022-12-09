@@ -1,6 +1,6 @@
 ﻿using BenchmarkDotNet.Attributes;
 
-namespace AD.BaseTypes.Benchmark;
+namespace AD.BaseTypes.Benchmarks;
 
 [MaxLengthString(MaxLength)]
 public partial record StaticMaxLengthString
