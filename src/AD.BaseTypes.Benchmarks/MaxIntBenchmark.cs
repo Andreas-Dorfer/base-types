@@ -3,7 +3,7 @@
 namespace AD.BaseTypes.Benchmarks;
 
 [MaxInt(Max)]
-public partial record StaticMaxInt
+public sealed partial record StaticMaxInt
 {
     public const int Max = 100;
 }
@@ -21,7 +21,7 @@ public class InstanceMaxIntAttribute : Attribute, IBaseTypeValidation<int>
     public void Validate(int value) => IntValidation.Max(max, value);
 }
 
-[InstanceMaxInt(StaticMaxInt.Max)] public partial record InstanceMaxInt;
+[InstanceMaxInt(StaticMaxInt.Max)] public sealed partial record InstanceMaxInt;
 
 [MemoryDiagnoser]
 public class MaxIntBenchmark

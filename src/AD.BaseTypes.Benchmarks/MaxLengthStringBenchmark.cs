@@ -3,7 +3,7 @@
 namespace AD.BaseTypes.Benchmarks;
 
 [MaxLengthString(MaxLength)]
-public partial record StaticMaxLengthString
+public sealed partial record StaticMaxLengthString
 {
     public const int MaxLength = 10;
 }
@@ -22,7 +22,7 @@ public class InstanceMaxLengthStringAttribute : Attribute, IBaseTypeValidation<s
     public void Validate(string value) => StringValidation.MaxLength(maxLength, value);
 }
 
-[InstanceMaxLengthString(StaticMaxLengthString.MaxLength)] public partial record InstanceMaxLengthString;
+[InstanceMaxLengthString(StaticMaxLengthString.MaxLength)] public sealed partial record InstanceMaxLengthString;
 
 [MemoryDiagnoser]
 public class MaxLengthStringBenchmark

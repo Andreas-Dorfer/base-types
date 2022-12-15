@@ -3,7 +3,7 @@
 namespace AD.BaseTypes.Benchmarks;
 
 [MinInt(Min)]
-public partial record StaticMinInt
+public sealed partial record StaticMinInt
 {
     public const int Min = 100;
 }
@@ -21,7 +21,7 @@ public class InstanceMinIntAttribute : Attribute, IBaseTypeValidation<int>
     public void Validate(int value) => IntValidation.Min(min, value);
 }
 
-[InstanceMinInt(StaticMinInt.Min)] public partial record InstanceMinInt;
+[InstanceMinInt(StaticMinInt.Min)] public sealed partial record InstanceMinInt;
 
 [MemoryDiagnoser]
 public class MinIntBenchmark

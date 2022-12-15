@@ -3,7 +3,7 @@
 namespace AD.BaseTypes.Benchmarks;
 
 [MinLengthString(MinLength)]
-public partial record StaticMinLengthString
+public sealed partial record StaticMinLengthString
 {
     public const int MinLength = 5;
 }
@@ -21,7 +21,7 @@ public class InstanceMinLengthStringAttribute : Attribute, IBaseTypeValidation<s
     public void Validate(string value) => StringValidation.MinLength(minLength, value);
 }
 
-[InstanceMinLengthString(StaticMinLengthString.MinLength)] public partial record InstanceMinLengthString;
+[InstanceMinLengthString(StaticMinLengthString.MinLength)] public sealed partial record InstanceMinLengthString;
 
 [MemoryDiagnoser]
 public class MinLengthStringBenchmark
