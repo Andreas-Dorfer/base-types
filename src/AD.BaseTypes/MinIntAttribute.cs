@@ -4,7 +4,7 @@
 /// Int with a minimal value.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class)]
-public class MinIntAttribute : Attribute, IStaticBaseTypeValidation<int>
+public sealed class MinIntAttribute : Attribute, IStaticBaseTypeValidation<int>
 {
 #pragma warning disable IDE0060 // Remove unused parameter
     /// <param name="min">Minimal value.</param>
