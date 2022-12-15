@@ -1,7 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.Diagnostics;
 using System.Text.RegularExpressions;
 
 namespace AD.BaseTypes.Generator
@@ -11,7 +10,8 @@ namespace AD.BaseTypes.Generator
     {
         static readonly Regex
             BaseTypeDefinitionRegex = new("^AD.BaseTypes.IBaseTypeDefinition<(?<type>.+)>$"),
-            BaseTypeValidatedRegex = new("^AD.BaseTypes.IBaseTypeValidation<(?<type>.+)>$");
+            BaseTypeValidatedRegex = new("^AD.BaseTypes.IBaseTypeValidation<(?<type>.+)>$"),
+            StaticBaseTypeValidatedRegex = new("^AD.BaseTypes.IStaticBaseTypeValidation<(?<type>.+)>$");
         const string
             BaseTypeAttributeName = "AD.BaseTypes.BaseTypeAttribute",
             Cast_Explicit = "Explicit",
@@ -20,7 +20,6 @@ namespace AD.BaseTypes.Generator
 
         public void Initialize(GeneratorInitializationContext context)
         {
-            //AttachDebugger();
             context.RegisterForSyntaxNotifications(() => new PartialRecordsWithAttributesReceiver());
         }
 
@@ -227,14 +226,30 @@ namespace AD.BaseTypes.Generator
         static void AppendReturnsComment(IndentedStringBuilder sourceBuilder, string comment) =>
             sourceBuilder.AppendLine($"/// <returns>{comment}</returns>");
 
-        static void AppendValidations(IndentedStringBuilder sourceBuilder, SemanticModel semantics, IEnumerable<AttributeSyntax> validations)
+        static void AppendValidations(IndentedStringBuilder sourceBuilder, SemanticModel semantics, IEnumerable<(AttributeSyntax, bool IsStatic)> validations)
         {
             foreach (var validation in validations)
             {
-                var validationType = semantics.GetSymbolInfo(validation).Symbol?.ContainingType;
+                var (attribute, isStatic) = validation;
+                var validationType = semantics.GetSymbolInfo(attribute).Symbol?.ContainingType;
                 if (validationType is null) continue;
-                var args = validation?.ArgumentList?.Arguments.ToString() ?? "";
-                sourceBuilder.AppendLine($"new {validationType.ToDisplayString()}({args}).Validate(value);");
+                var args = attribute?.ArgumentList?.Arguments;
+                var argsText = args?.ToString() ?? "";
+                if (isStatic)
+                {
+                    if (args?.Count > 0)
+                    {
+                        sourceBuilder.AppendLine($"{validationType.ToDisplayString()}.Validate(value, {argsText});");
+                    }
+                    else
+                    {
+                        sourceBuilder.AppendLine($"{validationType.ToDisplayString()}.Validate(value);");
+                    }
+                }
+                else
+                {
+                    sourceBuilder.AppendLine($"new {validationType.ToDisplayString()}({argsText}).Validate(value);");
+                }
             }
         }
 
@@ -276,23 +291,18 @@ namespace AD.BaseTypes.Generator
             return expression.Name.Identifier.Text;
         }
 
-        static IEnumerable<AttributeSyntax> GetAllValidations(SemanticModel semantics, IEnumerable<AttributeSyntax> attributes, string baseType) =>
-            attributes.Where(a =>
-                semantics.GetSymbolInfo(a).Symbol?.ContainingType.AllInterfaces.Any(i =>
-                {
-                    var match = BaseTypeValidatedRegex.Match(i.ToDisplayString());
-                    return match.Success && match.Groups["type"].Value == baseType;
-                }) ?? false);
-
-#pragma warning disable IDE0051 // Remove unused private members
-        [Conditional("DEBUG")]
-        static void AttachDebugger()
-        {
-            if (!Debugger.IsAttached)
+        static IEnumerable<(AttributeSyntax, bool IsStatic)> GetAllValidations(SemanticModel semantics, IEnumerable<AttributeSyntax> attributes, string baseType) =>
+            attributes.Select(a =>
             {
-                Debugger.Launch();
-            }
-        }
-#pragma warning restore IDE0051 // Remove unused private members
+                foreach (var i in semantics.GetSymbolInfo(a).Symbol?.ContainingType.AllInterfaces ?? Enumerable.Empty<INamedTypeSymbol>())
+                {
+                    var validationMatch = BaseTypeValidatedRegex.Match(i.ToDisplayString());
+                    if (validationMatch.Success && validationMatch.Groups["type"].Value == baseType) return (a, false);
+
+                    var staticMatch = StaticBaseTypeValidatedRegex.Match(i.ToDisplayString());
+                    if (staticMatch.Success && staticMatch.Groups["type"].Value == baseType) return (a, true);
+                }
+                return default;
+            }).Where(_ => _.a != null);
     }
 }

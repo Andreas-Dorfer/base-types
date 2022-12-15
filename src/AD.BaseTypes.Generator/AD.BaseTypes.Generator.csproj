@@ -1,20 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	
-	<PropertyGroup>
-		<TargetFramework>netstandard2.0</TargetFramework>
-		<IncludeBuildOutput>false</IncludeBuildOutput>
-		<PackageId>AndreasDorfer.BaseTypes.Generator</PackageId>
-		<Version>1.4.0</Version>
-		<Description>A source generator to fight primitive obsession and create expressive domain models.</Description>
-		<PackageTags>C#, source-generator, domain-modeling, validation, primitive-obsession</PackageTags>
-		<PackageIcon>ESD_512.png</PackageIcon>
-	</PropertyGroup>
-	
-	<ItemGroup>
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.4.0" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3" PrivateAssets="all" />
-		<PackageReference Update="NETStandard.Library" PrivateAssets="all" />
-		<None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-		<None Include="..\ESD_512.png" Pack="true" PackagePath="\" />
-	</ItemGroup>
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+        <PackageId>AndreasDorfer.BaseTypes.Generator</PackageId>
+        <Version>1.4.0</Version>
+        <Description>A source generator to fight primitive obsession and create expressive domain models.</Description>
+        <PackageTags>C#, source-generator, domain-modeling, validation, primitive-obsession</PackageTags>
+        <PackageIcon>ESD_512.png</PackageIcon>
+        <IsRoslynComponent>true</IsRoslynComponent>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.4.0" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3" PrivateAssets="all" />
+        <PackageReference Update="NETStandard.Library" PrivateAssets="all" />
+        <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+        <None Include="..\ESD_512.png" Pack="true" PackagePath="\" />
+    </ItemGroup>
 </Project>
