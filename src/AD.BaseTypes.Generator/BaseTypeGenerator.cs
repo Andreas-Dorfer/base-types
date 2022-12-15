@@ -47,10 +47,23 @@ namespace AD.BaseTypes.Generator
                 var semantics = context.Compilation.GetSemanticModel(record.SyntaxTree);
 
                 var attributes = GetAllAttributes(record);
-                if (!TryGetBaseType(semantics, attributes, out var baseType)) continue;
+                if (!TryGetBaseType(semantics, attributes, out var bt)) continue;
+                var (baseType, baseTypeInfo) = bt;
                 var isStruct = record.ClassOrStructKeyword.IsKind(SyntaxKind.StructKeyword);
                 var validations = GetAllValidations(semantics, attributes, baseType).ToList();
                 if (isStruct && validations.Count > 0) continue;
+
+                var implements = baseTypeInfo is null ?
+                    new
+                    {
+                        IComparable = false,
+                        IComparable_T = false
+                    } :
+                    new
+                    {
+                        IComparable = Implements(baseTypeInfo, context.Compilation.GetTypeByMetadataName("System.IComparable")),
+                        IComparable_T = Implements(baseTypeInfo, context.Compilation.GetTypeByMetadataName("System.IComparable`1")?.Construct(baseTypeInfo))
+                    };
 
                 var @sealed = isStruct ? "" : "sealed ";
                 var recordType = isStruct ? " struct" : "";
@@ -76,7 +89,17 @@ namespace AD.BaseTypes.Generator
                 }
                 sourceBuilder.AppendLine($"[System.ComponentModel.TypeConverter(typeof(AD.BaseTypes.Converters.BaseTypeTypeConverter<{recordName}, {baseType}>))]");
                 sourceBuilder.AppendLine($"[System.Text.Json.Serialization.JsonConverter(typeof(AD.BaseTypes.Json.BaseTypeJsonConverter<{recordName}, {baseType}>))]");
-                sourceBuilder.AppendLine($"{@sealed}partial record{recordType} {recordName} : System.IComparable<{recordName}>, System.IComparable, AD.BaseTypes.IBaseType<{recordName}, {baseType}>");
+                sourceBuilder.Indent();
+                sourceBuilder.Append($"{@sealed}partial record{recordType} {recordName} : AD.BaseTypes.IBaseType<{recordName}, {baseType}>");
+                if (implements.IComparable)
+                {
+                    sourceBuilder.Append(", System.IComparable");
+                }
+                if (implements.IComparable_T)
+                {
+                    sourceBuilder.Append($", System.IComparable<{recordName}>");
+                }
+                sourceBuilder.EndLine();
                 sourceBuilder.AppendLine("{");
                 sourceBuilder.IncreaseIndent();
                 //*****
@@ -106,29 +129,35 @@ namespace AD.BaseTypes.Generator
                 sourceBuilder.AppendLine($"{baseType} AD.BaseTypes.IBaseType<{baseType}>.Value => value;");
                 AppendInheritDoc(sourceBuilder);
                 sourceBuilder.AppendLine("public override string ToString() => value.ToString();");
-                AppendInheritDoc(sourceBuilder);
-                if (isStruct)
+                if (implements.IComparable)
                 {
-                    sourceBuilder.AppendLine($"public int CompareTo(object? obj)");
-                    sourceBuilder.AppendLine("{");
-                    sourceBuilder.IncreaseIndent();
-                    sourceBuilder.AppendLine($"if(obj is not {recordName} other) return 1;");
-                    sourceBuilder.AppendLine("return CompareTo(other);");
-                    sourceBuilder.DecreaseIndent();
-                    sourceBuilder.AppendLine("}");
+                    AppendInheritDoc(sourceBuilder);
+                    if (isStruct)
+                    {
+                        sourceBuilder.AppendLine($"public int CompareTo(object? obj)");
+                        sourceBuilder.AppendLine("{");
+                        sourceBuilder.IncreaseIndent();
+                        sourceBuilder.AppendLine($"if(obj is not {recordName} other) return 1;");
+                        sourceBuilder.AppendLine("return CompareTo(other);");
+                        sourceBuilder.DecreaseIndent();
+                        sourceBuilder.AppendLine("}");
+                    }
+                    else
+                    {
+                        sourceBuilder.AppendLine($"public int CompareTo(object? obj) => CompareTo(obj as {recordName});");
+                    }
                 }
-                else
+                if (implements.IComparable_T)
                 {
-                    sourceBuilder.AppendLine($"public int CompareTo(object? obj) => CompareTo(obj as {recordName});");
-                }
-                AppendInheritDoc(sourceBuilder);
-                if (isStruct)
-                {
-                    sourceBuilder.AppendLine($"public int CompareTo({recordName} other) => System.Collections.Generic.Comparer<{baseType}>.Default.Compare(value, other.value);");
-                }
-                else
-                {
-                    sourceBuilder.AppendLine($"public int CompareTo({recordName}? other) => other is null ? 1 : System.Collections.Generic.Comparer<{baseType}>.Default.Compare(value, other.value);");
+                    AppendInheritDoc(sourceBuilder);
+                    if (isStruct)
+                    {
+                        sourceBuilder.AppendLine($"public int CompareTo({recordName} other) => value.CompareTo(other.value);");
+                    }
+                    else
+                    {
+                        sourceBuilder.AppendLine($"public int CompareTo({recordName}? other) => other is null ? 1 : value.CompareTo(other.value);");
+                    }
                 }
                 AppendCast(sourceBuilder, semantics, attributes, baseType, recordName);
                 AppendSummaryComment(sourceBuilder, $"Creates the <see cref=\"{recordName}\"/>.");
@@ -195,7 +224,7 @@ namespace AD.BaseTypes.Generator
         static IEnumerable<AttributeSyntax> GetAllAttributes(RecordDeclarationSyntax record) =>
             record.AttributeLists.SelectMany(_ => _.Attributes);
 
-        static bool TryGetBaseType(SemanticModel semantics, IEnumerable<AttributeSyntax> attributes, out string baseType)
+        static bool TryGetBaseType(SemanticModel semantics, IEnumerable<AttributeSyntax> attributes, out (string, ITypeSymbol) baseType)
         {
             var baseTypes = GetBaseTypes(semantics, attributes);
             if (baseTypes.Length != 1)
@@ -207,14 +236,14 @@ namespace AD.BaseTypes.Generator
             return true;
         }
 
-        static string[] GetBaseTypes(SemanticModel semantics, IEnumerable<AttributeSyntax> attributes) =>
+        static (string, ITypeSymbol)[] GetBaseTypes(SemanticModel semantics, IEnumerable<AttributeSyntax> attributes) =>
             attributes.SelectMany(attribute =>
                 semantics.GetSymbolInfo(attribute).Symbol?.ContainingType.AllInterfaces.Select(@interface =>
                 {
                     var match = BaseTypeDefinitionRegex.Match(@interface.ToDisplayString());
-                    return match.Success ? match.Groups["type"].Value : null;
-                }) ?? Enumerable.Empty<string>())
-            .Where(_ => _ != null).Distinct().ToArray()!;
+                    return match.Success ? (match.Groups["type"].Value, @interface.TypeArguments[0]) : default;
+                }) ?? Enumerable.Empty<(string, ITypeSymbol)>())
+            .Where(_ => _ != default).GroupBy(_ => _.Value).Select(_ => (_.Key, _.First().Item2)).ToArray()!;
 
         static string GetNamespace(RecordDeclarationSyntax record, SemanticModel semantics) =>
             semantics.GetDeclaredSymbol(record)?.ContainingNamespace?.ToDisplayString() ?? "";
@@ -316,5 +345,12 @@ namespace AD.BaseTypes.Generator
                 }
                 return default;
             }).Where(_ => _.a != null);
+
+        static bool Implements(ITypeSymbol? baseType, INamedTypeSymbol? @interface)
+        {
+            if (baseType is null || @interface is null) return false;
+
+            return baseType.AllInterfaces.Any(i => i.Equals(@interface, SymbolEqualityComparer.Default));
+        }
     }
 }

@@ -12,7 +12,11 @@ namespace AD.BaseTypes.Generator
 
         public void DecreaseIndent() => indent = Math.Max(indent - 1, 0);
 
-        void Indent() => builder.Append(' ', indent * 4);
+        public void Indent() => builder.Append(' ', indent * 4);
+
+        public void Append(string text) => builder.Append(text);
+
+        public void EndLine() => builder.AppendLine();
 
         public void AppendLine(string text)
         {
