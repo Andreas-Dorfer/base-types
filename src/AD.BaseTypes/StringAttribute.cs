@@ -4,8 +4,9 @@
 /// Non-null string wrapper.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class)]
-public class StringAttribute : Attribute, IBaseTypeValidation<string>
+public sealed class StringAttribute : Attribute, IStaticBaseTypeValidation<string>
 {
+    /// <param name="value">The value to be validated.</param>
     /// <exception cref="ArgumentNullException">The parameter <paramref name="value"/> is null.</exception>
-    public void Validate(string value) => ArgumentNullException.ThrowIfNull(value);
+    public static void Validate(string value) => ArgumentNullException.ThrowIfNull(value);
 }

@@ -15,13 +15,11 @@ public sealed class InstanceRegexStringAttribute : Attribute, IBaseTypeValidatio
 {
     readonly string pattern;
 
-    /// <param name="pattern">Regex pattern.</param>
     public InstanceRegexStringAttribute([StringSyntax(StringSyntaxAttribute.Regex)] string pattern)
     {
         this.pattern = pattern;
     }
 
-    /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> doesn't match.</exception>
     public void Validate(string value)
     {
         ArgumentNullException.ThrowIfNull(value);

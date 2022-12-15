@@ -7,7 +7,6 @@ namespace AD.BaseTypes.Benchmarks;
 [AttributeUsage(AttributeTargets.Class)]
 public sealed class InstanceNonEmptyStringAttribute : Attribute, IBaseTypeValidation<string>
 {
-    /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> is empty.</exception>
     public void Validate(string value)
     {
         ArgumentNullException.ThrowIfNull(value);
