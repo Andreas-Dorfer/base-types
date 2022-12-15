@@ -6,8 +6,6 @@
 [AttributeUsage(AttributeTargets.Class)]
 public sealed class MinMaxIntAttribute : Attribute, IStaticBaseTypeValidation<int>
 {
-    readonly int min, max;
-
 #pragma warning disable IDE0060 // Remove unused parameter
     /// <param name="min">Minimal value.</param>
     /// <param name="max">Maximal value.</param>
