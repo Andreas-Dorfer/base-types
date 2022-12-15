@@ -29,7 +29,7 @@ public class BaseTypeArbitrary<TBaseType, TWrapped> : Arbitrary<TBaseType> where
     /// <param name="value">The wrapped value.</param>
     /// <returns>The base type.</returns>
     /// <exception cref="ArgumentException">The parameter <paramref name="value"/> is invalid.</exception>
-    protected TBaseType Creator(TWrapped value) => TBaseType.Create(value);
+    protected TBaseType Creator(TWrapped value) => TBaseType.From(value);
 
     /// <summary>
     /// Filters invalid wrapped values.

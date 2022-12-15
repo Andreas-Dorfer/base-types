@@ -132,7 +132,7 @@ namespace AD.BaseTypes.Generator
                 AppendParamComment(sourceBuilder, "value", $"The underlying <see cref=\"{baseType}\"/>.");
                 AppendExceptionComment(sourceBuilder, "System.ArgumentException", "The parameter <paramref name=\"value\"/> is invalid.");
                 AppendReturnsComment(sourceBuilder, $"The created <see cref=\"{recordName}\"/>.");
-                sourceBuilder.AppendLine($"public static {recordName} Create({baseType} value) => new(value);");
+                sourceBuilder.AppendLine($"public static {recordName} From({baseType} value) => new(value);");
                 if (validations.Count > 0)
                 {
                     AppendSummaryComment(sourceBuilder, $"Tries to create the <see cref=\"{recordName}\"/>.");
@@ -140,9 +140,9 @@ namespace AD.BaseTypes.Generator
                     AppendParamComment(sourceBuilder, "baseType", $"The created <see cref=\"{recordName}\"/>.");
                     AppendParamComment(sourceBuilder, "errorMessage", "The error message.");
                     AppendReturnsComment(sourceBuilder, $"True, if the <see cref=\"{recordName}\"/> is created.");
-                    sourceBuilder.AppendLine($"public static bool TryCreate({baseType} value, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] out {recordName} baseType, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(true)] out string errorMessage) =>");
+                    sourceBuilder.AppendLine($"public static bool TryFrom({baseType} value, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] out {recordName} baseType, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(true)] out string errorMessage) =>");
                     sourceBuilder.IncreaseIndent();
-                    sourceBuilder.AppendLine($"AD.BaseTypes.BaseType<{recordName}, {baseType}>.TryCreate(value, out baseType, out errorMessage);");
+                    sourceBuilder.AppendLine($"AD.BaseTypes.BaseType<{recordName}, {baseType}>.TryFrom(value, out baseType, out errorMessage);");
                     sourceBuilder.DecreaseIndent();
                 }
 

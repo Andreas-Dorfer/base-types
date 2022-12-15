@@ -19,6 +19,6 @@ public class BaseTypeJsonConverter<TBaseType, TWrapped> : JsonConverter<TBaseTyp
     {
         var value = JsonSerializer.Deserialize<TWrapped>(ref reader, options);
         return value is null ? default :
-            BaseType<TBaseType, TWrapped>.TryCreate(value, out var baseType, out var errorMessage) ? baseType : throw new JsonException(errorMessage);
+            BaseType<TBaseType, TWrapped>.TryFrom(value, out var baseType, out var errorMessage) ? baseType : throw new JsonException(errorMessage);
     }
 }

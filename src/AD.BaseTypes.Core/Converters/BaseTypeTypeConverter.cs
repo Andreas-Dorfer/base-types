@@ -23,7 +23,7 @@ public class BaseTypeTypeConverter<TBaseType, TWrapped> : TypeConverter where TB
         {
             wrapped = (TWrapped)wrappedConverter.ConvertFrom(context, culture, value)!;
         }
-        return TBaseType.Create(wrapped);
+        return TBaseType.From(wrapped);
     }
 
     /// <inheritdoc/>

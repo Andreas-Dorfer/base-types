@@ -8,8 +8,8 @@ open AD.BaseTypes
 /// </summary>
 /// <param name="value">The base type's value.</param>
 /// <returns>The created base type or an error message.</returns>
-let create<'baseType, 'wrapped when 'baseType :> IBaseType<'baseType, 'wrapped>> value =
-    match value |> BaseType<'baseType, _>.TryCreate with
+let from<'baseType, 'wrapped when 'baseType :> IBaseType<'baseType, 'wrapped>> value =
+    match value |> BaseType<'baseType, _>.TryFrom with
     | true, baseType, _ -> baseType |> Ok
     | false, _, error -> error |> Error
 
@@ -21,11 +21,11 @@ let (|Value|) (baseType : #IBaseType<_>) = baseType.Value
 
 /// Binds a base type.
 let bind binder (baseType : 'baseType) =
-    baseType |> value |> binder |> Result.bind create<'baseType, _>
+    baseType |> value |> binder |> Result.bind from<'baseType, _>
 
 /// Maps a base type.
 let map mapper (baseType : 'baseType) =
-    baseType |> value |> mapper |> create<'baseType, _>
+    baseType |> value |> mapper |> from<'baseType, _>
 
 /// Maps the base type's value.
 let mapValue mapper = value >> mapper

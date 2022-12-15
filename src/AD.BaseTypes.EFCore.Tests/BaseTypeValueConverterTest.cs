@@ -7,7 +7,7 @@ public class BaseTypeValueConverterTest
 {
     const string expectedString = "MyValue";
     readonly BaseTypeValueConverter<MyString, string> converter = new();
-    readonly MyString expected = MyString.Create(expectedString);
+    readonly MyString expected = MyString.From(expectedString);
 
     [TestMethod]
     public void ConvertFromProvider() =>

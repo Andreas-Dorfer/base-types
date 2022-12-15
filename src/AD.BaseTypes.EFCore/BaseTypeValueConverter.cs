@@ -17,6 +17,6 @@ public class BaseTypeValueConverter<TBaseType, TWrapped> : ValueConverter<TBaseT
     public BaseTypeValueConverter()
         : base(
               v => v.Value,
-              v => BaseType<TBaseType, TWrapped>.Create(v))
+              v => BaseType<TBaseType, TWrapped>.From(v))
     { }
 }

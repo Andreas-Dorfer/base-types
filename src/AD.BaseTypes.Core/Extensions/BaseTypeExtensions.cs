@@ -22,7 +22,7 @@ public static class BaseTypeExtensions
         ArgumentNullException.ThrowIfNull(baseType);
         ArgumentNullException.ThrowIfNull(mapper);
 
-        return TBaseType.Create(mapper(baseType.Value));
+        return TBaseType.From(mapper(baseType.Value));
     }
 
     /// <summary>
@@ -41,7 +41,7 @@ public static class BaseTypeExtensions
         ArgumentNullException.ThrowIfNull(baseType);
         ArgumentNullException.ThrowIfNull(mapper);
 
-        return BaseType<TBaseType, TWrapped>.TryCreate(mapper(baseType.Value), out mapped, out errorMessage);
+        return BaseType<TBaseType, TWrapped>.TryFrom(mapper(baseType.Value), out mapped, out errorMessage);
     }
 
     /// <summary>
