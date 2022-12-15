@@ -1,6 +1,4 @@
-﻿using BenchmarkDotNet.Attributes;
-
-namespace AD.BaseTypes.Benchmarks;
+﻿namespace AD.BaseTypes.Benchmarks;
 
 [NonEmptyString] public sealed partial record StaticNonEmptyString;
 

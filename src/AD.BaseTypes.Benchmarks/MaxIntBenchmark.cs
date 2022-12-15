@@ -1,6 +1,4 @@
-﻿using BenchmarkDotNet.Attributes;
-
-namespace AD.BaseTypes.Benchmarks;
+﻿namespace AD.BaseTypes.Benchmarks;
 
 [MaxInt(Max)]
 public sealed partial record StaticMaxInt

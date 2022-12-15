@@ -13,6 +13,8 @@ namespace AD.BaseTypes.EFCore;
 /// </remarks>
 public class BaseTypeConversionConvention : IModelFinalizingConvention
 {
+    static readonly Type BaseType = typeof(IBaseType<,>);
+
     /// <summary>
     /// Called when a model is being finalized.
     /// </summary>
@@ -20,7 +22,6 @@ public class BaseTypeConversionConvention : IModelFinalizingConvention
     /// <param name="context">Additional information associated with convention execution.</param>
     public void ProcessModelFinalizing(IConventionModelBuilder modelBuilder, IConventionContext<IConventionModelBuilder> context)
     {
-        var baseType = typeof(IBaseType<,>);
         var baseTypesProperties = modelBuilder.Metadata
             .GetEntityTypes()
             .SelectMany(x => x.GetDeclaredProperties())
@@ -30,7 +31,7 @@ public class BaseTypeConversionConvention : IModelFinalizingConvention
         {
             var wrappedType = baseTypeProperty.ClrType
                 .GetInterfaces()
-                .First(x => x.IsGenericType && x.GetGenericTypeDefinition() == baseType)
+                .First(x => x.IsGenericType && x.GetGenericTypeDefinition() == BaseType)
                 .GetGenericArguments()[1];
 
             var converterType = typeof(BaseTypeValueConverter<,>).MakeGenericType(new Type[] { baseTypeProperty.ClrType, wrappedType });

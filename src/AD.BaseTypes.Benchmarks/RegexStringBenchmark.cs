@@ -1,5 +1,4 @@
-﻿using BenchmarkDotNet.Attributes;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 
 namespace AD.BaseTypes.Benchmarks;

@@ -7,7 +7,7 @@
 public class StringArbitrary<TBaseType> : BaseTypeArbitrary<TBaseType, string> where TBaseType : IBaseType<TBaseType, string>
 {
     /// <inheritdoc/>
-    protected override Arbitrary<string> WrappedArb() => Arb.Default.NonNull<string>().Convert(str => str.Item, str => NonNull<string>.NewNonNull(str));
+    protected override Arbitrary<string> WrappedArb() => Arb.Default.NonNull<string>().Convert(str => str.Item, NonNull<string>.NewNonNull);
 
     /// <summary>
     /// Filters null.

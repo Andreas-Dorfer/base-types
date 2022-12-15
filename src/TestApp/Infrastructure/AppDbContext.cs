@@ -1,10 +1,5 @@
-﻿using AD.BaseTypes;
-using AD.BaseTypes.EFCore;
-using AD.BaseTypes.Extensions;
+﻿using AD.BaseTypes.EFCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using TestApp.UserAggregate;
 
 namespace TestApp.Data.Infrastructure;

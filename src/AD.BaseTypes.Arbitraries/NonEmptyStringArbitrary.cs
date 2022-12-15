@@ -7,7 +7,7 @@
 public class NonEmptyStringArbitrary<TBaseType> : BaseTypeArbitrary<TBaseType, string> where TBaseType : IBaseType<TBaseType, string>
 {
     /// <inheritdoc/>
-    protected override Arbitrary<string> WrappedArb() => Arb.Default.NonEmptyString().Convert(str => str.Item, str => NonEmptyString.NewNonEmptyString(str));
+    protected override Arbitrary<string> WrappedArb() => Arb.Default.NonEmptyString().Convert(str => str.Item, NonEmptyString.NewNonEmptyString);
 
     /// <summary>
     /// Filters empty strings.
