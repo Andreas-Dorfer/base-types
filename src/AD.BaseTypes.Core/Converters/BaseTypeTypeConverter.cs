@@ -4,7 +4,7 @@ using System.Globalization;
 namespace AD.BaseTypes.Converters;
 
 /// <inheritdoc/>
-public class BaseTypeTypeConverter<TBaseType, TWrapped> : TypeConverter where TBaseType : IBaseType<TBaseType, TWrapped>
+public class BaseTypeTypeConverter<TBaseType, TWrapped> : TypeConverter where TBaseType : IBaseType<TBaseType, TWrapped> where TWrapped : notnull
 {
     readonly TypeConverter wrappedConverter = TypeDescriptor.GetConverter(typeof(TWrapped));
 

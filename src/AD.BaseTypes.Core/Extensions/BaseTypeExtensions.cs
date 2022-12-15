@@ -17,7 +17,7 @@ public static class BaseTypeExtensions
     /// <returns>The mapped base type.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="baseType"/> or <paramref name="mapper"/> is null.</exception>
     /// <exception cref="ArgumentException">The mapped value is invalid.</exception>
-    public static TBaseType Map<TBaseType, TWrapped>(this TBaseType baseType, Func<TWrapped, TWrapped> mapper) where TBaseType : IBaseType<TBaseType, TWrapped>
+    public static TBaseType Map<TBaseType, TWrapped>(this TBaseType baseType, Func<TWrapped, TWrapped> mapper) where TBaseType : IBaseType<TBaseType, TWrapped> where TWrapped : notnull
     {
         ArgumentNullException.ThrowIfNull(baseType);
         ArgumentNullException.ThrowIfNull(mapper);
@@ -36,7 +36,7 @@ public static class BaseTypeExtensions
     /// <param name="errorMessage">The error message.</param>
     /// <returns>True, if the base type is created.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="baseType"/> or <paramref name="mapper"/> is null.</exception>
-    public static bool TryMap<TBaseType, TWrapped>(this TBaseType baseType, Func<TWrapped, TWrapped> mapper, [MaybeNullWhen(false)] out TBaseType mapped, [MaybeNullWhen(true)] out string errorMessage) where TBaseType : IBaseType<TBaseType, TWrapped>
+    public static bool TryMap<TBaseType, TWrapped>(this TBaseType baseType, Func<TWrapped, TWrapped> mapper, [MaybeNullWhen(false)] out TBaseType mapped, [MaybeNullWhen(true)] out string errorMessage) where TBaseType : IBaseType<TBaseType, TWrapped> where TWrapped : notnull
     {
         ArgumentNullException.ThrowIfNull(baseType);
         ArgumentNullException.ThrowIfNull(mapper);
@@ -52,7 +52,7 @@ public static class BaseTypeExtensions
     /// <param name="mapper">The mapper.</param>
     /// <returns>The mapped value.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="baseType"/> or <paramref name="mapper"/> is null.</exception>
-    public static TWrapped MapValue<TWrapped>(this IBaseType<TWrapped> baseType, Func<TWrapped, TWrapped> mapper)
+    public static TWrapped MapValue<TWrapped>(this IBaseType<TWrapped> baseType, Func<TWrapped, TWrapped> mapper) where TWrapped : notnull
     {
         ArgumentNullException.ThrowIfNull(baseType);
         ArgumentNullException.ThrowIfNull(mapper);
@@ -67,7 +67,7 @@ public static class BaseTypeExtensions
     /// <param name="baseType">The base type.</param>
     /// <returns>The base type's value.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="baseType"/> is null.</exception>
-    public static TWrapped Value<TWrapped>(this IBaseType<TWrapped> baseType)
+    public static TWrapped Value<TWrapped>(this IBaseType<TWrapped> baseType) where TWrapped : notnull
     {
         ArgumentNullException.ThrowIfNull(baseType);
 

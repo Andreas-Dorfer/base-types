@@ -5,5 +5,5 @@
 /// </summary>
 /// <typeparam name="TWrapped">The type to wrap.</typeparam>
 /// <remarks>Must define a static Validate method.</remarks>
-public interface IStaticBaseTypeValidation<TWrapped> : IBaseTypeDefinition<TWrapped>
+public interface IStaticBaseTypeValidation<TWrapped> : IBaseTypeDefinition<TWrapped> where TWrapped : notnull
 { }

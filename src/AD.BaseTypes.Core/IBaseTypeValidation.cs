@@ -4,7 +4,7 @@
 /// A validated wrapper around a (primitive) type.
 /// </summary>
 /// <typeparam name="TWrapped">The type to wrap.</typeparam>
-public interface IBaseTypeValidation<TWrapped> : IBaseTypeDefinition<TWrapped>
+public interface IBaseTypeValidation<TWrapped> : IBaseTypeDefinition<TWrapped> where TWrapped : notnull
 {
     /// <summary>
     /// Validates the wrapped value.

@@ -5,7 +5,7 @@
 /// </summary>
 /// <typeparam name="TBaseType">The base type.</typeparam>
 /// <typeparam name="TWrapped">The wrapped type.</typeparam>
-public class ExampleArbitrary<TBaseType, TWrapped> : Arbitrary<TBaseType> where TBaseType : IBaseType<TBaseType, TWrapped>
+public class ExampleArbitrary<TBaseType, TWrapped> : Arbitrary<TBaseType> where TBaseType : IBaseType<TBaseType, TWrapped> where TWrapped : notnull
 {
     readonly TWrapped[] examples;
 
