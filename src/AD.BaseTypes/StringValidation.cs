@@ -1,8 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-[assembly: InternalsVisibleTo("AD.BaseTypes.Benchmarks")]
-
-namespace AD.BaseTypes;
+﻿namespace AD.BaseTypes;
 
 static class StringValidation
 {

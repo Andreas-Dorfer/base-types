@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AD.BaseTypes.Generator\AD.BaseTypes.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"  />
     <ProjectReference Include="..\AD.BaseTypes\AD.BaseTypes.csproj" />
   </ItemGroup>
 
