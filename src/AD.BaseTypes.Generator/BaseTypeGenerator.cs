@@ -86,7 +86,10 @@ namespace AD.BaseTypes.Generator
                 //constructor start
                 AppendSummaryComment(sourceBuilder, $"Creates the <see cref=\"{recordName}\"/>.");
                 AppendParamComment(sourceBuilder, "value", $"The underlying <see cref=\"{baseType}\"/>.");
-                AppendExceptionComment(sourceBuilder, "System.ArgumentException", "The parameter <paramref name=\"value\"/> is invalid.");
+                if (validations.Count > 0)
+                {
+                    AppendExceptionComment(sourceBuilder, "System.ArgumentException", "The parameter <paramref name=\"value\"/> is invalid.");
+                }
                 sourceBuilder.AppendLine($"public {recordName}({baseType} value)");
                 sourceBuilder.AppendLine("{");
                 sourceBuilder.IncreaseIndent();
@@ -130,7 +133,10 @@ namespace AD.BaseTypes.Generator
                 AppendCast(sourceBuilder, semantics, attributes, baseType, recordName);
                 AppendSummaryComment(sourceBuilder, $"Creates the <see cref=\"{recordName}\"/>.");
                 AppendParamComment(sourceBuilder, "value", $"The underlying <see cref=\"{baseType}\"/>.");
-                AppendExceptionComment(sourceBuilder, "System.ArgumentException", "The parameter <paramref name=\"value\"/> is invalid.");
+                if (validations.Count > 0)
+                {
+                    AppendExceptionComment(sourceBuilder, "System.ArgumentException", "The parameter <paramref name=\"value\"/> is invalid.");
+                }
                 AppendReturnsComment(sourceBuilder, $"The created <see cref=\"{recordName}\"/>.");
                 sourceBuilder.AppendLine($"public static {recordName} From({baseType} value) => new(value);");
                 if (validations.Count > 0)
@@ -144,6 +150,12 @@ namespace AD.BaseTypes.Generator
                     sourceBuilder.IncreaseIndent();
                     sourceBuilder.AppendLine($"AD.BaseTypes.BaseType<{recordName}, {baseType}>.TryFrom(value, out baseType, out errorMessage);");
                     sourceBuilder.DecreaseIndent();
+                }
+                else if (baseType == typeof(Guid).FullName)
+                {
+                    AppendSummaryComment(sourceBuilder, $"Creates a new <see cref=\"{recordName}\"/>.");
+                    AppendReturnsComment(sourceBuilder, $"The created <see cref=\"{recordName}\"/>.");
+                    sourceBuilder.AppendLine($"public static {recordName} New{recordName}() => new({baseType}.NewGuid());");
                 }
 
                 //record end
