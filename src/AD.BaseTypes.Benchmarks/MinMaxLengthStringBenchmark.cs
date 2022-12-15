@@ -9,7 +9,7 @@ public sealed partial record StaticMinMaxLengthString
 }
 
 [AttributeUsage(AttributeTargets.Class)]
-public class InstanceMinMaxLengthStringAttribute : Attribute, IBaseTypeValidation<string>
+public sealed class InstanceMinMaxLengthStringAttribute : Attribute, IBaseTypeValidation<string>
 {
     readonly int minLength, maxLength;
 

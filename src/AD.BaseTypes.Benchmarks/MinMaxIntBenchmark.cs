@@ -9,7 +9,7 @@ public sealed partial record StaticMinMaxInt
 }
 
 [AttributeUsage(AttributeTargets.Class)]
-public class InstanceMinMaxIntAttribute : Attribute, IBaseTypeValidation<int>
+public sealed class InstanceMinMaxIntAttribute : Attribute, IBaseTypeValidation<int>
 {
     readonly int min, max;
 

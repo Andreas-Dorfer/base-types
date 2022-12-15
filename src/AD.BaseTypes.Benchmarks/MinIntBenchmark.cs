@@ -9,7 +9,7 @@ public sealed partial record StaticMinInt
 }
 
 [AttributeUsage(AttributeTargets.Class)]
-public class InstanceMinIntAttribute : Attribute, IBaseTypeValidation<int>
+public sealed class InstanceMinIntAttribute : Attribute, IBaseTypeValidation<int>
 {
     readonly int min;
 
