@@ -64,6 +64,16 @@ namespace AD.BaseTypes.Generator
                         IComparable = Implements(baseTypeInfo, context.Compilation.GetTypeByMetadataName("System.IComparable")),
                         IComparable_T = Implements(baseTypeInfo, context.Compilation.GetTypeByMetadataName("System.IComparable`1")?.Construct(baseTypeInfo))
                     };
+                bool nullableToString;
+                if (baseTypeInfo is null)
+                {
+                    nullableToString = true;
+                }
+                else
+                {
+                    var toString = baseTypeInfo.GetMembers(nameof(object.ToString)).OfType<IMethodSymbol>().Where(m => m.Parameters.Length == 0).FirstOrDefault();
+                    nullableToString = toString is null || toString.ReturnType.NullableAnnotation == NullableAnnotation.Annotated;
+                }
 
                 var @sealed = isStruct ? "" : "sealed ";
                 var recordType = isStruct ? " struct" : "";
@@ -128,7 +138,7 @@ namespace AD.BaseTypes.Generator
 
                 sourceBuilder.AppendLine($"{baseType} AD.BaseTypes.IBaseType<{baseType}>.Value => value;");
                 AppendInheritDoc(sourceBuilder);
-                sourceBuilder.AppendLine("public override string ToString() => value.ToString();");
+                sourceBuilder.AppendLine($"public override string{(nullableToString ? "?" : "")} ToString() => value.ToString();");
                 if (implements.IComparable)
                 {
                     AppendInheritDoc(sourceBuilder);
