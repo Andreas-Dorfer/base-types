@@ -2,6 +2,7 @@
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Text.RegularExpressions;
+using static AD.BaseTypes.Generator.Utils;
 
 namespace AD.BaseTypes.Generator;
 
@@ -9,9 +10,9 @@ namespace AD.BaseTypes.Generator;
 public class BaseTypeGenerator : ISourceGenerator
 {
     static readonly Regex
-        BaseTypeDefinitionRegex = new("^AD.BaseTypes.IBaseTypeDefinition<(?<type>.+)>$"),
-        BaseTypeValidatedRegex = new("^AD.BaseTypes.IBaseTypeValidation<(?<type>.+)>$"),
-        StaticBaseTypeValidatedRegex = new("^AD.BaseTypes.IStaticBaseTypeValidation<(?<type>.+)>$");
+        BaseTypeDefinitionRegex = new("^AD\\.BaseTypes\\.IBaseTypeDefinition<(?<type>.+)>$", RegexOptions.Compiled),
+        BaseTypeValidatedRegex = new("^AD\\.BaseTypes\\.IBaseTypeValidation<(?<type>.+)>$", RegexOptions.Compiled),
+        StaticBaseTypeValidatedRegex = new("^AD\\.BaseTypes\\.IStaticBaseTypeValidation<(?<type>.+)>$", RegexOptions.Compiled);
     const string
         BaseTypeAttributeName = "AD.BaseTypes.BaseTypeAttribute",
         Cast_Explicit = "Explicit",
@@ -319,9 +320,6 @@ public class BaseTypeGenerator : ISourceGenerator
                 return match.Success ? (match.Groups["type"].Value, @interface.TypeArguments[0]) : default;
             }) ?? Enumerable.Empty<(string, ITypeSymbol)>())
         .Where(_ => _ != default).GroupBy(_ => _.Value).Select(_ => (_.Key, _.First().Item2)).ToArray()!;
-
-    static string GetNamespace(RecordDeclarationSyntax record, SemanticModel semantics) =>
-        semantics.GetDeclaredSymbol(record)?.ContainingNamespace?.ToDisplayString() ?? "";
 
     static void AppendSummaryComment(IndentedStringBuilder sourceBuilder, string summary)
     {

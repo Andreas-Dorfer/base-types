@@ -4,7 +4,7 @@
 /// Non-empty GUID.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class)]
-public class NonEmptyGuidAttribute : Attribute, IStaticBaseTypeValidation<Guid>
+public sealed class NonEmptyGuidAttribute : Attribute, IStaticBaseTypeValidation<Guid>
 {
     /// <param name="value">The value to be validated.</param>
     /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> is empty.</exception>
