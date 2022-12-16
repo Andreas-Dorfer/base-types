@@ -22,7 +22,7 @@ public class CastTest
 
     [Property]
     public void None(NonEmptyString str) =>
-        Assert.AreNotEqual(str.Item, NoneString.From(str.Item));
+        Assert.AreNotEqual<object>(str.Item, NoneString.From(str.Item));
 }
 
 
@@ -48,5 +48,5 @@ public class CastStructTest
 
     [Property]
     public void None(int x) =>
-        Assert.AreNotEqual(x, NoneIntStruct.From(x));
+        Assert.AreNotEqual<object>(x, NoneIntStruct.From(x));
 }
