@@ -142,13 +142,7 @@ namespace AD.BaseTypes.Generator
                     AppendInheritDoc(sourceBuilder);
                     if (isStruct)
                     {
-                        sourceBuilder.AppendLine($"public int CompareTo(object? obj)");
-                        sourceBuilder.AppendLine("{");
-                        sourceBuilder.IncreaseIndent();
-                        sourceBuilder.AppendLine($"if(obj is not {recordName} other) return 1;");
-                        sourceBuilder.AppendLine("return CompareTo(other);");
-                        sourceBuilder.DecreaseIndent();
-                        sourceBuilder.AppendLine("}");
+                        sourceBuilder.AppendLine($"public int CompareTo(object? obj) => obj is not {recordName} other ? 1 : CompareTo(other);");
                     }
                     else
                     {
