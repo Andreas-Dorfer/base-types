@@ -1,0 +1,26 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: 08 Pack EFCore
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+    - name: Pack
+      run: dotnet pack ./src/AD.BaseTypes.EFCore/AD.BaseTypes.EFCore.csproj --configuration Release --output out
+    - uses: actions/upload-artifact@v3
+      with:
+        name: EFCore
+        path: out/*
+      
