@@ -44,7 +44,8 @@ namespace AD.BaseTypes.Generator
 
             foreach (var record in (context.SyntaxReceiver as PartialRecordsWithAttributesReceiver)?.Records ?? Enumerable.Empty<RecordDeclarationSyntax>())
             {
-                var semantics = context.Compilation.GetSemanticModel(record.SyntaxTree);
+                var compilation = context.Compilation;
+                var semantics = compilation.GetSemanticModel(record.SyntaxTree);
 
                 var attributes = GetAllAttributes(record);
                 if (!TryGetBaseType(semantics, attributes, out var bt)) continue;
@@ -57,12 +58,14 @@ namespace AD.BaseTypes.Generator
                     new
                     {
                         IComparable = false,
-                        IComparable_T = false
+                        IComparable_T = false,
+                        IParsable = false
                     } :
                     new
                     {
-                        IComparable = Implements(baseTypeInfo, context.Compilation.GetTypeByMetadataName("System.IComparable")),
-                        IComparable_T = Implements(baseTypeInfo, context.Compilation.GetTypeByMetadataName("System.IComparable`1")?.Construct(baseTypeInfo))
+                        IComparable = Implements(baseTypeInfo, compilation.GetTypeByMetadataName("System.IComparable")),
+                        IComparable_T = Implements(baseTypeInfo, compilation.GetTypeByMetadataName("System.IComparable`1")?.Construct(baseTypeInfo)),
+                        IParsable = Implements(baseTypeInfo, compilation.GetTypeByMetadataName("System.IParsable`1")?.Construct(baseTypeInfo))
                     };
 
                 var @sealed = isStruct ? "" : "sealed ";
@@ -98,6 +101,10 @@ namespace AD.BaseTypes.Generator
                 if (implements.IComparable_T)
                 {
                     sourceBuilder.Append($", System.IComparable<{recordName}>");
+                }
+                if (implements.IParsable)
+                {
+                    sourceBuilder.Append($", System.IParsable<{recordName}>");
                 }
                 sourceBuilder.EndLine();
                 sourceBuilder.AppendLine("{");
@@ -157,6 +164,40 @@ namespace AD.BaseTypes.Generator
                     else
                     {
                         sourceBuilder.AppendLine($"public int CompareTo({recordName}? other) => other is null ? 1 : value.CompareTo(other.value);");
+                    }
+                }
+                if (implements.IParsable)
+                {
+                    AppendInheritDoc(sourceBuilder);
+                    sourceBuilder.AppendLine($"public static {recordName} Parse(string s, System.IFormatProvider? provider) => new({baseType}.Parse(s, provider));");
+                    AppendInheritDoc(sourceBuilder);
+                    if (validations.Count > 0)
+                    {
+                        sourceBuilder.AppendLine($"public static bool TryParse([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] string? s, System.IFormatProvider? provider, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] out TSelf result)");
+                        sourceBuilder.AppendLine("{");
+                        sourceBuilder.IncreaseIndent();
+                        sourceBuilder.AppendLine($"if({baseType}.TryParse(s, provider, out var value) && TryFrom(value, out result, out _)) return true;");
+                        sourceBuilder.AppendLine("result = default;");
+                        sourceBuilder.AppendLine("return false;");
+                        sourceBuilder.DecreaseIndent();
+                        sourceBuilder.AppendLine("}");
+                    }
+                    else
+                    {
+                        sourceBuilder.AppendLine($"public static bool TryParse([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] string? s, System.IFormatProvider? provider, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] out TSelf result)");
+                        sourceBuilder.AppendLine("{");
+                        sourceBuilder.IncreaseIndent();
+                        sourceBuilder.AppendLine($"if({baseType}.TryParse(s, provider, out var value))");
+                        sourceBuilder.AppendLine("{");
+                        sourceBuilder.IncreaseIndent();
+                        sourceBuilder.AppendLine("result = new(value);");
+                        sourceBuilder.AppendLine("return true;");
+                        sourceBuilder.DecreaseIndent();
+                        sourceBuilder.AppendLine("}");
+                        sourceBuilder.AppendLine("result = default;");
+                        sourceBuilder.AppendLine("return false;");
+                        sourceBuilder.DecreaseIndent();
+                        sourceBuilder.AppendLine("}");
                     }
                 }
                 AppendCast(sourceBuilder, semantics, attributes, baseType, recordName);
