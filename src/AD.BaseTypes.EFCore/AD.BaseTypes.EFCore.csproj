@@ -4,7 +4,7 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageId>AndreasDorfer.BaseTypes.EFCore</PackageId>
         <Version>0.10.0</Version>
-        <Description>Add support to EntityFrameworkCore data access technology.</Description>
+        <Description>Entity Framework Core support for generated base types.</Description>
         <PackageIcon>ESD_512.png</PackageIcon>
     </PropertyGroup>
 
