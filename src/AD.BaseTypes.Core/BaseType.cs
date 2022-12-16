@@ -7,7 +7,7 @@ namespace AD.BaseTypes;
 /// </summary>
 /// <typeparam name="TBaseType">The base type.</typeparam>
 /// <typeparam name="TWrapped">The wrapped type.</typeparam>
-public static class BaseType<TBaseType, TWrapped> where TBaseType : IBaseType<TBaseType, TWrapped>
+public static class BaseType<TBaseType, TWrapped> where TBaseType : IBaseType<TBaseType, TWrapped> where TWrapped : notnull
 {
     /// <summary>
     /// Creates the base type.

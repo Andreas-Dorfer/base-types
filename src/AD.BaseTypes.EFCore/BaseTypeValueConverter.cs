@@ -10,6 +10,7 @@ namespace AD.BaseTypes.EFCore;
 /// </remarks>
 public class BaseTypeValueConverter<TBaseType, TWrapped> : ValueConverter<TBaseType, TWrapped>
     where TBaseType : IBaseType<TBaseType, TWrapped>
+    where TWrapped : notnull
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="BaseTypeValueConverter{TBaseType,TWrapped}" /> class.
