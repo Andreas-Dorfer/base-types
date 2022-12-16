@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<PackageId>AndreasDorfer.BaseTypes.Arbitraries</PackageId>
-		<Version>1.4.0</Version>
+		<Version>1.5.0</Version>
 		<Description>Arbitraries for generated base types.</Description>
 		<PackageIcon>ESD_512.png</PackageIcon>
 	</PropertyGroup>

@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<PackageId>AndreasDorfer.BaseTypes.OpenApiSchemas</PackageId>
-		<Version>0.9.0</Version>
+		<Version>0.10.0</Version>
 		<Description>OpenAPI schemas for generated base types.</Description>
 	</PropertyGroup>
 	
