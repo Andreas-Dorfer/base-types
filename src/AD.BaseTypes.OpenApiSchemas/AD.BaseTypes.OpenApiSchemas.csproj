@@ -5,6 +5,7 @@
 		<PackageId>AndreasDorfer.BaseTypes.OpenApiSchemas</PackageId>
 		<Version>0.10.0</Version>
 		<Description>OpenAPI schemas for generated base types.</Description>
+		<PackageIcon>ESD_512.png</PackageIcon>
 	</PropertyGroup>
 	
 	<ItemGroup Condition="'$(Configuration)'!='Debug'">
@@ -14,7 +15,11 @@
 	<ItemGroup Condition="'$(Configuration)'=='Debug'">
 		<ProjectReference Include="..\AD.BaseTypes.Core\AD.BaseTypes.Core.csproj" />
 	</ItemGroup>
-	
+
+	<ItemGroup>
+		<None Include="..\ESD_512.png" Pack="true" PackagePath="\" />
+	</ItemGroup>
+
 	<ItemGroup>
 		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.4.0" />
 	</ItemGroup>

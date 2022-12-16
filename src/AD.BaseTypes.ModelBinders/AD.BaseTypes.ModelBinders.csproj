@@ -5,6 +5,7 @@
 		<PackageId>AndreasDorfer.BaseTypes.ModelBinders</PackageId>
 		<Version>0.10.0</Version>
 		<Description>Model binders for generated base types.</Description>
+		<PackageIcon>ESD_512.png</PackageIcon>
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(Configuration)'!='Debug'">
@@ -15,6 +16,10 @@
 		<ProjectReference Include="..\AD.BaseTypes.Core\AD.BaseTypes.Core.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<None Include="..\ESD_512.png" Pack="true" PackagePath="\" />
+	</ItemGroup>
+	
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
 	</ItemGroup>
