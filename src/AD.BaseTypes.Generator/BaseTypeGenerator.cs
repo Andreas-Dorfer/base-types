@@ -54,6 +54,7 @@ namespace AD.BaseTypes.Generator
                 var validations = GetAllValidations(semantics, attributes, baseType).ToList();
                 if (isStruct && validations.Count > 0) continue;
 
+                bool isStringType = baseTypeInfo?.SpecialType == SpecialType.System_String;
                 var implements = baseTypeInfo is null ?
                     new
                     {
@@ -65,7 +66,7 @@ namespace AD.BaseTypes.Generator
                     {
                         IComparable = Implements(baseTypeInfo, compilation.GetTypeByMetadataName("System.IComparable")),
                         IComparable_T = Implements(baseTypeInfo, compilation.GetTypeByMetadataName("System.IComparable`1")?.Construct(baseTypeInfo)),
-                        IParsable = Implements(baseTypeInfo, compilation.GetTypeByMetadataName("System.IParsable`1")?.Construct(baseTypeInfo))
+                        IParsable = Implements(baseTypeInfo, compilation.GetTypeByMetadataName("System.IParsable`1")?.Construct(baseTypeInfo)) || isStringType
                     };
 
                 var @sealed = isStruct ? "" : "sealed ";
@@ -169,35 +170,69 @@ namespace AD.BaseTypes.Generator
                 if (implements.IParsable)
                 {
                     AppendInheritDoc(sourceBuilder);
-                    sourceBuilder.AppendLine($"public static {recordName} Parse(string s, System.IFormatProvider? provider) => new({baseType}.Parse(s, provider));");
-                    AppendInheritDoc(sourceBuilder);
-                    if (validations.Count > 0)
+                    if (isStringType)
                     {
-                        sourceBuilder.AppendLine($"public static bool TryParse([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] string? s, System.IFormatProvider? provider, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] out {recordName} result)");
-                        sourceBuilder.AppendLine("{");
-                        sourceBuilder.IncreaseIndent();
-                        sourceBuilder.AppendLine($"if({baseType}.TryParse(s, provider, out var value) && TryFrom(value, out result, out _)) return true;");
-                        sourceBuilder.AppendLine("result = default;");
-                        sourceBuilder.AppendLine("return false;");
-                        sourceBuilder.DecreaseIndent();
-                        sourceBuilder.AppendLine("}");
+                        sourceBuilder.AppendLine($"public static {recordName} System.IParsable<{recordName}>.Parse(string s, System.IFormatProvider? provider) => new(s);");
                     }
                     else
                     {
-                        sourceBuilder.AppendLine($"public static bool TryParse([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] string? s, System.IFormatProvider? provider, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] out {recordName} result)");
-                        sourceBuilder.AppendLine("{");
-                        sourceBuilder.IncreaseIndent();
-                        sourceBuilder.AppendLine($"if({baseType}.TryParse(s, provider, out var value))");
-                        sourceBuilder.AppendLine("{");
-                        sourceBuilder.IncreaseIndent();
-                        sourceBuilder.AppendLine("result = new(value);");
-                        sourceBuilder.AppendLine("return true;");
-                        sourceBuilder.DecreaseIndent();
-                        sourceBuilder.AppendLine("}");
-                        sourceBuilder.AppendLine("result = default;");
-                        sourceBuilder.AppendLine("return false;");
-                        sourceBuilder.DecreaseIndent();
-                        sourceBuilder.AppendLine("}");
+                        sourceBuilder.AppendLine($"public static {recordName} Parse(string s, System.IFormatProvider? provider) => new({baseType}.Parse(s, provider));");
+                    }
+                    AppendInheritDoc(sourceBuilder);
+                    if (validations.Count > 0)
+                    {
+                        if (isStringType)
+                        {
+                            sourceBuilder.AppendLine($"public static bool System.IParsable<{recordName}>.TryParse([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] string? s, System.IFormatProvider? provider, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] out {recordName} result)");
+                            sourceBuilder.AppendLine("{");
+                            sourceBuilder.IncreaseIndent();
+                            sourceBuilder.AppendLine($"if(TryFrom(value, out result, out _)) return true;");
+                            sourceBuilder.AppendLine("result = default;");
+                            sourceBuilder.AppendLine("return false;");
+                            sourceBuilder.DecreaseIndent();
+                            sourceBuilder.AppendLine("}");
+                        }
+                        else
+                        {
+                            sourceBuilder.AppendLine($"public static bool TryParse([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] string? s, System.IFormatProvider? provider, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] out {recordName} result)");
+                            sourceBuilder.AppendLine("{");
+                            sourceBuilder.IncreaseIndent();
+                            sourceBuilder.AppendLine($"if({baseType}.TryParse(s, provider, out var value) && TryFrom(value, out result, out _)) return true;");
+                            sourceBuilder.AppendLine("result = default;");
+                            sourceBuilder.AppendLine("return false;");
+                            sourceBuilder.DecreaseIndent();
+                            sourceBuilder.AppendLine("}");
+                        }
+                    }
+                    else
+                    {
+                        if (isStringType)
+                        {
+                            sourceBuilder.AppendLine($"public static bool System.IParsable<{recordName}>.TryParse([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] string? s, System.IFormatProvider? provider, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] out {recordName} result)");
+                            sourceBuilder.AppendLine("{");
+                            sourceBuilder.IncreaseIndent();
+                            sourceBuilder.AppendLine("result = new(value);");
+                            sourceBuilder.AppendLine("return true;");
+                            sourceBuilder.DecreaseIndent();
+                            sourceBuilder.AppendLine("}");
+                        }
+                        else
+                        {
+                            sourceBuilder.AppendLine($"public static bool TryParse([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] string? s, System.IFormatProvider? provider, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] out {recordName} result)");
+                            sourceBuilder.AppendLine("{");
+                            sourceBuilder.IncreaseIndent();
+                            sourceBuilder.AppendLine($"if({baseType}.TryParse(s, provider, out var value))");
+                            sourceBuilder.AppendLine("{");
+                            sourceBuilder.IncreaseIndent();
+                            sourceBuilder.AppendLine("result = new(value);");
+                            sourceBuilder.AppendLine("return true;");
+                            sourceBuilder.DecreaseIndent();
+                            sourceBuilder.AppendLine("}");
+                            sourceBuilder.AppendLine("result = default;");
+                            sourceBuilder.AppendLine("return false;");
+                            sourceBuilder.DecreaseIndent();
+                            sourceBuilder.AppendLine("}");
+                        }
                     }
                 }
                 AppendCast(sourceBuilder, semantics, attributes, baseType, recordName);
