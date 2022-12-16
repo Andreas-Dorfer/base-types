@@ -185,28 +185,22 @@ namespace AD.BaseTypes.Generator
                     AppendInheritDoc(sourceBuilder);
                     if (validations.Count > 0)
                     {
+                        sourceBuilder.AppendLine($"public static bool TryParse([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] string? s, System.IFormatProvider? provider, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] out {recordName} result)");
+                        sourceBuilder.AppendLine("{");
+                        sourceBuilder.IncreaseIndent();
                         if (isStringType)
                         {
-                            sourceBuilder.AppendLine($"public static bool TryParse([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] string? s, System.IFormatProvider? provider, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] out {recordName} result)");
-                            sourceBuilder.AppendLine("{");
-                            sourceBuilder.IncreaseIndent();
                             sourceBuilder.AppendLine($"if(s is not null && TryFrom(s, out result, out _)) return true;");
-                            sourceBuilder.AppendLine("result = default;");
-                            sourceBuilder.AppendLine("return false;");
-                            sourceBuilder.DecreaseIndent();
-                            sourceBuilder.AppendLine("}");
+
                         }
                         else
                         {
-                            sourceBuilder.AppendLine($"public static bool TryParse([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] string? s, System.IFormatProvider? provider, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] out {recordName} result)");
-                            sourceBuilder.AppendLine("{");
-                            sourceBuilder.IncreaseIndent();
                             sourceBuilder.AppendLine($"if({baseType}.TryParse(s, provider, out var value) && TryFrom(value, out result, out _)) return true;");
-                            sourceBuilder.AppendLine("result = default;");
-                            sourceBuilder.AppendLine("return false;");
-                            sourceBuilder.DecreaseIndent();
-                            sourceBuilder.AppendLine("}");
                         }
+                        sourceBuilder.AppendLine("result = default;");
+                        sourceBuilder.AppendLine("return false;");
+                        sourceBuilder.DecreaseIndent();
+                        sourceBuilder.AppendLine("}");
                     }
                     else
                     {
