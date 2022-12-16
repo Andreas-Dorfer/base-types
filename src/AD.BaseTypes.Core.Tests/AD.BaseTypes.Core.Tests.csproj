@@ -14,11 +14,7 @@
     </PackageReference>
   </ItemGroup>
 
-    <ItemGroup Condition="'$(Configuration)'!='Debug'">
-        <PackageReference Include="AndreasDorfer.BaseTypes.Core" Version="1.4.0" />
-    </ItemGroup>
-
-    <ItemGroup Condition="'$(Configuration)'=='Debug'">
+    <ItemGroup>
         <ProjectReference Include="..\AD.BaseTypes.Core\AD.BaseTypes.Core.csproj" />
     </ItemGroup>
 
