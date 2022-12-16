@@ -176,7 +176,7 @@ namespace AD.BaseTypes.Generator
                     AppendInheritDoc(sourceBuilder);
                     if (isStringType)
                     {
-                        sourceBuilder.AppendLine($"static {recordName} System.IParsable<{recordName}>.Parse(string s, System.IFormatProvider? provider) => new(s);");
+                        sourceBuilder.AppendLine($"public static {recordName} Parse(string s, System.IFormatProvider? provider) => new(s);");
                     }
                     else
                     {
@@ -187,7 +187,7 @@ namespace AD.BaseTypes.Generator
                     {
                         if (isStringType)
                         {
-                            sourceBuilder.AppendLine($"static bool System.IParsable<{recordName}>.TryParse([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] string? s, System.IFormatProvider? provider, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] out {recordName} result)");
+                            sourceBuilder.AppendLine($"public static bool TryParse([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] string? s, System.IFormatProvider? provider, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] out {recordName} result)");
                             sourceBuilder.AppendLine("{");
                             sourceBuilder.IncreaseIndent();
                             sourceBuilder.AppendLine($"if(s is not null && TryFrom(s, out result, out _)) return true;");
@@ -212,7 +212,7 @@ namespace AD.BaseTypes.Generator
                     {
                         if (isStringType)
                         {
-                            sourceBuilder.AppendLine($"static bool System.IParsable<{recordName}>.TryParse([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] string? s, System.IFormatProvider? provider, {(isStruct ? "" : "[System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] ")}out {recordName} result)");
+                            sourceBuilder.AppendLine($"public static bool TryParse([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] string? s, System.IFormatProvider? provider, {(isStruct ? "" : "[System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] ")}out {recordName} result)");
                             sourceBuilder.AppendLine("{");
                             sourceBuilder.IncreaseIndent();
                             sourceBuilder.AppendLine("if(s is null) return false;");
