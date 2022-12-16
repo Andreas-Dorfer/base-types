@@ -202,7 +202,7 @@ namespace AD.BaseTypes.Generator
                     {
                         if (isStringType)
                         {
-                            sourceBuilder.AppendLine($"static bool System.IParsable<{recordName}>.TryParse([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] string? s, System.IFormatProvider? provider, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] out {recordName} result)");
+                            sourceBuilder.AppendLine($"static bool System.IParsable<{recordName}>.TryParse([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] string? s, System.IFormatProvider? provider, {(isStruct ? "" : "[System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] ")}out {recordName} result)");
                             sourceBuilder.AppendLine("{");
                             sourceBuilder.IncreaseIndent();
                             sourceBuilder.AppendLine("if(s is null) return false;");
@@ -213,7 +213,7 @@ namespace AD.BaseTypes.Generator
                         }
                         else
                         {
-                            sourceBuilder.AppendLine($"public static bool TryParse([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] string? s, System.IFormatProvider? provider, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] out {recordName} result)");
+                            sourceBuilder.AppendLine($"public static bool TryParse([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] string? s, System.IFormatProvider? provider, {(isStruct ? "" : "[System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] ")}out {recordName} result)");
                             sourceBuilder.AppendLine("{");
                             sourceBuilder.IncreaseIndent();
                             sourceBuilder.AppendLine($"if({baseType}.TryParse(s, provider, out var value))");
