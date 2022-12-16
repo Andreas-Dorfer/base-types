@@ -114,7 +114,7 @@ namespace AD.BaseTypes.Generator
                 sourceBuilder.AppendLine($"readonly {baseType} value;");
 
                 //constructor start
-                AppendSummaryComment(sourceBuilder, $"Creates the <see cref=\"{recordName}\"/>.");
+                AppendSummaryComment(sourceBuilder, $"Creates a <see cref=\"{recordName}\"/>.");
                 AppendParamComment(sourceBuilder, "value", $"The underlying <see cref=\"{baseType}\"/>.");
                 if (validations.Count > 0)
                 {
@@ -173,7 +173,7 @@ namespace AD.BaseTypes.Generator
                     AppendInheritDoc(sourceBuilder);
                     if (validations.Count > 0)
                     {
-                        sourceBuilder.AppendLine($"public static bool TryParse([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] string? s, System.IFormatProvider? provider, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] out TSelf result)");
+                        sourceBuilder.AppendLine($"public static bool TryParse([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] string? s, System.IFormatProvider? provider, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] out {recordName} result)");
                         sourceBuilder.AppendLine("{");
                         sourceBuilder.IncreaseIndent();
                         sourceBuilder.AppendLine($"if({baseType}.TryParse(s, provider, out var value) && TryFrom(value, out result, out _)) return true;");
@@ -184,7 +184,7 @@ namespace AD.BaseTypes.Generator
                     }
                     else
                     {
-                        sourceBuilder.AppendLine($"public static bool TryParse([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] string? s, System.IFormatProvider? provider, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] out TSelf result)");
+                        sourceBuilder.AppendLine($"public static bool TryParse([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] string? s, System.IFormatProvider? provider, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] out {recordName} result)");
                         sourceBuilder.AppendLine("{");
                         sourceBuilder.IncreaseIndent();
                         sourceBuilder.AppendLine($"if({baseType}.TryParse(s, provider, out var value))");
@@ -201,7 +201,7 @@ namespace AD.BaseTypes.Generator
                     }
                 }
                 AppendCast(sourceBuilder, semantics, attributes, baseType, recordName);
-                AppendSummaryComment(sourceBuilder, $"Creates the <see cref=\"{recordName}\"/>.");
+                AppendSummaryComment(sourceBuilder, $"Creates a <see cref=\"{recordName}\"/>.");
                 AppendParamComment(sourceBuilder, "value", $"The underlying <see cref=\"{baseType}\"/>.");
                 if (validations.Count > 0)
                 {
@@ -211,7 +211,7 @@ namespace AD.BaseTypes.Generator
                 sourceBuilder.AppendLine($"public static {recordName} From({baseType} value) => new(value);");
                 if (validations.Count > 0)
                 {
-                    AppendSummaryComment(sourceBuilder, $"Tries to create the <see cref=\"{recordName}\"/>.");
+                    AppendSummaryComment(sourceBuilder, $"Tries to create a <see cref=\"{recordName}\"/>.");
                     AppendParamComment(sourceBuilder, "value", $"The underlying <see cref=\"{baseType}\"/>.");
                     AppendParamComment(sourceBuilder, "baseType", $"The created <see cref=\"{recordName}\"/>.");
                     AppendParamComment(sourceBuilder, "errorMessage", "The error message.");
