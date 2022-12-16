@@ -1,29 +1,27 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 
-namespace AD.BaseTypes.Generator
+namespace AD.BaseTypes.Generator;
+
+class IndentedStringBuilder
 {
-    class IndentedStringBuilder
+    int indent = 0;
+    readonly StringBuilder builder = new();
+
+    public void IncreaseIndent() => indent++;
+
+    public void DecreaseIndent() => indent = Math.Max(indent - 1, 0);
+
+    public void Indent() => builder.Append(' ', indent * 4);
+
+    public void Append(string text) => builder.Append(text);
+
+    public void EndLine() => builder.AppendLine();
+
+    public void AppendLine(string text)
     {
-        int indent = 0;
-        readonly StringBuilder builder = new();
-
-        public void IncreaseIndent() => indent++;
-
-        public void DecreaseIndent() => indent = Math.Max(indent - 1, 0);
-
-        public void Indent() => builder.Append(' ', indent * 4);
-
-        public void Append(string text) => builder.Append(text);
-
-        public void EndLine() => builder.AppendLine();
-
-        public void AppendLine(string text)
-        {
-            Indent();
-            builder.AppendLine(text);
-        }
-
-        public override string ToString() => builder.ToString();
+        Indent();
+        builder.AppendLine(text);
     }
+
+    public override string ToString() => builder.ToString();
 }
