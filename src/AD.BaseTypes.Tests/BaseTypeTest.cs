@@ -43,11 +43,25 @@ public abstract class BaseTypeTest<TBaseType, TWrapped> where TBaseType : IBaseT
 
     [TestMethod]
     public void Json() =>
-        Prop.ForAll(Arbitrary.Filter(_ => JsonFilter(_.Value)), baseType =>
+        JsonTest(baseType =>
         {
             var serializedValue = JsonSerializer.Serialize(baseType.Value);
             var serialized = JsonSerializer.Serialize(baseType);
 
             return serializedValue == serialized && Equals(baseType, JsonSerializer.Deserialize<TBaseType>(serialized));
-        }).QuickCheckThrowOnFailure();
+        });
+
+    [TestMethod]
+    public void JsonDictionaryKey() =>
+        JsonTest(baseType =>
+        {
+            Dictionary<TBaseType, string> expected = new() { [baseType] = "A" };
+            var actual = JsonSerializer.Deserialize<Dictionary<TBaseType, string>>(JsonSerializer.Serialize(expected));
+
+            CollectionAssert.AreEquivalent(expected, actual);
+            return true;
+        });
+
+    void JsonTest(Func<TBaseType, bool> test) =>
+        Prop.ForAll(Arbitrary.Filter(_ => JsonFilter(_.Value)), test).QuickCheckThrowOnFailure();
 }
