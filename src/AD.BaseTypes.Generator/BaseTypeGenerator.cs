@@ -25,7 +25,7 @@ namespace AD.BaseTypes.Generator
 
         class PartialRecordsWithAttributesReceiver : ISyntaxReceiver
         {
-            public List<RecordDeclarationSyntax> Records { get; } = new List<RecordDeclarationSyntax>();
+            public List<RecordDeclarationSyntax> Records { get; } = [];
 
             public void OnVisitSyntaxNode(SyntaxNode syntaxNode)
             {

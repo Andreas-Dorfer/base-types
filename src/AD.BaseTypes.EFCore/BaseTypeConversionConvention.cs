@@ -34,7 +34,7 @@ public class BaseTypeConversionConvention : IModelFinalizingConvention
                 .First(x => x.IsGenericType && x.GetGenericTypeDefinition() == BaseType)
                 .GetGenericArguments()[1];
 
-            var converterType = typeof(BaseTypeValueConverter<,>).MakeGenericType(new Type[] { baseTypeProperty.ClrType, wrappedType });
+            var converterType = typeof(BaseTypeValueConverter<,>).MakeGenericType([baseTypeProperty.ClrType, wrappedType]);
 
             baseTypeProperty.Builder.HasConverter(converterType);
         }
