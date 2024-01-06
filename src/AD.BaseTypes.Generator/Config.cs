@@ -1,13 +1,12 @@
-﻿namespace AD.BaseTypes.Generator
+﻿namespace AD.BaseTypes.Generator;
+
+/// <summary>
+/// Generator's config.
+/// </summary>
+public class Config
 {
     /// <summary>
-    /// Generator's config.
+    /// The F# null literal.
     /// </summary>
-    public class Config
-    {
-        /// <summary>
-        /// The F# null literal.
-        /// </summary>
-        public bool? AllowNullLiteral { get; set; }
-    }
+    public bool? AllowNullLiteral { get; set; }
 }
