@@ -3,15 +3,12 @@
 /// <summary>
 /// String with a minimal length.
 /// </summary>
+/// <param name="minLength">Minimal length.</param>
 [AttributeUsage(AttributeTargets.Class)]
-public sealed class MinLengthStringAttribute : Attribute, IStaticBaseTypeValidation<string>
+#pragma warning disable CS9113 // Parameter is unread.
+public sealed class MinLengthStringAttribute(int minLength) : Attribute, IStaticBaseTypeValidation<string>
+#pragma warning restore CS9113 // Parameter is unread.
 {
-#pragma warning disable IDE0060 // Remove unused parameter
-    /// <param name="minLength">Minimal length.</param>
-    public MinLengthStringAttribute(int minLength)
-    { }
-#pragma warning restore IDE0060 // Remove unused parameter
-
     /// <param name="value">The value to be validated.</param>
     /// <param name="minLength">Minimal length.</param>
     /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> is too short.</exception>

@@ -10,15 +10,8 @@ public sealed partial record StaticRegexString
 }
 
 [AttributeUsage(AttributeTargets.Class)]
-public sealed class InstanceRegexStringAttribute : Attribute, IBaseTypeValidation<string>
+public sealed class InstanceRegexStringAttribute([StringSyntax(StringSyntaxAttribute.Regex)] string pattern) : Attribute, IBaseTypeValidation<string>
 {
-    readonly string pattern;
-
-    public InstanceRegexStringAttribute([StringSyntax(StringSyntaxAttribute.Regex)] string pattern)
-    {
-        this.pattern = pattern;
-    }
-
     public void Validate(string value)
     {
         ArgumentNullException.ThrowIfNull(value);

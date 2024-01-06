@@ -4,18 +4,13 @@
 /// Arbitrary for int base types with a maximal value.
 /// </summary>
 /// <typeparam name="TBaseType"></typeparam>
-public class MaxIntArbitrary<TBaseType> : IntArbitrary<TBaseType> where TBaseType : IBaseType<TBaseType, int>
+/// <param name="max">The maximal value.</param>
+public class MaxIntArbitrary<TBaseType>(int max) : IntArbitrary<TBaseType> where TBaseType : IBaseType<TBaseType, int>
 {
-    /// <param name="max">The maximal value.</param>
-    public MaxIntArbitrary(int max)
-    {
-        Max = max;
-    }
-
     /// <summary>
     /// The maximal value.
     /// </summary>
-    protected int Max { get; }
+    protected int Max { get; } = max;
 
     /// <summary>
     /// Filters too large values.

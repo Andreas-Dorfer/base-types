@@ -3,15 +3,12 @@
 /// <summary>
 /// Int with a maximal value.
 /// </summary>
+/// <param name="max">Maximal value.</param>
 [AttributeUsage(AttributeTargets.Class)]
-public sealed class MaxIntAttribute : Attribute, IStaticBaseTypeValidation<int>
+#pragma warning disable CS9113 // Parameter is unread.
+public sealed class MaxIntAttribute(int max) : Attribute, IStaticBaseTypeValidation<int>
+#pragma warning restore CS9113 // Parameter is unread.
 {
-#pragma warning disable IDE0060 // Remove unused parameter
-    /// <param name="max">Maximal value.</param>
-    public MaxIntAttribute(int max)
-    { }
-#pragma warning restore IDE0060 // Remove unused parameter
-
     /// <param name="value">The value to be validated.</param>
     /// <param name="max">Maximal value.</param>
     /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> is too large.</exception>
