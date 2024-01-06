@@ -7,15 +7,8 @@ public sealed partial record StaticMaxLengthString
 }
 
 [AttributeUsage(AttributeTargets.Class)]
-public sealed class InstanceMaxLengthStringAttribute : Attribute, IBaseTypeValidation<string>
+public sealed class InstanceMaxLengthStringAttribute(int maxLength) : Attribute, IBaseTypeValidation<string>
 {
-    readonly int maxLength;
-
-    public InstanceMaxLengthStringAttribute(int maxLength)
-    {
-        this.maxLength = maxLength;
-    }
-
     /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> is too long.</exception>
     public void Validate(string value) => StringValidation.MaxLength(maxLength, value);
 }

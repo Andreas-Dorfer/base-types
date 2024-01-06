@@ -3,13 +3,13 @@
 	<PropertyGroup>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<PackageId>AndreasDorfer.BaseTypes.OpenApiSchemas</PackageId>
-		<Version>0.10.1</Version>
+		<Version>0.11.0</Version>
 		<Description>OpenAPI schemas for generated base types.</Description>
 		<PackageIcon>ESD_512.png</PackageIcon>
 	</PropertyGroup>
 	
 	<ItemGroup Condition="'$(Configuration)'!='Debug'">
-		<PackageReference Include="AndreasDorfer.BaseTypes.Core" Version="1.5.1" />
+		<PackageReference Include="AndreasDorfer.BaseTypes.Core" Version="1.6.0" />
 	</ItemGroup>
 	
 	<ItemGroup Condition="'$(Configuration)'=='Debug'">
@@ -21,6 +21,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.4.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" />
 	</ItemGroup>
 </Project>

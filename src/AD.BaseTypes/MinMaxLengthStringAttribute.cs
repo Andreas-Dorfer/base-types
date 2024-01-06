@@ -3,16 +3,13 @@
 /// <summary>
 /// String with a minimal and maximal length.
 /// </summary>
+/// <param name="minLength">Minimal length.</param>
+/// <param name="maxLength">Maximal length.</param>
 [AttributeUsage(AttributeTargets.Class)]
-public sealed class MinMaxLengthStringAttribute : Attribute, IStaticBaseTypeValidation<string>
+#pragma warning disable CS9113 // Parameter is unread.
+public sealed class MinMaxLengthStringAttribute(int minLength, int maxLength) : Attribute, IStaticBaseTypeValidation<string>
+#pragma warning restore CS9113 // Parameter is unread.
 {
-#pragma warning disable IDE0060 // Remove unused parameter
-    /// <param name="minLength">Minimal length.</param>
-    /// <param name="maxLength">Maximal length.</param>
-    public MinMaxLengthStringAttribute(int minLength, int maxLength)
-    { }
-#pragma warning restore IDE0060 // Remove unused parameter
-
     /// <param name="value">The value to be validated.</param>
     /// <param name="minLength">Minimal length.</param>
     /// <param name="maxLength">Maximal length.</param>

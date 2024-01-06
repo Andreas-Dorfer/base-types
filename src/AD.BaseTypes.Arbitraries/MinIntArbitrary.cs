@@ -4,18 +4,13 @@
 /// Arbitrary for int base types with a minimal value.
 /// </summary>
 /// <typeparam name="TBaseType">The base type.</typeparam>
-public class MinIntArbitrary<TBaseType> : IntArbitrary<TBaseType> where TBaseType : IBaseType<TBaseType, int>
+/// <param name="min">The minimal value.</param>
+public class MinIntArbitrary<TBaseType>(int min) : IntArbitrary<TBaseType> where TBaseType : IBaseType<TBaseType, int>
 {
-    /// <param name="min">The minimal value.</param>
-    public MinIntArbitrary(int min)
-    {
-        Min = min;
-    }
-
     /// <summary>
     /// The minimal value.
     /// </summary>
-    protected int Min { get; }
+    protected int Min { get; } = min;
 
     /// <summary>
     /// Filters too small values.

@@ -7,15 +7,8 @@ public sealed partial record StaticMinLengthString
 }
 
 [AttributeUsage(AttributeTargets.Class)]
-public sealed class InstanceMinLengthStringAttribute : Attribute, IBaseTypeValidation<string>
+public sealed class InstanceMinLengthStringAttribute(int minLength) : Attribute, IBaseTypeValidation<string>
 {
-    readonly int minLength;
-
-    public InstanceMinLengthStringAttribute(int minLength)
-    {
-        this.minLength = minLength;
-    }
-
     public void Validate(string value) => StringValidation.MinLength(minLength, value);
 }
 

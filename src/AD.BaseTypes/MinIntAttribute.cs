@@ -3,15 +3,12 @@
 /// <summary>
 /// Int with a minimal value.
 /// </summary>
+/// <param name="min">Minimal value.</param>
 [AttributeUsage(AttributeTargets.Class)]
-public sealed class MinIntAttribute : Attribute, IStaticBaseTypeValidation<int>
+#pragma warning disable CS9113 // Parameter is unread.
+public sealed class MinIntAttribute(int min) : Attribute, IStaticBaseTypeValidation<int>
+#pragma warning restore CS9113 // Parameter is unread.
 {
-#pragma warning disable IDE0060 // Remove unused parameter
-    /// <param name="min">Minimal value.</param>
-    public MinIntAttribute(int min)
-    { }
-#pragma warning restore IDE0060 // Remove unused parameter
-
     /// <param name="value">The value to be validated.</param>
     /// <param name="min">Minimal value.</param>
     /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> is too small.</exception>

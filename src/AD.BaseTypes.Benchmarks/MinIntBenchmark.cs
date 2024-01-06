@@ -7,15 +7,8 @@ public sealed partial record StaticMinInt
 }
 
 [AttributeUsage(AttributeTargets.Class)]
-public sealed class InstanceMinIntAttribute : Attribute, IBaseTypeValidation<int>
+public sealed class InstanceMinIntAttribute(int min) : Attribute, IBaseTypeValidation<int>
 {
-    readonly int min;
-
-    public InstanceMinIntAttribute(int min)
-    {
-        this.min = min;
-    }
-
     public void Validate(int value) => IntValidation.Min(min, value);
 }
 

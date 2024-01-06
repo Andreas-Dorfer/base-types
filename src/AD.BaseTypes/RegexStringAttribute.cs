@@ -6,15 +6,12 @@ namespace AD.BaseTypes;
 /// <summary>
 /// String with a regex constraint.
 /// </summary>
+/// <param name="pattern">Regex pattern.</param>
 [AttributeUsage(AttributeTargets.Class)]
-public sealed class RegexStringAttribute : Attribute, IStaticBaseTypeValidation<string>
+#pragma warning disable CS9113 // Parameter is unread.
+public sealed class RegexStringAttribute([StringSyntax(StringSyntaxAttribute.Regex)] string pattern) : Attribute, IStaticBaseTypeValidation<string>
+#pragma warning restore CS9113 // Parameter is unread.
 {
-#pragma warning disable IDE0060 // Remove unused parameter
-    /// <param name="pattern">Regex pattern.</param>
-    public RegexStringAttribute([StringSyntax(StringSyntaxAttribute.Regex)] string pattern)
-    { }
-#pragma warning restore IDE0060 // Remove unused parameter
-
     /// <param name="value">The value to be validated.</param>
     /// <param name="pattern">Regex pattern.</param>
     /// <exception cref="ArgumentOutOfRangeException">The parameter <paramref name="value"/> doesn't match.</exception>

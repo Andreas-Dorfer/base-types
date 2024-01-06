@@ -4,7 +4,7 @@
 		<RootNamespace>AD.BaseTypes</RootNamespace>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<PackageId>AndreasDorfer.BaseTypes.Core</PackageId>
-		<Version>1.5.1</Version>
+		<Version>1.6.0</Version>
 		<Description>Fight primitive obsession and create expressive domain models with source generators.</Description>
 		<PackageTags>C#, source-generator, domain-modeling, validation, primitive-obsession</PackageTags>
 		<PackageIcon>ESD_512.png</PackageIcon>

@@ -3,429 +3,428 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Text.RegularExpressions;
 
-namespace AD.BaseTypes.Generator
+namespace AD.BaseTypes.Generator;
+
+[Generator]
+public class BaseTypeGenerator : ISourceGenerator
 {
-    [Generator]
-    public class BaseTypeGenerator : ISourceGenerator
+    static readonly Regex
+        BaseTypeDefinitionRegex = new("^AD.BaseTypes.IBaseTypeDefinition<(?<type>.+)>$"),
+        BaseTypeValidatedRegex = new("^AD.BaseTypes.IBaseTypeValidation<(?<type>.+)>$"),
+        StaticBaseTypeValidatedRegex = new("^AD.BaseTypes.IStaticBaseTypeValidation<(?<type>.+)>$");
+    const string
+        BaseTypeAttributeName = "AD.BaseTypes.BaseTypeAttribute",
+        Cast_Explicit = "Explicit",
+        Cast_Implicit = "Implicit",
+        Cast_None = "None";
+
+    public void Initialize(GeneratorInitializationContext context)
     {
-        static readonly Regex
-            BaseTypeDefinitionRegex = new("^AD.BaseTypes.IBaseTypeDefinition<(?<type>.+)>$"),
-            BaseTypeValidatedRegex = new("^AD.BaseTypes.IBaseTypeValidation<(?<type>.+)>$"),
-            StaticBaseTypeValidatedRegex = new("^AD.BaseTypes.IStaticBaseTypeValidation<(?<type>.+)>$");
-        const string
-            BaseTypeAttributeName = "AD.BaseTypes.BaseTypeAttribute",
-            Cast_Explicit = "Explicit",
-            Cast_Implicit = "Implicit",
-            Cast_None = "None";
+        context.RegisterForSyntaxNotifications(() => new PartialRecordsWithAttributesReceiver());
+    }
 
-        public void Initialize(GeneratorInitializationContext context)
+    class PartialRecordsWithAttributesReceiver : ISyntaxReceiver
+    {
+        public List<RecordDeclarationSyntax> Records { get; } = [];
+
+        public void OnVisitSyntaxNode(SyntaxNode syntaxNode)
         {
-            context.RegisterForSyntaxNotifications(() => new PartialRecordsWithAttributesReceiver());
-        }
-
-        class PartialRecordsWithAttributesReceiver : ISyntaxReceiver
-        {
-            public List<RecordDeclarationSyntax> Records { get; } = new List<RecordDeclarationSyntax>();
-
-            public void OnVisitSyntaxNode(SyntaxNode syntaxNode)
+            if (syntaxNode is RecordDeclarationSyntax record &&
+                record.Modifiers.Any(SyntaxKind.PartialKeyword) &&
+                GetAllAttributes(record).Any())
             {
-                if (syntaxNode is RecordDeclarationSyntax record &&
-                    record.Modifiers.Any(SyntaxKind.PartialKeyword) &&
-                    GetAllAttributes(record).Any())
-                {
-                    Records.Add(record);
-                }
+                Records.Add(record);
             }
         }
+    }
 
-        public void Execute(GeneratorExecutionContext context)
+    public void Execute(GeneratorExecutionContext context)
+    {
+        var config = ReadConfig(context);
+
+        foreach (var record in (context.SyntaxReceiver as PartialRecordsWithAttributesReceiver)?.Records ?? Enumerable.Empty<RecordDeclarationSyntax>())
         {
-            var config = ReadConfig(context);
+            var compilation = context.Compilation;
+            var semantics = compilation.GetSemanticModel(record.SyntaxTree);
 
-            foreach (var record in (context.SyntaxReceiver as PartialRecordsWithAttributesReceiver)?.Records ?? Enumerable.Empty<RecordDeclarationSyntax>())
-            {
-                var compilation = context.Compilation;
-                var semantics = compilation.GetSemanticModel(record.SyntaxTree);
+            var attributes = GetAllAttributes(record);
+            if (!TryGetBaseType(semantics, attributes, out var bt)) continue;
+            var (baseType, baseTypeInfo) = bt;
+            var isStruct = record.ClassOrStructKeyword.IsKind(SyntaxKind.StructKeyword);
+            var validations = GetAllValidations(semantics, attributes, baseType).ToList();
+            if (isStruct && validations.Count > 0) continue;
 
-                var attributes = GetAllAttributes(record);
-                if (!TryGetBaseType(semantics, attributes, out var bt)) continue;
-                var (baseType, baseTypeInfo) = bt;
-                var isStruct = record.ClassOrStructKeyword.IsKind(SyntaxKind.StructKeyword);
-                var validations = GetAllValidations(semantics, attributes, baseType).ToList();
-                if (isStruct && validations.Count > 0) continue;
-
-                bool isStringType = baseTypeInfo?.SpecialType == SpecialType.System_String;
-                var implements = baseTypeInfo is null ?
-                    new
-                    {
-                        IComparable = false,
-                        IComparable_T = false,
-                        IParsable = false
-                    } :
-                    new
-                    {
-                        IComparable = Implements(baseTypeInfo, compilation.GetTypeByMetadataName("System.IComparable")),
-                        IComparable_T = Implements(baseTypeInfo, compilation.GetTypeByMetadataName("System.IComparable`1")?.Construct(baseTypeInfo)),
-                        IParsable = Implements(baseTypeInfo, compilation.GetTypeByMetadataName("System.IParsable`1")?.Construct(baseTypeInfo)) || isStringType
-                    };
-                bool nullableToString;
-                if (baseTypeInfo is null)
+            bool isStringType = baseTypeInfo?.SpecialType == SpecialType.System_String;
+            var implements = baseTypeInfo is null ?
+                new
                 {
-                    nullableToString = true;
+                    IComparable = false,
+                    IComparable_T = false,
+                    IParsable = false
+                } :
+                new
+                {
+                    IComparable = Implements(baseTypeInfo, compilation.GetTypeByMetadataName("System.IComparable")),
+                    IComparable_T = Implements(baseTypeInfo, compilation.GetTypeByMetadataName("System.IComparable`1")?.Construct(baseTypeInfo)),
+                    IParsable = Implements(baseTypeInfo, compilation.GetTypeByMetadataName("System.IParsable`1")?.Construct(baseTypeInfo)) || isStringType
+                };
+            bool nullableToString;
+            if (baseTypeInfo is null)
+            {
+                nullableToString = true;
+            }
+            else
+            {
+                var toString = baseTypeInfo.GetMembers(nameof(object.ToString)).OfType<IMethodSymbol>().Where(m => m.Parameters.Length == 0).FirstOrDefault();
+                nullableToString = toString is null || toString.ReturnType.NullableAnnotation == NullableAnnotation.Annotated;
+            }
+
+            var @sealed = isStruct ? "" : "sealed ";
+            var recordType = isStruct ? " struct" : "";
+
+            var sourceBuilder = new IndentedStringBuilder();
+
+            sourceBuilder.AppendLine("// <auto-generated> This file was generated by AD.BaseTypes. </auto-generated>");
+            sourceBuilder.AppendLine("#nullable enable");
+
+            var @namespace = GetNamespace(record, semantics);
+            if (!string.IsNullOrEmpty(@namespace))
+            {
+                //namespace
+                sourceBuilder.AppendLine($"namespace {@namespace};");
+                sourceBuilder.AppendLine("");
+            }
+
+            //record start
+            var recordName = record.Identifier.Text;
+            if (!isStruct && config?.AllowNullLiteral == false)
+            {
+                sourceBuilder.AppendLine("[Microsoft.FSharp.Core.AllowNullLiteral(false)]");
+            }
+            sourceBuilder.AppendLine($"[System.ComponentModel.TypeConverter(typeof(AD.BaseTypes.Converters.BaseTypeTypeConverter<{recordName}, {baseType}>))]");
+            sourceBuilder.AppendLine($"[System.Text.Json.Serialization.JsonConverter(typeof(AD.BaseTypes.Json.BaseTypeJsonConverter<{recordName}, {baseType}>))]");
+            sourceBuilder.Indent();
+            sourceBuilder.Append($"{@sealed}partial record{recordType} {recordName} : AD.BaseTypes.IBaseType<{recordName}, {baseType}>");
+            if (implements.IComparable)
+            {
+                sourceBuilder.Append(", System.IComparable");
+            }
+            if (implements.IComparable_T)
+            {
+                sourceBuilder.Append($", System.IComparable<{recordName}>");
+            }
+            if (implements.IParsable)
+            {
+                sourceBuilder.Append($", System.IParsable<{recordName}>");
+            }
+            sourceBuilder.EndLine();
+            sourceBuilder.AppendLine("{");
+            sourceBuilder.IncreaseIndent();
+            //*****
+
+            sourceBuilder.AppendLine($"readonly {baseType} value;");
+
+            //constructor start
+            AppendSummaryComment(sourceBuilder, $"Creates a <see cref=\"{recordName}\"/>.");
+            AppendParamComment(sourceBuilder, "value", $"The underlying <see cref=\"{baseType}\"/>.");
+            if (validations.Count > 0)
+            {
+                AppendExceptionComment(sourceBuilder, "System.ArgumentException", "The parameter <paramref name=\"value\"/> is invalid.");
+            }
+            sourceBuilder.AppendLine($"public {recordName}({baseType} value)");
+            sourceBuilder.AppendLine("{");
+            sourceBuilder.IncreaseIndent();
+            //*****
+
+            AppendValidations(sourceBuilder, semantics, validations);
+            sourceBuilder.AppendLine("this.value = value;");
+
+            //constructor end
+            sourceBuilder.DecreaseIndent();
+            sourceBuilder.AppendLine("}");
+            //*****
+
+            sourceBuilder.AppendLine($"{baseType} AD.BaseTypes.IBaseType<{baseType}>.Value => value;");
+            AppendInheritDoc(sourceBuilder);
+            sourceBuilder.AppendLine($"public override string{(nullableToString ? "?" : "")} ToString() => value.ToString();");
+            if (implements.IComparable)
+            {
+                AppendInheritDoc(sourceBuilder);
+                if (isStruct)
+                {
+                    sourceBuilder.AppendLine($"public int CompareTo(object? obj) => obj is not {recordName} other ? 1 : CompareTo(other);");
                 }
                 else
                 {
-                    var toString = baseTypeInfo.GetMembers(nameof(object.ToString)).OfType<IMethodSymbol>().Where(m => m.Parameters.Length == 0).FirstOrDefault();
-                    nullableToString = toString is null || toString.ReturnType.NullableAnnotation == NullableAnnotation.Annotated;
+                    sourceBuilder.AppendLine($"public int CompareTo(object? obj) => CompareTo(obj as {recordName});");
                 }
-
-                var @sealed = isStruct ? "" : "sealed ";
-                var recordType = isStruct ? " struct" : "";
-
-                var sourceBuilder = new IndentedStringBuilder();
-
-                sourceBuilder.AppendLine("// <auto-generated> This file was generated by AD.BaseTypes. </auto-generated>");
-                sourceBuilder.AppendLine("#nullable enable");
-
-                var @namespace = GetNamespace(record, semantics);
-                if (!string.IsNullOrEmpty(@namespace))
+            }
+            if (implements.IComparable_T)
+            {
+                AppendInheritDoc(sourceBuilder);
+                if (isStruct)
                 {
-                    //namespace
-                    sourceBuilder.AppendLine($"namespace {@namespace};");
-                    sourceBuilder.AppendLine("");
+                    sourceBuilder.AppendLine($"public int CompareTo({recordName} other) => value.CompareTo(other.value);");
                 }
-
-                //record start
-                var recordName = record.Identifier.Text;
-                if (!isStruct && config?.AllowNullLiteral == false)
+                else
                 {
-                    sourceBuilder.AppendLine("[Microsoft.FSharp.Core.AllowNullLiteral(false)]");
+                    sourceBuilder.AppendLine($"public int CompareTo({recordName}? other) => other is null ? 1 : value.CompareTo(other.value);");
                 }
-                sourceBuilder.AppendLine($"[System.ComponentModel.TypeConverter(typeof(AD.BaseTypes.Converters.BaseTypeTypeConverter<{recordName}, {baseType}>))]");
-                sourceBuilder.AppendLine($"[System.Text.Json.Serialization.JsonConverter(typeof(AD.BaseTypes.Json.BaseTypeJsonConverter<{recordName}, {baseType}>))]");
-                sourceBuilder.Indent();
-                sourceBuilder.Append($"{@sealed}partial record{recordType} {recordName} : AD.BaseTypes.IBaseType<{recordName}, {baseType}>");
-                if (implements.IComparable)
+            }
+            if (implements.IParsable)
+            {
+                AppendInheritDoc(sourceBuilder);
+                if (isStringType)
                 {
-                    sourceBuilder.Append(", System.IComparable");
+                    sourceBuilder.AppendLine($"public static {recordName} Parse(string s, System.IFormatProvider? provider) => new(s);");
                 }
-                if (implements.IComparable_T)
+                else
                 {
-                    sourceBuilder.Append($", System.IComparable<{recordName}>");
+                    sourceBuilder.AppendLine($"public static {recordName} Parse(string s, System.IFormatProvider? provider) => new(AD.BaseTypes.Implementations.Implementation.Parse<{baseType}>(s, provider));");
                 }
-                if (implements.IParsable)
-                {
-                    sourceBuilder.Append($", System.IParsable<{recordName}>");
-                }
-                sourceBuilder.EndLine();
-                sourceBuilder.AppendLine("{");
-                sourceBuilder.IncreaseIndent();
-                //*****
-
-                sourceBuilder.AppendLine($"readonly {baseType} value;");
-
-                //constructor start
-                AppendSummaryComment(sourceBuilder, $"Creates a <see cref=\"{recordName}\"/>.");
-                AppendParamComment(sourceBuilder, "value", $"The underlying <see cref=\"{baseType}\"/>.");
+                AppendInheritDoc(sourceBuilder);
                 if (validations.Count > 0)
                 {
-                    AppendExceptionComment(sourceBuilder, "System.ArgumentException", "The parameter <paramref name=\"value\"/> is invalid.");
-                }
-                sourceBuilder.AppendLine($"public {recordName}({baseType} value)");
-                sourceBuilder.AppendLine("{");
-                sourceBuilder.IncreaseIndent();
-                //*****
-
-                AppendValidations(sourceBuilder, semantics, validations);
-                sourceBuilder.AppendLine("this.value = value;");
-
-                //constructor end
-                sourceBuilder.DecreaseIndent();
-                sourceBuilder.AppendLine("}");
-                //*****
-
-                sourceBuilder.AppendLine($"{baseType} AD.BaseTypes.IBaseType<{baseType}>.Value => value;");
-                AppendInheritDoc(sourceBuilder);
-                sourceBuilder.AppendLine($"public override string{(nullableToString ? "?" : "")} ToString() => value.ToString();");
-                if (implements.IComparable)
-                {
-                    AppendInheritDoc(sourceBuilder);
-                    if (isStruct)
-                    {
-                        sourceBuilder.AppendLine($"public int CompareTo(object? obj) => obj is not {recordName} other ? 1 : CompareTo(other);");
-                    }
-                    else
-                    {
-                        sourceBuilder.AppendLine($"public int CompareTo(object? obj) => CompareTo(obj as {recordName});");
-                    }
-                }
-                if (implements.IComparable_T)
-                {
-                    AppendInheritDoc(sourceBuilder);
-                    if (isStruct)
-                    {
-                        sourceBuilder.AppendLine($"public int CompareTo({recordName} other) => value.CompareTo(other.value);");
-                    }
-                    else
-                    {
-                        sourceBuilder.AppendLine($"public int CompareTo({recordName}? other) => other is null ? 1 : value.CompareTo(other.value);");
-                    }
-                }
-                if (implements.IParsable)
-                {
-                    AppendInheritDoc(sourceBuilder);
+                    sourceBuilder.AppendLine($"public static bool TryParse([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] string? s, System.IFormatProvider? provider, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] out {recordName} result)");
+                    sourceBuilder.AppendLine("{");
+                    sourceBuilder.IncreaseIndent();
                     if (isStringType)
                     {
-                        sourceBuilder.AppendLine($"public static {recordName} Parse(string s, System.IFormatProvider? provider) => new(s);");
+                        sourceBuilder.AppendLine($"if(s is not null && TryFrom(s, out result, out _)) return true;");
+
                     }
                     else
                     {
-                        sourceBuilder.AppendLine($"public static {recordName} Parse(string s, System.IFormatProvider? provider) => new({baseType}.Parse(s, provider));");
+                        sourceBuilder.AppendLine($"if(AD.BaseTypes.Implementations.Implementation.TryParse<{baseType}>(s, provider, out var value) && TryFrom(value, out result, out _)) return true;");
                     }
-                    AppendInheritDoc(sourceBuilder);
-                    if (validations.Count > 0)
+                    sourceBuilder.AppendLine("result = default;");
+                    sourceBuilder.AppendLine("return false;");
+                    sourceBuilder.DecreaseIndent();
+                    sourceBuilder.AppendLine("}");
+                }
+                else
+                {
+                    if (isStringType)
                     {
-                        sourceBuilder.AppendLine($"public static bool TryParse([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] string? s, System.IFormatProvider? provider, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] out {recordName} result)");
+                        sourceBuilder.AppendLine($"public static bool TryParse([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] string? s, System.IFormatProvider? provider, {(isStruct ? "" : "[System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] ")}out {recordName} result)");
                         sourceBuilder.AppendLine("{");
                         sourceBuilder.IncreaseIndent();
-                        if (isStringType)
-                        {
-                            sourceBuilder.AppendLine($"if(s is not null && TryFrom(s, out result, out _)) return true;");
-
-                        }
-                        else
-                        {
-                            sourceBuilder.AppendLine($"if({baseType}.TryParse(s, provider, out var value) && TryFrom(value, out result, out _)) return true;");
-                        }
-                        sourceBuilder.AppendLine("result = default;");
-                        sourceBuilder.AppendLine("return false;");
+                        sourceBuilder.AppendLine("if(s is null) return false;");
+                        sourceBuilder.AppendLine("result = new(s);");
+                        sourceBuilder.AppendLine("return true;");
                         sourceBuilder.DecreaseIndent();
                         sourceBuilder.AppendLine("}");
                     }
                     else
                     {
-                        if (isStringType)
-                        {
-                            sourceBuilder.AppendLine($"public static bool TryParse([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] string? s, System.IFormatProvider? provider, {(isStruct ? "" : "[System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] ")}out {recordName} result)");
-                            sourceBuilder.AppendLine("{");
-                            sourceBuilder.IncreaseIndent();
-                            sourceBuilder.AppendLine("if(s is null) return false;");
-                            sourceBuilder.AppendLine("result = new(s);");
-                            sourceBuilder.AppendLine("return true;");
-                            sourceBuilder.DecreaseIndent();
-                            sourceBuilder.AppendLine("}");
-                        }
-                        else
-                        {
-                            sourceBuilder.AppendLine($"public static bool TryParse([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] string? s, System.IFormatProvider? provider, {(isStruct ? "" : "[System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] ")}out {recordName} result)");
-                            sourceBuilder.AppendLine("{");
-                            sourceBuilder.IncreaseIndent();
-                            sourceBuilder.AppendLine($"if({baseType}.TryParse(s, provider, out var value))");
-                            sourceBuilder.AppendLine("{");
-                            sourceBuilder.IncreaseIndent();
-                            sourceBuilder.AppendLine("result = new(value);");
-                            sourceBuilder.AppendLine("return true;");
-                            sourceBuilder.DecreaseIndent();
-                            sourceBuilder.AppendLine("}");
-                            sourceBuilder.AppendLine("result = default;");
-                            sourceBuilder.AppendLine("return false;");
-                            sourceBuilder.DecreaseIndent();
-                            sourceBuilder.AppendLine("}");
-                        }
+                        sourceBuilder.AppendLine($"public static bool TryParse([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] string? s, System.IFormatProvider? provider, {(isStruct ? "" : "[System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] ")}out {recordName} result)");
+                        sourceBuilder.AppendLine("{");
+                        sourceBuilder.IncreaseIndent();
+                        sourceBuilder.AppendLine($"if(AD.BaseTypes.Implementations.Implementation.TryParse<{baseType}>(s, provider, out var value))");
+                        sourceBuilder.AppendLine("{");
+                        sourceBuilder.IncreaseIndent();
+                        sourceBuilder.AppendLine("result = new(value);");
+                        sourceBuilder.AppendLine("return true;");
+                        sourceBuilder.DecreaseIndent();
+                        sourceBuilder.AppendLine("}");
+                        sourceBuilder.AppendLine("result = default;");
+                        sourceBuilder.AppendLine("return false;");
+                        sourceBuilder.DecreaseIndent();
+                        sourceBuilder.AppendLine("}");
                     }
                 }
-                AppendCast(sourceBuilder, semantics, attributes, baseType, recordName);
-                AppendSummaryComment(sourceBuilder, $"Creates a <see cref=\"{recordName}\"/>.");
+            }
+            AppendCast(sourceBuilder, semantics, attributes, baseType, recordName);
+            AppendSummaryComment(sourceBuilder, $"Creates a <see cref=\"{recordName}\"/>.");
+            AppendParamComment(sourceBuilder, "value", $"The underlying <see cref=\"{baseType}\"/>.");
+            if (validations.Count > 0)
+            {
+                AppendExceptionComment(sourceBuilder, "System.ArgumentException", "The parameter <paramref name=\"value\"/> is invalid.");
+            }
+            AppendReturnsComment(sourceBuilder, $"The created <see cref=\"{recordName}\"/>.");
+            sourceBuilder.AppendLine($"public static {recordName} From({baseType} value) => new(value);");
+            if (validations.Count > 0)
+            {
+                AppendSummaryComment(sourceBuilder, $"Tries to create a <see cref=\"{recordName}\"/>.");
                 AppendParamComment(sourceBuilder, "value", $"The underlying <see cref=\"{baseType}\"/>.");
-                if (validations.Count > 0)
-                {
-                    AppendExceptionComment(sourceBuilder, "System.ArgumentException", "The parameter <paramref name=\"value\"/> is invalid.");
-                }
-                AppendReturnsComment(sourceBuilder, $"The created <see cref=\"{recordName}\"/>.");
-                sourceBuilder.AppendLine($"public static {recordName} From({baseType} value) => new(value);");
-                if (validations.Count > 0)
-                {
-                    AppendSummaryComment(sourceBuilder, $"Tries to create a <see cref=\"{recordName}\"/>.");
-                    AppendParamComment(sourceBuilder, "value", $"The underlying <see cref=\"{baseType}\"/>.");
-                    AppendParamComment(sourceBuilder, "baseType", $"The created <see cref=\"{recordName}\"/>.");
-                    AppendParamComment(sourceBuilder, "errorMessage", "The error message.");
-                    AppendReturnsComment(sourceBuilder, $"True, if the <see cref=\"{recordName}\"/> is created.");
-                    sourceBuilder.AppendLine($"public static bool TryFrom({baseType} value, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] out {recordName} baseType, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(true)] out string errorMessage) =>");
-                    sourceBuilder.IncreaseIndent();
-                    sourceBuilder.AppendLine($"AD.BaseTypes.BaseType<{recordName}, {baseType}>.TryFrom(value, out baseType, out errorMessage);");
-                    sourceBuilder.DecreaseIndent();
-                }
-                else if (baseType == typeof(Guid).FullName)
-                {
-                    AppendSummaryComment(sourceBuilder, $"Creates a new <see cref=\"{recordName}\"/>.");
-                    AppendReturnsComment(sourceBuilder, $"The created <see cref=\"{recordName}\"/>.");
-                    sourceBuilder.AppendLine($"public static {recordName} New{recordName}() => new({baseType}.NewGuid());");
-                }
-
-                //record end
+                AppendParamComment(sourceBuilder, "baseType", $"The created <see cref=\"{recordName}\"/>.");
+                AppendParamComment(sourceBuilder, "errorMessage", "The error message.");
+                AppendReturnsComment(sourceBuilder, $"True, if the <see cref=\"{recordName}\"/> is created.");
+                sourceBuilder.AppendLine($"public static bool TryFrom({baseType} value, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] out {recordName} baseType, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(true)] out string errorMessage) =>");
+                sourceBuilder.IncreaseIndent();
+                sourceBuilder.AppendLine($"AD.BaseTypes.BaseType<{recordName}, {baseType}>.TryFrom(value, out baseType, out errorMessage);");
                 sourceBuilder.DecreaseIndent();
-                sourceBuilder.AppendLine("}");
-                //*****
-
-                var fileHint = !string.IsNullOrEmpty(@namespace) ? $"{@namespace}.{recordName}" : recordName;
-                context.AddSource($"{fileHint}.g", sourceBuilder.ToString());
             }
-        }
-
-        static readonly Regex ConfigKeyValueRegex = new(@"""(?<key>.+)""\s*:\s*(?<value>.+);?");
-
-        static Config? ReadConfig(GeneratorExecutionContext context)
-        {
-            var configFile = context.AdditionalFiles.FirstOrDefault(_ => _.Path.EndsWith("AD.BaseTypes.Generator.json"));
-            if (configFile == null) return default;
-            var text = File.ReadAllText(configFile.Path);
-
-            var config = new Config();
-            foreach (Match match in ConfigKeyValueRegex.Matches(text))
+            else if (baseType == typeof(Guid).FullName)
             {
-                switch (match.Groups["key"].Value)
-                {
-                    case nameof(config.AllowNullLiteral):
-                        if (bool.TryParse(match.Groups["value"].Value, out var allowNullLiteral))
-                        {
-                            config.AllowNullLiteral = allowNullLiteral;
-                        }
-                        break;
-                }
+                AppendSummaryComment(sourceBuilder, $"Creates a new <see cref=\"{recordName}\"/>.");
+                AppendReturnsComment(sourceBuilder, $"The created <see cref=\"{recordName}\"/>.");
+                sourceBuilder.AppendLine($"public static {recordName} New{recordName}() => new({baseType}.NewGuid());");
             }
-            return config;
+
+            //record end
+            sourceBuilder.DecreaseIndent();
+            sourceBuilder.AppendLine("}");
+            //*****
+
+            var fileHint = !string.IsNullOrEmpty(@namespace) ? $"{@namespace}.{recordName}" : recordName;
+            context.AddSource($"{fileHint}.g", sourceBuilder.ToString());
         }
+    }
 
-        static IEnumerable<AttributeSyntax> GetAllAttributes(RecordDeclarationSyntax record) =>
-            record.AttributeLists.SelectMany(_ => _.Attributes);
+    static readonly Regex ConfigKeyValueRegex = new(@"""(?<key>.+)""\s*:\s*(?<value>.+);?");
 
-        static bool TryGetBaseType(SemanticModel semantics, IEnumerable<AttributeSyntax> attributes, out (string, ITypeSymbol) baseType)
+    static Config? ReadConfig(GeneratorExecutionContext context)
+    {
+        var configFile = context.AdditionalFiles.FirstOrDefault(_ => _.Path.EndsWith("AD.BaseTypes.Generator.json"));
+        if (configFile == null) return default;
+        var text = configFile.GetText()?.ToString() ?? "";
+
+        var config = new Config();
+        foreach (Match match in ConfigKeyValueRegex.Matches(text))
         {
-            var baseTypes = GetBaseTypes(semantics, attributes);
-            if (baseTypes.Length != 1)
+            switch (match.Groups["key"].Value)
             {
-                baseType = default!;
-                return false;
-            }
-            baseType = baseTypes[0];
-            return true;
-        }
-
-        static (string, ITypeSymbol)[] GetBaseTypes(SemanticModel semantics, IEnumerable<AttributeSyntax> attributes) =>
-            attributes.SelectMany(attribute =>
-                semantics.GetSymbolInfo(attribute).Symbol?.ContainingType.AllInterfaces.Select(@interface =>
-                {
-                    var match = BaseTypeDefinitionRegex.Match(@interface.ToDisplayString());
-                    return match.Success ? (match.Groups["type"].Value, @interface.TypeArguments[0]) : default;
-                }) ?? Enumerable.Empty<(string, ITypeSymbol)>())
-            .Where(_ => _ != default).GroupBy(_ => _.Value).Select(_ => (_.Key, _.First().Item2)).ToArray()!;
-
-        static string GetNamespace(RecordDeclarationSyntax record, SemanticModel semantics) =>
-            semantics.GetDeclaredSymbol(record)?.ContainingNamespace?.ToDisplayString() ?? "";
-
-        static void AppendSummaryComment(IndentedStringBuilder sourceBuilder, string summary)
-        {
-            sourceBuilder.AppendLine("/// <summary>");
-            sourceBuilder.AppendLine($"/// {summary}");
-            sourceBuilder.AppendLine("/// </summary>");
-        }
-
-        static void AppendParamComment(IndentedStringBuilder sourceBuilder, string name, string comment) =>
-            sourceBuilder.AppendLine($"/// <param name=\"{name}\">{comment}</param>");
-
-        static void AppendExceptionComment(IndentedStringBuilder sourceBuilder, string name, string comment) =>
-            sourceBuilder.AppendLine($"/// <exception cref=\"{name}\">{comment}</exception>");
-
-        static void AppendInheritDoc(IndentedStringBuilder sourceBuilder) =>
-            sourceBuilder.AppendLine("/// <inheritdoc/>");
-
-        static void AppendReturnsComment(IndentedStringBuilder sourceBuilder, string comment) =>
-            sourceBuilder.AppendLine($"/// <returns>{comment}</returns>");
-
-        static void AppendValidations(IndentedStringBuilder sourceBuilder, SemanticModel semantics, IEnumerable<(AttributeSyntax, bool IsStatic)> validations)
-        {
-            foreach (var validation in validations)
-            {
-                var (attribute, isStatic) = validation;
-                var validationType = semantics.GetSymbolInfo(attribute).Symbol?.ContainingType;
-                if (validationType is null) continue;
-                var args = attribute?.ArgumentList?.Arguments;
-                var argsText = args?.ToString() ?? "";
-                if (isStatic)
-                {
-                    if (args?.Count > 0)
+                case nameof(config.AllowNullLiteral):
+                    if (bool.TryParse(match.Groups["value"].Value, out var allowNullLiteral))
                     {
-                        sourceBuilder.AppendLine($"{validationType.ToDisplayString()}.Validate(value, {argsText});");
+                        config.AllowNullLiteral = allowNullLiteral;
                     }
-                    else
-                    {
-                        sourceBuilder.AppendLine($"{validationType.ToDisplayString()}.Validate(value);");
-                    }
+                    break;
+            }
+        }
+        return config;
+    }
+
+    static IEnumerable<AttributeSyntax> GetAllAttributes(RecordDeclarationSyntax record) =>
+        record.AttributeLists.SelectMany(_ => _.Attributes);
+
+    static bool TryGetBaseType(SemanticModel semantics, IEnumerable<AttributeSyntax> attributes, out (string, ITypeSymbol) baseType)
+    {
+        var baseTypes = GetBaseTypes(semantics, attributes);
+        if (baseTypes.Length != 1)
+        {
+            baseType = default!;
+            return false;
+        }
+        baseType = baseTypes[0];
+        return true;
+    }
+
+    static (string, ITypeSymbol)[] GetBaseTypes(SemanticModel semantics, IEnumerable<AttributeSyntax> attributes) =>
+        attributes.SelectMany(attribute =>
+            semantics.GetSymbolInfo(attribute).Symbol?.ContainingType.AllInterfaces.Select(@interface =>
+            {
+                var match = BaseTypeDefinitionRegex.Match(@interface.ToDisplayString());
+                return match.Success ? (match.Groups["type"].Value, @interface.TypeArguments[0]) : default;
+            }) ?? Enumerable.Empty<(string, ITypeSymbol)>())
+        .Where(_ => _ != default).GroupBy(_ => _.Value).Select(_ => (_.Key, _.First().Item2)).ToArray()!;
+
+    static string GetNamespace(RecordDeclarationSyntax record, SemanticModel semantics) =>
+        semantics.GetDeclaredSymbol(record)?.ContainingNamespace?.ToDisplayString() ?? "";
+
+    static void AppendSummaryComment(IndentedStringBuilder sourceBuilder, string summary)
+    {
+        sourceBuilder.AppendLine("/// <summary>");
+        sourceBuilder.AppendLine($"/// {summary}");
+        sourceBuilder.AppendLine("/// </summary>");
+    }
+
+    static void AppendParamComment(IndentedStringBuilder sourceBuilder, string name, string comment) =>
+        sourceBuilder.AppendLine($"/// <param name=\"{name}\">{comment}</param>");
+
+    static void AppendExceptionComment(IndentedStringBuilder sourceBuilder, string name, string comment) =>
+        sourceBuilder.AppendLine($"/// <exception cref=\"{name}\">{comment}</exception>");
+
+    static void AppendInheritDoc(IndentedStringBuilder sourceBuilder) =>
+        sourceBuilder.AppendLine("/// <inheritdoc/>");
+
+    static void AppendReturnsComment(IndentedStringBuilder sourceBuilder, string comment) =>
+        sourceBuilder.AppendLine($"/// <returns>{comment}</returns>");
+
+    static void AppendValidations(IndentedStringBuilder sourceBuilder, SemanticModel semantics, IEnumerable<(AttributeSyntax, bool IsStatic)> validations)
+    {
+        foreach (var validation in validations)
+        {
+            var (attribute, isStatic) = validation;
+            var validationType = semantics.GetSymbolInfo(attribute).Symbol?.ContainingType;
+            if (validationType is null) continue;
+            var args = attribute?.ArgumentList?.Arguments;
+            var argsText = args?.ToString() ?? "";
+            if (isStatic)
+            {
+                if (args?.Count > 0)
+                {
+                    sourceBuilder.AppendLine($"{validationType.ToDisplayString()}.Validate(value, {argsText});");
                 }
                 else
                 {
-                    sourceBuilder.AppendLine($"new {validationType.ToDisplayString()}({argsText}).Validate(value);");
+                    sourceBuilder.AppendLine($"{validationType.ToDisplayString()}.Validate(value);");
                 }
             }
-        }
-
-        static void AppendCast(IndentedStringBuilder sourceBuilder, SemanticModel semantics, IEnumerable<AttributeSyntax> attributes, string baseType, string recordName)
-        {
-            switch (GetCast(semantics, attributes))
+            else
             {
-                default:
-                case Cast_Explicit:
-                    AppendComment();
-                    sourceBuilder.AppendLine($"public static explicit operator {baseType}({recordName} baseType) => baseType.value;");
-                    break;
-                case Cast_Implicit:
-                    AppendComment();
-                    sourceBuilder.AppendLine($"public static implicit operator {baseType}({recordName} baseType) => baseType.value;");
-                    break;
-                case Cast_None:
-                    break;
-            }
-
-            void AppendComment()
-            {
-                AppendSummaryComment(sourceBuilder, $"Casts the <see cref=\"{recordName}\"/> to <see cref=\"{baseType}\"/>.");
-                AppendParamComment(sourceBuilder, "baseType", $"The <see cref=\"{recordName}\"/> to cast.");
-                AppendReturnsComment(sourceBuilder, $"The underlying <see cref=\"{baseType}\"/>.");
+                sourceBuilder.AppendLine($"new {validationType.ToDisplayString()}({argsText}).Validate(value);");
             }
         }
+    }
 
-        static string? GetCast(SemanticModel semantics, IEnumerable<AttributeSyntax> attributes)
+    static void AppendCast(IndentedStringBuilder sourceBuilder, SemanticModel semantics, IEnumerable<AttributeSyntax> attributes, string baseType, string recordName)
+    {
+        switch (GetCast(semantics, attributes))
         {
-            var configs = attributes.Where(attribute => semantics.GetSymbolInfo(attribute).Symbol?.ContainingType.ToDisplayString() == BaseTypeAttributeName).ToArray();
-            if (configs.Length != 1) return null;
-            var args = configs[0].ArgumentList?.Arguments;
-            if (args is null) return null;
-            if (args.Value.Count != 1) return null;
-
-            if (args.Value[0].Expression is not MemberAccessExpressionSyntax expression) return null;
-
-            return expression.Name.Identifier.Text;
+            default:
+            case Cast_Explicit:
+                AppendComment();
+                sourceBuilder.AppendLine($"public static explicit operator {baseType}({recordName} baseType) => baseType.value;");
+                break;
+            case Cast_Implicit:
+                AppendComment();
+                sourceBuilder.AppendLine($"public static implicit operator {baseType}({recordName} baseType) => baseType.value;");
+                break;
+            case Cast_None:
+                break;
         }
 
-        static IEnumerable<(AttributeSyntax, bool IsStatic)> GetAllValidations(SemanticModel semantics, IEnumerable<AttributeSyntax> attributes, string baseType) =>
-            attributes.Select(a =>
+        void AppendComment()
+        {
+            AppendSummaryComment(sourceBuilder, $"Casts the <see cref=\"{recordName}\"/> to <see cref=\"{baseType}\"/>.");
+            AppendParamComment(sourceBuilder, "baseType", $"The <see cref=\"{recordName}\"/> to cast.");
+            AppendReturnsComment(sourceBuilder, $"The underlying <see cref=\"{baseType}\"/>.");
+        }
+    }
+
+    static string? GetCast(SemanticModel semantics, IEnumerable<AttributeSyntax> attributes)
+    {
+        var configs = attributes.Where(attribute => semantics.GetSymbolInfo(attribute).Symbol?.ContainingType.ToDisplayString() == BaseTypeAttributeName).ToArray();
+        if (configs.Length != 1) return null;
+        var args = configs[0].ArgumentList?.Arguments;
+        if (args is null) return null;
+        if (args.Value.Count != 1) return null;
+
+        if (args.Value[0].Expression is not MemberAccessExpressionSyntax expression) return null;
+
+        return expression.Name.Identifier.Text;
+    }
+
+    static IEnumerable<(AttributeSyntax, bool IsStatic)> GetAllValidations(SemanticModel semantics, IEnumerable<AttributeSyntax> attributes, string baseType) =>
+        attributes.Select(a =>
+        {
+            foreach (var i in semantics.GetSymbolInfo(a).Symbol?.ContainingType.AllInterfaces ?? Enumerable.Empty<INamedTypeSymbol>())
             {
-                foreach (var i in semantics.GetSymbolInfo(a).Symbol?.ContainingType.AllInterfaces ?? Enumerable.Empty<INamedTypeSymbol>())
-                {
-                    var validationMatch = BaseTypeValidatedRegex.Match(i.ToDisplayString());
-                    if (validationMatch.Success && validationMatch.Groups["type"].Value == baseType) return (a, false);
+                var validationMatch = BaseTypeValidatedRegex.Match(i.ToDisplayString());
+                if (validationMatch.Success && validationMatch.Groups["type"].Value == baseType) return (a, false);
 
-                    var staticMatch = StaticBaseTypeValidatedRegex.Match(i.ToDisplayString());
-                    if (staticMatch.Success && staticMatch.Groups["type"].Value == baseType) return (a, true);
-                }
-                return default;
-            }).Where(_ => _.a != null);
+                var staticMatch = StaticBaseTypeValidatedRegex.Match(i.ToDisplayString());
+                if (staticMatch.Success && staticMatch.Groups["type"].Value == baseType) return (a, true);
+            }
+            return default;
+        }).Where(_ => _.a != null);
 
-        static bool Implements(ITypeSymbol? baseType, INamedTypeSymbol? @interface)
-        {
-            if (baseType is null || @interface is null) return false;
+    static bool Implements(ITypeSymbol? baseType, INamedTypeSymbol? @interface)
+    {
+        if (baseType is null || @interface is null) return false;
 
-            return baseType.AllInterfaces.Any(i => i.Equals(@interface, SymbolEqualityComparer.Default));
-        }
+        return baseType.AllInterfaces.Any(i => i.Equals(@interface, SymbolEqualityComparer.Default));
     }
 }
