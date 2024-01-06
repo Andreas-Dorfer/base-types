@@ -3,15 +3,15 @@
 	<PropertyGroup>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<PackageId>AndreasDorfer.BaseTypes</PackageId>
-		<Version>1.5.1</Version>
+		<Version>1.6.0</Version>
 		<Description>Fight primitive obsession and create expressive domain models with source generators.</Description>
 		<PackageTags>C#, source-generator, domain-modeling, validation, primitive-obsession</PackageTags>
 		<PackageIcon>ESD_512.png</PackageIcon>
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(Configuration)'!='Debug'">
-		<PackageReference Include="AndreasDorfer.BaseTypes.Core" Version="1.5.1" />
-		<PackageReference Include="AndreasDorfer.BaseTypes.Generator" Version="1.5.0" />
+		<PackageReference Include="AndreasDorfer.BaseTypes.Core" Version="1.6.0" />
+		<PackageReference Include="AndreasDorfer.BaseTypes.Generator" Version="1.6.0" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(Configuration)'=='Debug'">
