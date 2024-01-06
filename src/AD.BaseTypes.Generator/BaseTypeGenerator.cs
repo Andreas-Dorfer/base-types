@@ -180,7 +180,7 @@ namespace AD.BaseTypes.Generator
                     }
                     else
                     {
-                        sourceBuilder.AppendLine($"public static {recordName} Parse(string s, System.IFormatProvider? provider) => new({baseType}.Parse(s, provider));");
+                        sourceBuilder.AppendLine($"public static {recordName} Parse(string s, System.IFormatProvider? provider) => new(AD.BaseTypes.Implementations.Implementation.Parse<{baseType}>(s, provider));");
                     }
                     AppendInheritDoc(sourceBuilder);
                     if (validations.Count > 0)
@@ -195,7 +195,7 @@ namespace AD.BaseTypes.Generator
                         }
                         else
                         {
-                            sourceBuilder.AppendLine($"if({baseType}.TryParse(s, provider, out var value) && TryFrom(value, out result, out _)) return true;");
+                            sourceBuilder.AppendLine($"if(AD.BaseTypes.Implementations.Implementation.TryParse<{baseType}>(s, provider, out var value) && TryFrom(value, out result, out _)) return true;");
                         }
                         sourceBuilder.AppendLine("result = default;");
                         sourceBuilder.AppendLine("return false;");
@@ -220,7 +220,7 @@ namespace AD.BaseTypes.Generator
                             sourceBuilder.AppendLine($"public static bool TryParse([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] string? s, System.IFormatProvider? provider, {(isStruct ? "" : "[System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] ")}out {recordName} result)");
                             sourceBuilder.AppendLine("{");
                             sourceBuilder.IncreaseIndent();
-                            sourceBuilder.AppendLine($"if({baseType}.TryParse(s, provider, out var value))");
+                            sourceBuilder.AppendLine($"if(AD.BaseTypes.Implementations.Implementation.TryParse<{baseType}>(s, provider, out var value))");
                             sourceBuilder.AppendLine("{");
                             sourceBuilder.IncreaseIndent();
                             sourceBuilder.AppendLine("result = new(value);");
