@@ -278,7 +278,7 @@ namespace AD.BaseTypes.Generator
         {
             var configFile = context.AdditionalFiles.FirstOrDefault(_ => _.Path.EndsWith("AD.BaseTypes.Generator.json"));
             if (configFile == null) return default;
-            var text = File.ReadAllText(configFile.Path);
+            var text = configFile.GetText()?.ToString() ?? "";
 
             var config = new Config();
             foreach (Match match in ConfigKeyValueRegex.Matches(text))

@@ -9,6 +9,7 @@
         <PackageTags>C#, source-generator, domain-modeling, validation, primitive-obsession</PackageTags>
         <PackageIcon>ESD_512.png</PackageIcon>
         <IsRoslynComponent>true</IsRoslynComponent>
+		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
     </PropertyGroup>
 
     <ItemGroup>
